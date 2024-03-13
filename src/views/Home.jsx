@@ -8,13 +8,10 @@ import { useState, useEffect, useRef } from 'react';
 
 
 
-const Home = () => {
 
-    const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
-    const [isCommunityOpen, setIsCommunityOpen] = useState(false);
+const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
     const sidebarRef = useRef();
-    const navbarRef = useRef();
     const recentRef = useRef();
     const mainfeedRef = useRef();
 
@@ -83,15 +80,22 @@ const Home = () => {
         mainfeedRef.current.addEventListener('scroll', handleScroll);
 
         return () => {
-            recentRef.current.removeEventListener('scroll', handleScroll);
-            sidebarRef.current.removeEventListener('scroll', handleScroll);
-            mainfeedRef.current.removeEventListener('scroll', handleScroll);
+            if (recentRef.current) {
+                recentRef.current.removeEventListener('scroll', handleScroll);
+            }
+            if (sidebarRef.current) {
+                sidebarRef.current.removeEventListener('scroll', handleScroll);
+            }
+            if (mainfeedRef.current) {
+                mainfeedRef.current.removeEventListener('scroll', handleScroll);
+            }
+
         };
     });
     return (
         <>
-            <div className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? 'block' : 'hidden'}`} onClick={() => setIsVisibleLeftSidebar(false)}> </div>
-            <Navbar isVisibleLeftSidebar={isVisibleLeftSidebar} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} navbarRef={navbarRef} />
+
+
             <div className="w-full mt-14 inline-flex flex-row justify-center overflow-hidden">
 
                 <div className={`relative flex flex-row w-fit lg:mr-5 xl:mr-3% mxl:mr-10 h-full`}>
@@ -105,6 +109,7 @@ const Home = () => {
                     <div className='mxl:w-192 mt-2 flex flex-row overflow-auto overflow-x-hidden scrollbar_mod flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
                         <Mainfeed />
                     </div>
+
 
                     <div className='w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
                         <Recent />

@@ -3,9 +3,13 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "node_modules/flowbite-react/lib/esm/**/*.js"
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'plex': ['IBM Plex Sans', 'sans-serif'],
+      },
       colors: {
         reddit_dark: "#030303",
         reddit_search: "#1A282C",
@@ -20,6 +24,8 @@ export default {
         reddit_darkRecent: "#04090A",
         reddit_downvote: "#6A5CFF",
         reddit_upvote: "#D93A01",
+        red: "#FF585B",
+
       },
       gridTemplateColumns: {
         '24': 'repeat(24, minmax(0, 1fr))',
@@ -142,6 +148,15 @@ export default {
         '74%': '74%',
         '80%': '80%',
         '90%': '90%',
+        '91%': '91%',
+        '92%' : '92%',
+        '93%': '93%',
+        '94%': '94%',
+        '95%': '95%',
+        '96%': '96%',
+        '97%': '97%',
+        '98%': '98%',
+        '99%': '99%',
         '100%': '100%',
 
         '13': '52px',
@@ -277,6 +292,10 @@ export default {
         '198': '792px',
         '0.1px': '0.04px',
         '1px': '1px',
+
+      },
+      borderWidth: {
+        '3': '3px',
       },
     },
     screens: {
@@ -302,6 +321,8 @@ export default {
       // => @media (min-width: 1536px) { ... }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 
