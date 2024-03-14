@@ -503,6 +503,8 @@ export default {
       },
     },
     screens: {
+      "2xs": "300px",
+
       xs: "470px",
       // => @media (min-width: 470px) { ... }
 

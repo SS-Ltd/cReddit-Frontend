@@ -1,10 +1,10 @@
 export default function GAButtons() {
   return (
     <>
-      <div className="w-92 h-10 bg-white rounded-3xl">
-        <div className="w-[368px] h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
-          <div className="flex justify-center align-middle w-[342.400px] h-[38.400px]">
-            <div className="w-[18px] h-[18px] justify-self-center self-center">
+      <div className="w-full h-10 bg-white rounded-3xl">
+        <div className="w-full h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
+          <div className="flex justify-center align-middle w-full h-[38.400px]">
+            <div className="w-[18px] justify-self-center self-center">
               <svg
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -39,10 +39,10 @@ export default function GAButtons() {
         </div>
       </div>
 
-      <div className="w-92 h-10 mt-2 bg-white rounded-3xl">
-        <div className="w-[368px] h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
-          <div className="flex justify-center align-middle w-[342.400px] h-[38.400px]">
-            <div className="w-[18px] h-[18px] justify-self-center self-center">
+      <div className="w-full h-10 mt-2 bg-white rounded-3xl">
+        <div className="w-full h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
+          <div className="flex justify-center align-middle w-full h-[38.400px]">
+            <div className="w-[18px] justify-self-center self-center">
               <svg
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
