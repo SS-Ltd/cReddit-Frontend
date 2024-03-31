@@ -6,9 +6,9 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 function SimpleMenu({ title, menuItems, onSelect, id }) {
   return (
     <NavDropdown
-      title={title}
+      title={title + " "}
       menuVariant="dark"
-      className="text-white text-sm font-bold font-plex bg-reddit_greenyDark"
+      className="text-white text-sm font-bold font-plex bg-reddit_greenyDark mt-2"
     >
       {menuItems.map((item, i) => {
         return (

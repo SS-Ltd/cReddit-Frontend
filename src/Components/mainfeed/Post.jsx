@@ -11,6 +11,20 @@ import {
   FlagIcon,
 } from "@heroicons/react/24/outline";
 import moment from "moment";
+import { getRequest } from "../../services/Requests";
+import { baseUrl } from "../../constants";
+import SortingMenu from "./components/SortingMenu";
+import SimpleMenu from "../settings/components/SimpleMenu";
+import AddComment from "./components/AddComment";
+import PostComment from "./components/PostComment";
+
+const sorts = [
+  { name: "Best" },
+  { name: "Hot" },
+  { name: "New" },
+  { name: "Top" },
+  { name: "Rising" },
+];
 
 const Post = ({
   id,
@@ -24,10 +38,29 @@ const Post = ({
   isUpvoted,
   isDownvoted,
   setSelectedPost,
+  isSelected,
+  isHidden,
 }) => {
   const menuRefDots = useRef();
   const [isOpenDots, setIsOpenDots] = useState(false);
-  const uploadedFrom = moment(uploadDate).fromNow();
+  const [selectedSort, setSelectedSort] = useState(sorts[0].name);
+  const [addingComment, setAddingComment] = useState(false);
+  const [comments, setComments] = useState([]);
+
+  // console.log(
+  //   id,
+  //   postId,
+  //   title,
+  //   username,
+  //   content,
+  //   uploadDate,
+  //   commentCount,
+  //   netVote,
+  //   isUpvoted,
+  //   isDownvoted,
+  //   setSelectedPost,
+  //   isSelected
+  // );
 
   useEffect(() => {
     let closeDropdown = (e) => {
@@ -59,13 +92,30 @@ const Post = ({
     };
   });
 
+  // get comments if selected
+  useEffect(() => {
+    if (isSelected) {
+      getRequest(`${baseUrl}/posts/${postId}/comments`)
+        .then((res) => {
+          console.log(res);
+          setComments(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else setComments([]);
+  }, [isSelected]);
+
   return (
     <div
       id={"mainfeed_" + id + "_full"}
       href="L"
-      className={`flex flex-col bg-reddit_greenyDark hover:bg-reddit_hover ${
+      className={`flex flex-col bg-reddit_greenyDark ${
+        !isSelected && "hover:bg-reddit_hover"
+      } ${
         isOpenDots ? "bg-reddit_hover" : ""
       } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full cursor-pointer h-fit`}
+      hidden={isHidden}
     >
       <div className="flex flex-row items-center w-full h-6 ">
         <a
@@ -81,7 +131,7 @@ const Post = ({
 
         <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
         <p className="text-gray-400 font-extralight text-xs ml-1.5">
-          {uploadedFrom}
+          {moment(uploadDate).fromNow()}
         </p>
 
         <div ref={menuRefDots} className="relative ml-auto">
@@ -162,6 +212,46 @@ const Post = ({
         />
         <Share id={id} />
       </div>
+
+      {isSelected && (
+        <>
+          <div className="m-2 mt-3">
+            <SimpleMenu
+              title={selectedSort}
+              menuItems={sorts}
+              onSelect={setSelectedSort}
+            />
+          </div>
+
+          <AddComment
+            isCommenting={addingComment}
+            setIsCommenting={setAddingComment}
+          />
+
+          {/* <PostComment
+            comment="This is a comment"
+            username="Fluffy_Surprise_5733"
+            uploadDate={Date.now() - 5 * 24 * 60 * 60 * 1000}
+          />
+          <PostComment
+            comment="This is a comment"
+            username="Fluffy_Surprise_5733"
+            uploadDate={Date.now() - 5 * 24 * 60 * 60 * 1000}
+          />
+          <PostComment
+            comment="This is a comment"
+            username="Fluffy_Surprise_5733"
+            uploadDate={Date.now() - 5 * 24 * 60 * 60 * 1000}
+            netVote={100}
+          /> */}
+
+          <div className="mb-5">
+            {comments.map((comment) => (
+              <PostComment key={comment.postId} {...comment} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

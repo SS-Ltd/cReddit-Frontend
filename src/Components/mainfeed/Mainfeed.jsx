@@ -5,31 +5,48 @@ import { ChevronDownIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
 import Post from "./Post";
 import { getRequest } from "../../services/Requests";
 import { baseUrl } from "../../constants";
+import SortingMenu from "./components/SortingMenu";
 
 // ...
+
+const sorts = ["Best", "Hot", "New", "Top", "Rising"];
+
+function getSelectedPost(location, posts, setSelectedPost) {
+  console.log(location.pathname);
+  // check if "comments" is in the url
+  if (location.pathname.includes("comments")) {
+    // get the post id from the url
+    const postId = location.pathname.split("/").reverse()[0];
+    console.log(postId);
+    const post = posts?.find((post) => post.postId === postId);
+    setSelectedPost(post);
+  } else setSelectedPost(null);
+}
 
 const Mainfeed = () => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const location = useLocation();
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
 
+  function handleSelectPost(postId) {
+    if (postId == -1) return setSelectedPost(null);
+    console.log(posts);
+    const post = posts?.find((post) => {
+      console.log(post.postId);
+      return post.postId == postId;
+    });
+    console.log("Selected Post: ");
+    console.log(post);
+    setSelectedPost(post);
+  }
+
   useEffect(() => {
-    console.log(location.pathname);
-    // check if "comments" is in the url
-    if (location.pathname.includes("comments")) {
-      // get the post id from the url
-      const postId = location.pathname.split("/")[-1];
-      // find the post with the same id
-      const post = posts.find((post) => post.id === postId);
-      // set the post as the selected post
-      setSelectedPost(post);
-      console.log(`Selected post: ${post}`);
-    } else setSelectedPost(null);
+    getSelectedPost(location, posts, setSelectedPost);
   }, [location]);
 
   useEffect(() => {
@@ -37,6 +54,7 @@ const Mainfeed = () => {
       .then((res) => {
         console.log(res);
         setPosts(res.data);
+        getSelectedPost(location, res.data, setSelectedPost);
       })
       .catch((err) => {
         console.log(err);
@@ -81,71 +99,20 @@ const Mainfeed = () => {
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
     >
-      <div className="flex items-center h-12 mb-2 px-2 w-full">
+      <div
+        className="flex items-center h-12 mb-2 px-2 w-full"
+        hidden={selectedPost}
+      >
         <div
           id="mainfeed_category_dropdown"
           ref={menuRefCateg}
           className="relative"
         >
-          <div
-            onClick={() => setIsOpenCateg((prev) => !prev)}
-            className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${
-              isOpenCateg ? "bg-reddit_search_light" : ""
-            } justify-center items-center cursor-pointer`}
-          >
-            <p className="text-gray-500 font-semibold text-xs no-select ">
-              Best
-            </p>
-            <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-          </div>
-
-          {isOpenCateg && (
-            <div className=" w-20 h-72 bg-reddit_lightGreen absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col">
-              <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
-                <p className="no-select">Sort by</p>
-              </div>
-
-              <a
-                id="mainfeed_category_best"
-                href=""
-                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">Best</p>
-              </a>
-
-              <a
-                id="mainfeed_category_hot"
-                href=""
-                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">Hot</p>
-              </a>
-
-              <a
-                id="mainfeed_category_new"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">New</p>
-              </a>
-
-              <a
-                id="mainfeed_category_top"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">Top</p>
-              </a>
-
-              <a
-                id="mainfeed_category_rising"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer rounded-b-lg"
-              >
-                <p className="no-select">Rising</p>
-              </a>
-            </div>
-          )}
+          <SortingMenu
+            isOpen={isOpenCateg}
+            setIsOpen={setIsOpenCateg}
+            items={sorts}
+          />
         </div>
 
         <div ref={menuRefView} className="relative">
@@ -186,7 +153,7 @@ const Mainfeed = () => {
           )}
         </div>
       </div>
-      <div className=" h-1 flex w-full">
+      <div className=" h-1 flex w-full" hidden={selectedPost}>
         <Separator />
       </div>
 
@@ -196,19 +163,17 @@ const Mainfeed = () => {
       <Post id="post4" />
       <Post id="post5" /> */}
 
-      {!selectedPost &&
+      {posts &&
         posts.map((post, i) => (
           <Post
-            id={`post${i}`}
             key={i}
+            id={`post${i}`}
             {...post}
-            setSelectedPost={setSelectedPost}
+            onClick={() => handleSelectPost(post.postId)}
+            isSelected={selectedPost?.postId === post.postId}
+            isHidden={selectedPost && selectedPost.postId !== post.postId}
           />
         ))}
-
-      {selectedPost && (
-        <Post {...selectedPost} setSelectedPost={setSelectedPost} />
-      )}
     </div>
   );
 };
