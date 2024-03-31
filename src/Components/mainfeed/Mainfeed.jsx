@@ -1,5 +1,6 @@
 import Separator from "../sidebar/Nav-Icons/Separator";
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { ChevronDownIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
 import Post from "./Post";
 import { getRequest } from "../../services/Requests";
@@ -11,9 +12,25 @@ const Mainfeed = () => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const location = useLocation();
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
+
+  useEffect(() => {
+    console.log(location.pathname);
+    // check if "comments" is in the url
+    if (location.pathname.includes("comments")) {
+      // get the post id from the url
+      const postId = location.pathname.split("/")[-1];
+      // find the post with the same id
+      const post = posts.find((post) => post.id === postId);
+      // set the post as the selected post
+      setSelectedPost(post);
+      console.log(`Selected post: ${post}`);
+    } else setSelectedPost(null);
+  }, [location]);
 
   useEffect(() => {
     getRequest(`${baseUrl}/posts`)
@@ -179,9 +196,19 @@ const Mainfeed = () => {
       <Post id="post4" />
       <Post id="post5" /> */}
 
-      {posts.map((post, i) => (
-        <Post id={`post${i}`} key={i} {...post} />
-      ))}
+      {!selectedPost &&
+        posts.map((post, i) => (
+          <Post
+            id={`post${i}`}
+            key={i}
+            {...post}
+            setSelectedPost={setSelectedPost}
+          />
+        ))}
+
+      {selectedPost && (
+        <Post {...selectedPost} setSelectedPost={setSelectedPost} />
+      )}
     </div>
   );
 };

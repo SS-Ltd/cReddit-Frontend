@@ -14,6 +14,7 @@ import moment from "moment";
 
 const Post = ({
   id,
+  postId,
   title,
   username,
   content,
@@ -22,6 +23,7 @@ const Post = ({
   netVote,
   isUpvoted,
   isDownvoted,
+  setSelectedPost,
 }) => {
   const menuRefDots = useRef();
   const [isOpenDots, setIsOpenDots] = useState(false);
@@ -152,7 +154,12 @@ const Post = ({
           isUpvoted={isUpvoted}
           isDownvoted={isDownvoted}
         />
-        <Comment id={id} commentCount={commentCount} />
+        <Comment
+          id={id}
+          commentCount={commentCount}
+          url={`/${username}/comments/${postId}`}
+          onClick={() => setSelectedPost(postId)}
+        />
         <Share id={id} />
       </div>
     </div>
