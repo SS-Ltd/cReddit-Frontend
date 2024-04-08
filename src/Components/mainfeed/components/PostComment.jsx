@@ -7,6 +7,7 @@ import Save from "./Save";
 function PostComment({
   username,
   content,
+  image,
   uploadDate,
   profilePicture,
   netVote,

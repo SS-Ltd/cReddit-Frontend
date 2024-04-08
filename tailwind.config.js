@@ -28,6 +28,7 @@ export default {
         reddit_sky: "#50E9F4",
         reddit_search_light: "#213236",
         reddit_greenyDark: "#0B1416",
+        reddit_grayDark: "#162326",
         reddit_blue: "#1460d1",
         reddit_light_blue: "#1870f4",
         reddit_lightGreen: "#0F1A1C",
