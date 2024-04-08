@@ -34,7 +34,7 @@ function PostComment({
           <p className="text-white text-sm ml-3">{content}</p>
         </div>
       </div>
-      <div className="w-full h-8 mt-3 ml-12 flex flex-row justify-start items-center overflow-hidden">
+      <div className="w-full mt-3 ml-12 flex flex-row justify-start items-center">
         <Vote
           id={"id"}
           netVotes={netVote}

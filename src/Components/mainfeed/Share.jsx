@@ -6,6 +6,10 @@ const Share = ({ id }) => {
   const node = useRef();
 
   const handleClick = (e) => {
+    console.log("click");
+    // console.log(e.target);
+    // console.log(node.current);
+    // console.log(node.current.contains(e.target));
     if (node.current.contains(e.target)) {
       // inside click
       return;
@@ -24,11 +28,12 @@ const Share = ({ id }) => {
   }, []);
 
   return (
-    <div className="relative" ref={node}>
+    <div className="relative" ref={node} onMouseDown={(e) => handleClick(e)}>
       <div
         id={"mainfeed_" + id + "_share"}
         className="flex flex-row items-center w-21 h-8 justify-center bg-reddit_search hover:bg-reddit_search_light rounded-3xl "
         onClick={() => setIsMenuOpen(!isMenuOpen)}
+        // onBlur={() => setIsMenuOpen(false)}
       >
         <ArrowUpTrayIcon className="h-5 w-6 mr-1 text-gray-300" />
         <span className="text-gray-300 text-sm mr-1.5"> Share</span>
@@ -41,7 +46,6 @@ const Share = ({ id }) => {
                 rpl=""
                 fill="currentColor"
                 height="20"
-                iconName="link-post-outline"
                 viewBox="0 0 20 20"
                 width="20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +61,6 @@ const Share = ({ id }) => {
                 rpl=""
                 fill="currentColor"
                 height="20"
-                iconName="crosspost-outline"
                 viewBox="0 0 20 20"
                 width="20"
                 xmlns="http://www.w3.org/2000/svg"
