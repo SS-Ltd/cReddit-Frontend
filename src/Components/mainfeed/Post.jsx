@@ -35,7 +35,7 @@ const Post = ({
   isDownvoted,
   setSelectedPost,
   isSelected,
-  isHidden,
+  isShown,
 }) => {
   const menuRefDots = useRef();
   const [isOpenDots, setIsOpenDots] = useState(false);
@@ -92,7 +92,7 @@ const Post = ({
   // get comments if selected
   useEffect(() => {
     if (isSelected) {
-      getRequest(`${baseUrl}/post/${id}/comment`)
+      getRequest(`${baseUrl}/post/${id}/comments`)
         .then((res) => {
           console.log(res);
           setComments(res.data);
@@ -112,7 +112,7 @@ const Post = ({
       } ${
         isOpenDots ? "bg-reddit_hover" : ""
       } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full cursor-pointer h-fit`}
-      hidden={isHidden}
+      hidden={isShown}
     >
       <PostContent
         id={id}
@@ -138,16 +138,20 @@ const Post = ({
         <Comment
           id={id}
           commentCount={commentCount}
-          url={!isSelected ? `/${username}/comments/${id}` : null}
-          onClick={() => {
-            console.log(addCommentRef.current);
-            addCommentRef.current.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-          }}
+          url={!isSelected ? `/${username}/comment/${id}` : null}
+          onClick={
+            !isSelected
+              ? () => setSelectedPost(id)
+              : () => {
+                  console.log(addCommentRef.current);
+                  addCommentRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+          }
         />
-        <Share id={id} />
+        <Share id={id} username={username} />
       </div>
 
       {isSelected && (
@@ -168,11 +172,7 @@ const Post = ({
           {comments?.length ? (
             <div className="mb-5">
               {comments.map((comment) => (
-                <PostComment
-                  key={comment.postId}
-                  id={comment.postId}
-                  {...comment}
-                />
+                <PostComment key={comment._id} id={comment._id} {...comment} />
               ))}
             </div>
           ) : (

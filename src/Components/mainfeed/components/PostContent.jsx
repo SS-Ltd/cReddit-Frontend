@@ -5,6 +5,7 @@ import {
   FlagIcon,
 } from "@heroicons/react/24/outline";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 function PostContent({
   id,
@@ -23,11 +24,9 @@ function PostContent({
     <>
       <div className="flex flex-row items-center w-full h-6 ">
         {isSelected && (
-          <div
+          <Link
             className="max-w-10 min-h-10 mr-3 flex flex-row justify-center items-center w-full h-6 rounded-full bg-gray-800"
-            onClick={() => {
-              window.location.href = "/";
-            }}
+            to={"/"}
           >
             <svg
               rpl=""
@@ -40,7 +39,7 @@ function PostContent({
             >
               <path d="M19 9.375H2.51l7.932-7.933-.884-.884-9 9a.625.625 0 0 0 0 .884l9 9 .884-.884-7.933-7.933H19v-1.25Z"></path>
             </svg>
-          </div>
+          </Link>
         )}
         <a
           id={"mainfeed_" + id + "_community"}

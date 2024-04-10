@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw"
 import { baseUrl } from "../constants"
 export const postHandlers = [
     // get posts --> ADD TO API
-    http.get(`/posts`, (resolver) => {
+    http.get(`/home-feed`, (resolver) => {
         return HttpResponse.json([
             {
                 postId: "350651awd651awd",

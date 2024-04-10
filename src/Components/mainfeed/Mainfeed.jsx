@@ -14,11 +14,12 @@ const sorts = ["Best", "Hot", "New", "Top", "Rising"];
 function getSelectedPost(location, posts, setSelectedPost) {
   console.log(location.pathname);
   // check if "comments" is in the url
-  if (location.pathname.includes("comments")) {
+  if (location.pathname.includes("comment")) {
     // get the post id from the url
     const postId = location.pathname.split("/").reverse()[0];
     console.log(postId);
-    const post = posts?.find((post) => post.postId === postId);
+    const post = posts?.find((post) => post._id === postId);
+    console.log(`Found post: ${post}`);
     setSelectedPost(post);
   } else setSelectedPost(null);
 }
@@ -37,8 +38,8 @@ const Mainfeed = () => {
     if (postId == -1) return setSelectedPost(null);
     console.log(posts);
     const post = posts?.find((post) => {
-      console.log(post.postId);
-      return post.postId == postId;
+      console.log(post._id);
+      return post._id == postId;
     });
     console.log("Selected Post: ");
     console.log(post);
@@ -50,7 +51,7 @@ const Mainfeed = () => {
   }, [location]);
 
   useEffect(() => {
-    getRequest(`${baseUrl}/posts`)
+    getRequest(`${baseUrl}/post/home-feed`)
       .then((res) => {
         console.log(res);
         setPosts(res.data);
@@ -167,11 +168,11 @@ const Mainfeed = () => {
         posts.map((post, i) => (
           <Post
             key={i}
-            id={post.postId}
+            id={post._id}
             {...post}
-            onClick={() => handleSelectPost(post.postId)}
-            isSelected={selectedPost?.postId === post.postId}
-            isHidden={selectedPost && selectedPost.postId !== post.postId}
+            setSelectedPost={(postId) => handleSelectPost(postId)}
+            isSelected={selectedPost?._id === post._id}
+            isShown={selectedPost && selectedPost._id !== post._id}
           />
         ))}
     </div>
