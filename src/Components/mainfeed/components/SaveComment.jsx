@@ -1,11 +1,19 @@
 import { useState } from "react";
+import { Save } from "../utils/CommentsUtils";
 
-function Save() {
+function SaveComment({ id }) {
   const [isSaved, setIsSaved] = useState(false);
+
+  async function handleClickSave() {
+    await Save(id, isSaved);
+    setIsSaved((prev) => !prev);
+  }
+
   return (
     <div
+      id={id}
       className="flex flex-row items-center w-full h-8 justify-center  bg-reddit_search hover:bg-reddit_search_light rounded-3xl"
-      onClick={() => setIsSaved((prev) => !prev)}
+      onClick={handleClickSave}
     >
       {!isSaved && (
         <div className="p-2 flex flex-row items-center justify-center">
@@ -47,4 +55,4 @@ function Save() {
   );
 }
 
-export default Save;
+export default SaveComment;

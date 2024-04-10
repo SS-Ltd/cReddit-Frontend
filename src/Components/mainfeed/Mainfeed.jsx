@@ -167,7 +167,7 @@ const Mainfeed = () => {
         posts.map((post, i) => (
           <Post
             key={i}
-            id={`post${i}`}
+            id={post.postId}
             {...post}
             onClick={() => handleSelectPost(post.postId)}
             isSelected={selectedPost?.postId === post.postId}

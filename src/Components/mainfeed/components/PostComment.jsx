@@ -2,9 +2,10 @@ import moment from "moment";
 import Vote from "../Vote";
 import Comment from "../Comment";
 import Share from "../Share";
-import Save from "./Save";
+import SaveComment from "./SaveComment";
 
 function PostComment({
+  id,
   username,
   content,
   image,
@@ -36,17 +37,17 @@ function PostComment({
       </div>
       <div className="w-full mt-3 ml-12 flex flex-row justify-start items-center">
         <Vote
-          id={"id"}
+          id={`mainfeed_${id}_vote`}
           netVotes={netVote}
           isUpvoted={isUpvoted}
           isDownvoted={isDownvoted}
         />
 
         <div className="ml-3">
-          <Share id={"id"} />
+          <Share id={`mainfeed_${id}_share`} />
         </div>
         <div className="ml-3">
-          <Save />
+          <SaveComment id={`mainfeed_${id}_save`} />
         </div>
       </div>
     </>

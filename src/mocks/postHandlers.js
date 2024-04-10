@@ -89,7 +89,7 @@ export const postHandlers = [
     }),
 
     // get comments for a post
-    http.get(`${baseUrl}/posts/:postId/comments`, (resolver) => {
+    http.get(`${baseUrl}/post/:postId/comment`, (resolver) => {
         return HttpResponse.json([
             {
                 postId: "350651awd651awa",
@@ -170,5 +170,18 @@ export const postHandlers = [
         )
     }),
 
+    // upvote a post
+    http.post(`${baseUrl}/post/:postId/upvote`, (resolver) => {
+        return HttpResponse.json({ message: "Post voted successfully" })
+    }),
 
+    // downvote a post
+    http.post(`${baseUrl}/post/:postId/downvote`, (resolver) => {
+        return HttpResponse.json({ message: "Post voted successfully" })
+    }),
+
+    // save a post
+    http.post(`${baseUrl}/post/:postId/save`, (resolver) => {
+        return HttpResponse.json({ message: "Post saved successfully" })
+    }),
 ]

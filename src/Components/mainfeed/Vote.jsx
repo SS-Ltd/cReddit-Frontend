@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { UpDownVoteComment } from "./utils/CommentsUtils";
 
 const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
   return isUpvote ? (
@@ -85,18 +86,20 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
 };
 
 const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
-  console.log(netVotes, isUpvoted, isDownvoted);
+  console.log(id, netVotes, isUpvoted, isDownvoted);
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  const handleUpvote = () => {
+  const handleUpvote = async () => {
     if (isUpvote) {
+      if (!(await UpDownVoteComment(id, false))) return;
       setVoters(voters - 1);
       setIsUpvote(false);
     } else {
+      if (!(await UpDownVoteComment(id, true))) return;
       if (isDownvote) {
         setVoters(voters + 2);
         setIsDownvote(false);
@@ -107,11 +110,13 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     }
   };
 
-  const handleDownvote = () => {
+  const handleDownvote = async () => {
     if (isDownvote) {
+      if (!(await UpDownVoteComment(id, true))) return;
       setVoters(voters + 1);
       setIsDownvote(false);
     } else {
+      if (!(await UpDownVoteComment(id, false))) return;
       if (isUpvote) {
         setVoters(voters - 2);
         setIsUpvote(false);
@@ -133,7 +138,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       }  rounded-3xl`}
     >
       <span
-        id={"mainfeed_" + id + "_upvote"}
+        id={`${id}_upvote`}
         onMouseEnter={() => setIsHoverUpvote(true)}
         onMouseLeave={() => setIsHoverUpvote(false)}
         role="button"
@@ -146,11 +151,13 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
           isUpvote={isUpvote}
           isDownvote={isDownvote}
           isHoverUpvote={isHoverUpvote}
-        />{" "}
+        />
       </span>
-      <span className="text-gray-300 text-sm">{voters}</span>
+      <span id={`${id}_voters`} className="text-gray-300 text-sm">
+        {voters}
+      </span>
       <span
-        id={"mainfeed_" + id + "_downvote"}
+        id={`${id}_downvote`}
         onMouseEnter={() => setIsHoverDownvote(true)}
         onMouseLeave={() => setIsHoverDownvote(false)}
         role="button"

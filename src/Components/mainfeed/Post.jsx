@@ -25,7 +25,6 @@ const sorts = [
 
 const Post = ({
   id,
-  postId,
   title,
   username,
   content,
@@ -43,6 +42,7 @@ const Post = ({
   const [selectedSort, setSelectedSort] = useState(sorts[0].name);
   const [addingComment, setAddingComment] = useState(false);
   const [comments, setComments] = useState([]);
+  const addCommentRef = useRef();
 
   // console.log(
   //   id,
@@ -92,7 +92,7 @@ const Post = ({
   // get comments if selected
   useEffect(() => {
     if (isSelected) {
-      getRequest(`${baseUrl}/posts/${postId}/comments`)
+      getRequest(`${baseUrl}/post/${id}/comment`)
         .then((res) => {
           console.log(res);
           setComments(res.data);
@@ -138,8 +138,14 @@ const Post = ({
         <Comment
           id={id}
           commentCount={commentCount}
-          url={`/${username}/comments/${postId}`}
-          onClick={() => setSelectedPost(postId)}
+          url={!isSelected ? `/${username}/comments/${id}` : null}
+          onClick={() => {
+            console.log(addCommentRef.current);
+            addCommentRef.current.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }}
         />
         <Share id={id} />
       </div>
@@ -154,15 +160,21 @@ const Post = ({
             />
           </div>
 
-          <AddComment
-            isCommenting={addingComment}
-            setIsCommenting={setAddingComment}
-          />
+          <div ref={addCommentRef} className="w-full flex flex-row">
+            <AddComment
+              isCommenting={addingComment}
+              setIsCommenting={setAddingComment}
+            />
+          </div>
 
           {comments?.length ? (
             <div className="mb-5">
               {comments.map((comment) => (
-                <PostComment key={comment.postId} {...comment} />
+                <PostComment
+                  key={comment.postId}
+                  id={comment.postId}
+                  {...comment}
+                />
               ))}
             </div>
           ) : (

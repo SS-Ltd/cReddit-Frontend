@@ -2,7 +2,7 @@ import CommentSection from "./CommentSection";
 
 function AddComment({ isCommenting, setIsCommenting }) {
   return (
-    <div className="max-xs mt-2 inline-flex flex-row  justify-center">
+    <div className="w-full mt-2 inline-flex flex-row  justify-center">
       <button
         className="w-full h-10 bg-greenyDark flex flex-row items-center rounded-3xl border border-gray-600 font-plex"
         hidden={isCommenting}
