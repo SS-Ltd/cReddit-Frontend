@@ -17,10 +17,9 @@ import PostContent from "./components/PostContent";
 
 const sorts = [
   { name: "Best" },
-  { name: "Hot" },
-  { name: "New" },
+  { name: "Old" },
   { name: "Top" },
-  { name: "Rising" },
+  { name: "New" },
 ];
 
 const Post = ({
@@ -92,7 +91,11 @@ const Post = ({
   // get comments if selected
   useEffect(() => {
     if (isSelected) {
-      getRequest(`${baseUrl}/post/${id}/comments`)
+      getRequest(
+        `${baseUrl}/post/${id}/comments?${
+          selectedSort ? `sort=${selectedSort.toLowerCase()}` : ""
+        }`
+      )
         .then((res) => {
           console.log(res);
           setComments(res.data);
@@ -101,7 +104,7 @@ const Post = ({
           console.log(err);
         });
     } else setComments([]);
-  }, [isSelected]);
+  }, [isSelected, selectedSort]);
 
   return (
     <div
@@ -165,6 +168,10 @@ const Post = ({
           </div>
 
           <AddComment
+            postId={id}
+            onAddComment={(newComment) =>
+              setComments([newComment, ...comments])
+            }
             isCommenting={addingComment}
             setIsCommenting={setAddingComment}
           />

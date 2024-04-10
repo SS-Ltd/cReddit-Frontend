@@ -1,11 +1,29 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { notify } from "../../settings/components/CustomToast";
 import CancelComment from "./CancelComment";
+import { postComment } from "../utils/CommentsUtils";
 
-function CommentSection({ isCommenting, setIsCommenting }) {
+function CommentSection({
+  postId,
+  isCommenting,
+  setIsCommenting,
+  onAddComment,
+}) {
   const [comment, setComment] = useState("");
+  const [image, setImage] = useState(null);
   const [buttonColor, setButtonColor] = useState("#4d4608");
   const [modalShow, setModalShow] = useState(false);
   const textareaRef = useRef();
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    const imageUrl = URL.createObjectURL(file);
+    setImage(imageUrl);
+    setComment("");
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
     if (isCommenting) {
@@ -13,25 +31,50 @@ function CommentSection({ isCommenting, setIsCommenting }) {
     }
   }, [isCommenting]);
 
+  async function addComment() {
+    const newComment = await postComment(postId, image, comment);
+    if (!newComment) return;
+    onAddComment(newComment);
+    setComment("");
+    setImage(null);
+    setIsCommenting(false);
+  }
+
   return (
     <div
       className="w-full  bg-greenyDark flex flex-col items-center rounded-2xl font-plex border-1 border-gray-500 "
       hidden={!isCommenting}
     >
-      <textarea
-        ref={textareaRef}
-        className="w-full block rounded-2xl pl-5 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
-        cols="10"
-        style={{ outline: "none", boxShadow: "none" }}
-        onInput={(e) => {
-          e.target.style.height = "inherit";
-          e.target.style.height = `${e.target.scrollHeight}px`;
-        }}
-        onChange={(e) => setComment(e.target.value)}
-        value={comment}
-      ></textarea>
+      {!image && (
+        <textarea
+          disabled={image ? true : false}
+          ref={textareaRef}
+          className="w-full block rounded-2xl pl-5 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
+          cols="10"
+          style={{ outline: "none", boxShadow: "none" }}
+          onInput={(e) => {
+            e.target.style.height = "inherit";
+            e.target.style.height = `${e.target.scrollHeight}px`;
+          }}
+          onChange={(e) => setComment(e.target.value)}
+          value={comment}
+        ></textarea>
+      )}
+
+      {image && (
+        <img
+          className="object-cover w-full h-full rounded-lg"
+          src={image}
+          alt="preview"
+        />
+      )}
       <div className="w-full flex flex-row">
-        <div className="w-full flex flex-row justify-start items-center">
+        <div
+          {...getRootProps()}
+          className="w-full flex flex-row justify-start items-center"
+          hidden={image ? true : false}
+        >
+          <input {...getInputProps()} />
           <svg
             rpl=""
             fill="currentColor"
@@ -51,7 +94,7 @@ function CommentSection({ isCommenting, setIsCommenting }) {
           <button
             className="bg-gray-800 h-8 items-center rounded-3xl font-plex hover:bg-gray-700"
             onClick={() => {
-              if (comment.length) setModalShow(true);
+              if (comment.length || image) setModalShow(true);
               else {
                 setIsCommenting(false);
                 setComment("");
@@ -61,6 +104,7 @@ function CommentSection({ isCommenting, setIsCommenting }) {
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
           <button
+            onClick={addComment}
             className="h-8 items-center rounded-3xl font-plex ml-2 "
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
@@ -74,6 +118,7 @@ function CommentSection({ isCommenting, setIsCommenting }) {
       <CancelComment
         show={modalShow}
         onHide={() => {
+          setImage(null);
           setModalShow(false);
           setIsCommenting(false);
           setComment("");

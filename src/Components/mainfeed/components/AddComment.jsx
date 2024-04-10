@@ -1,6 +1,6 @@
 import CommentSection from "./CommentSection";
 
-function AddComment({ isCommenting, setIsCommenting }) {
+function AddComment({ postId, isCommenting, setIsCommenting, onAddComment }) {
   return (
     <div className="w-full mt-2 inline-flex flex-row  justify-center">
       <button
@@ -14,6 +14,8 @@ function AddComment({ isCommenting, setIsCommenting }) {
       </button>
 
       <CommentSection
+        postId={postId}
+        onAddComment={onAddComment}
         isCommenting={isCommenting}
         setIsCommenting={setIsCommenting}
       />

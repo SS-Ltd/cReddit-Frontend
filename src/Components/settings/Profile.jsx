@@ -85,7 +85,7 @@ function Profile({
       <Subtitle title="IMAGE UPLOAD" />
       <Setting
         title="Upload profile picture"
-        message="Images must be .png or .jpg format"
+        message="Click/Drop Image to Upload/Change Profile Picture."
       />
       <ImageUpload id="profile-image-upload-drag-and-drop" />
 
@@ -98,7 +98,7 @@ function Profile({
         isToggled={showAdultContent}
         pageName={"profile"}
         settingName={"isNSFW"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
 
       <Subtitle title="PROFILE CATEGORY" />
@@ -110,7 +110,7 @@ function Profile({
         isToggled={allowFollow}
         pageName={"profile"}
         settingName={"allowFollow"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
       <Setting
         id="profile-category-visibility-toggle-button"
@@ -120,7 +120,7 @@ function Profile({
         isToggled={isContentVisible}
         pageName={"profile"}
         settingName={"isContentVisible"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
       <Setting
         id="profile-category-active-communities-toggle-button"
@@ -130,7 +130,7 @@ function Profile({
         isToggled={isActiveCommunityVisible}
         pageName={"profile"}
         settingName={"isActiveCommunityVisible"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
       <Setting
         id="profile-category-clear-history-button"
@@ -138,7 +138,7 @@ function Profile({
         message="Delete your post views history."
         regularButton="Clear History"
         overrideOnClick={clearHistory}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
     </div>
   );

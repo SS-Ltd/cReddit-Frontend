@@ -2,10 +2,10 @@ import { http, HttpResponse } from "msw"
 import { baseUrl } from "../constants"
 export const postHandlers = [
     // get posts --> ADD TO API
-    http.get(`/home-feed`, (resolver) => {
+    http.get(`/post/home-feed`, (resolver) => {
         return HttpResponse.json([
             {
-                postId: "350651awd651awd",
+                _id: "350651awd651awd",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "r/DunderMifflin",
                 communityName: "Watermelon",
@@ -32,7 +32,7 @@ export const postHandlers = [
                 expirationDate: "2024-03-25T15:37:33.339+00:00"
             },
             {
-                postId: "450651awd651awd",
+                _id: "450651awd651awd",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "r/DunderMifflin",
                 communityName: "Watermelon",
@@ -59,7 +59,7 @@ export const postHandlers = [
                 expirationDate: "2024-03-25T15:37:33.339+00:00"
             },
             {
-                postId: "550651awd651awd",
+                _id: "550651awd651awd",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "r/DunderMifflin",
                 communityName: "Watermelon",
@@ -88,11 +88,36 @@ export const postHandlers = [
         ])
     }),
 
+    // get comment by id
+    http.get(`${baseUrl}/comment/:commentId`, (resolver) => {
+        return HttpResponse.json({
+            _id: "350651awd651awxx",
+            type: "Comment",
+            username: "u/MICHAEL",
+            communityName: "Watermelon",
+            content: "Wow, I can't believe that happened! I'm so excited for the next post!",
+            profilePicture: "drive.creddit.com/subreddit_or_user_pfp",
+            netVote: 500,
+            isNSFW: false,
+            isSpoiler: false,
+            isApproved: false,
+            isUpvoted: false,
+            isDownvoted: false,
+            isHidden: false,
+            isSaved: false,
+            isLocked: false,
+            isEdited: false,
+            isJoined: false,
+            createdAt: "2024-03-25T15:37:33.339+00:00",
+            updatedAt: "2024-03-25T15:37:33.339+00:00"
+        })
+    }),
+
     // get comments for a post
-    http.get(`${baseUrl}/post/:postId/comment`, (resolver) => {
+    http.get(`${baseUrl}/post/:postId/comments`, (resolver) => {
         return HttpResponse.json([
             {
-                postId: "350651awd651awa",
+                _id: "350651awd651awa",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "u/JIMBOB",
                 communityName: "Watermelon",
@@ -124,7 +149,7 @@ export const postHandlers = [
                 isModerator: false
             },
             {
-                postId: "350651awd651awb",
+                _id: "350651awd651awb",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "u/CREED",
                 communityName: "Watermelon",
@@ -156,7 +181,7 @@ export const postHandlers = [
                 isModerator: false
             },
             {
-                postId: "350651awd651awc",
+                _id: "350651awd651awc",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "u/DWIGHT",
                 communityName: "Watermelon",
@@ -188,7 +213,7 @@ export const postHandlers = [
                 isModerator: false
             },
             {
-                postId: "350651awd651awe",
+                _id: "350651awd651awe",
                 type: "(Images & Video) or (Normal) or (Poll) or (Links)",
                 username: "u/ANGELA",
                 communityName: "Watermelon",
@@ -221,6 +246,14 @@ export const postHandlers = [
             },
         ]
         )
+    }),
+
+    // comment on a post
+    http.post(`${baseUrl}/comment`, (resolver) => {
+        return HttpResponse.json({
+            message: "Comment posted successfully",
+            commentId: "350651awd651awx"
+        })
     }),
 
     // upvote a post
