@@ -4,7 +4,7 @@ function NoComments() {
       <div className="w-13">
         <img
           src="https://www.redditstatic.com/shreddit/assets/thinking-snoo.png"
-          srcset=""
+          srcSet=""
           sizes=""
           alt="Thinking Snoo"
         ></img>

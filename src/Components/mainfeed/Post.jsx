@@ -152,7 +152,7 @@ const Post = ({
 
       {isSelected && (
         <>
-          <div className="m-2 mt-3 w-10">
+          <div ref={addCommentRef} className="m-2 mt-3 w-10">
             <SimpleMenu
               title={selectedSort}
               menuItems={sorts}
@@ -160,12 +160,10 @@ const Post = ({
             />
           </div>
 
-          <div ref={addCommentRef} className="w-full flex flex-row">
-            <AddComment
-              isCommenting={addingComment}
-              setIsCommenting={setAddingComment}
-            />
-          </div>
+          <AddComment
+            isCommenting={addingComment}
+            setIsCommenting={setAddingComment}
+          />
 
           {comments?.length ? (
             <div className="mb-5">

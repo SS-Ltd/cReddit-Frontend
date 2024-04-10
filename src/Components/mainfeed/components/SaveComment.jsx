@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Save } from "../utils/CommentsUtils";
 
-function SaveComment({ id }) {
-  const [isSaved, setIsSaved] = useState(false);
+function SaveComment({ id, Saved }) {
+  const [isSaved, setIsSaved] = useState(Saved);
 
   async function handleClickSave() {
     await Save(id, isSaved);

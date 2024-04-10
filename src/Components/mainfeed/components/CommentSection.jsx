@@ -36,7 +36,6 @@ function CommentSection({ isCommenting, setIsCommenting }) {
             rpl=""
             fill="currentColor"
             height="16"
-            iconName="image-post-outline"
             viewBox="0 0 20 20"
             width="16"
             xmlns="http://www.w3.org/2000/svg"
