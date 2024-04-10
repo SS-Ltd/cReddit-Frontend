@@ -8,7 +8,7 @@ import NotFound from "./views/NotFound";
 import { useContext, useState, useRef } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { FormText } from "react-bootstrap";
 import "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
@@ -44,7 +44,7 @@ function App() {
           )}
           <Routes>
             <Route
-              path="/"
+              path="/*"
               element={
                 <Home
                   isVisibleLeftSidebar={isVisibleLeftSidebar}
@@ -55,7 +55,7 @@ function App() {
             />
             <Route path="/settings/*" element={<Settings />} />
             <Route path="/submit" element={<CreatePost />} />
-            <Route path="/*" element={<NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />} />
+            {/* <Route path="/*" element={<NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />} /> */}
           </Routes>
         </div>
       </Router>

@@ -1,11 +1,28 @@
 import Separator from "../sidebar/Nav-Icons/Separator";
 import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { ChevronDownIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
+import { useLocation } from "react-router-dom";
 import Post from "./Post";
 import { UserContext } from '@/context/UserContext';
 import { postRequest, getRequest, postRequestImg } from "../../services/Requests";
 import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
+
+
+const sorts = ["Best", "Hot", "New", "Top", "Rising"];
+
+function getSelectedPost(location, posts, setSelectedPost) {
+  console.log(location.pathname);
+  // check if "comments" is in the url
+  if (location.pathname.includes("comment")) {
+    // get the post id from the url
+    const postId = location.pathname.split("/").reverse()[0];
+    console.log(postId);
+    const post = posts?.find((post) => post._id === postId);
+    console.log(`Found post: ${post}`);
+    setSelectedPost(post);
+  } else setSelectedPost(null);
+}
 
 
 const Mainfeed = () => {
@@ -17,6 +34,8 @@ const Mainfeed = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const location = useLocation();
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -30,6 +49,7 @@ const Mainfeed = () => {
         const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=8&sort=all`);
         if (response.status == 200 || response.status == 201) {
           setPosts(prevPosts => [...prevPosts, ...response.data]);
+          getSelectedPost(location, response.data, setSelectedPost);
           setHasMore(response.data.length > 0);
         } else {
           setError(true);
@@ -67,6 +87,23 @@ const Mainfeed = () => {
   }, [handleScroll]);
 
 
+  function handleSelectPost(postId) {
+    if (postId == -1) return setSelectedPost(null);
+    console.log(posts);
+    const post = posts?.find((post) => {
+      console.log(post._id);
+      return post._id == postId;
+    });
+    console.log("Selected Post: ");
+    console.log(post);
+    setSelectedPost(post);
+  }
+
+  useEffect(() => {
+    getSelectedPost(location, posts, setSelectedPost);
+  }, [location]);
+
+
 
   useEffect(() => {
     let closeDropdown = (e) => {
@@ -101,86 +138,24 @@ const Mainfeed = () => {
     };
   });
 
-  return (
-    <div
-      id="mainfeed"
-      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
-    >
-      <div className="flex items-center h-12 mb-2 px-2 w-full">
-        <div
-          id="mainfeed_category_dropdown"
-          ref={menuRefCateg}
-          className="relative"
-        >
-          <div
-            onClick={() => setIsOpenCateg((prev) => !prev)}
-            className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
-          >
-            <p className="text-gray-500 font-semibold text-xs no-select ">
-              Best
-            </p>
-            <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-          </div>
+    return (
+        <div id="mainfeed" className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden ">
+            <div className="flex items-center h-12 mb-2 px-2 w-full" >
 
-          {isOpenCateg && (
-            <div className=" w-20 h-72 bg-reddit_lightGreen absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col">
-              <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
-                <p className="no-select">Sort by</p>
-              </div>
+                <div id="mainfeed_category_dropdown" ref={menuRefCateg} className="relative">
+                <SortingMenu
+            isOpen={isOpenCateg}
+            setIsOpen={setIsOpenCateg}
+            items={sorts}
+          />
+                         
+                </div>
 
-              <div
-                id="mainfeed_category_best"
-                href=""
-                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">Best</p>
-              </div>
-
-              <a
-                id="mainfeed_category_hot"
-                href=""
-                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">Hot</p>
-              </a>
-
-              <a
-                id="mainfeed_category_new"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">New</p>
-              </a>
-
-              <a
-                id="mainfeed_category_top"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
-                <p className="no-select">Top</p>
-              </a>
-
-              <a
-                id="mainfeed_category_rising"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer rounded-b-lg"
-              >
-                <p className="no-select">Rising</p>
-              </a>
-            </div>
-          )}
-        </div>
-        <div ref={menuRefView} className="relative">
-          <div
-            id="mainfeed_view_type"
-            onClick={() => setIsOpenView((prev) => !prev)}
-            className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
-          >
-            <ViewColumnsIcon className="h-4.5 w-5 text-gray-500 rotate-90" />
-            <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-          </div>
+                <div ref={menuRefView} className="relative">
+                    <div id="mainfeed_view_type" onClick={() => setIsOpenView((prev) => !prev)} className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? 'bg-reddit_search_light' : ''} justify-center items-center cursor-pointer`} >
+                        <ViewColumnsIcon className='h-4.5 w-5 text-gray-500 rotate-90' />
+                        <ChevronDownIcon className='h-3 ml-0.5 w-3 text-gray-400' />
+                    </div>
 
           {isOpenView && (
             <div className=" w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col">
@@ -208,12 +183,17 @@ const Mainfeed = () => {
           )}
         </div>
       </div>
-      <div className=" h-1 px-2.5 flex w-full">
+      <div className=" h-1 flex w-full" hidden={selectedPost}>
         <Separator />
       </div>
 
       {posts.map((post, i) => (
-        <Post id={post._id} key={i} {...post} />
+        <Post key={i}
+        id={post._id}
+        {...post}
+        setSelectedPost={(postId) => handleSelectPost(postId)}
+        isSelected={selectedPost?._id === post._id}
+        isShown={selectedPost && selectedPost._id !== post._id}/>
       ))}
 
       {

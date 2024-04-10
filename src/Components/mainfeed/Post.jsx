@@ -9,6 +9,19 @@ import { baseUrl } from "../../constants";
 
 import moment from "moment";
 import HiddenPost from './HiddenPost';
+import SortingMenu from "./components/SortingMenu";
+import SimpleMenu from "../settings/components/SimpleMenu";
+import AddComment from "./components/AddComment";
+import PostComment from "./components/PostComment";
+import NoComments from "./components/NoComments";
+import PostContent from "./components/PostContent";
+
+const sorts = [
+    { name: "Best" },
+    { name: "Old" },
+    { name: "Top" },
+    { name: "New" },
+  ];
 
 const Post = ({
     id,
@@ -29,7 +42,10 @@ const Post = ({
     pollOptions,
     expirationDate,
     isHidden,
-    isSaved
+    isSaved,
+    setSelectedPost,
+    isSelected,
+    isShown,
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -44,6 +60,10 @@ const Post = ({
     const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
+    const [selectedSort, setSelectedSort] = useState(sorts[0].name);
+    const [addingComment, setAddingComment] = useState(false);
+    const [comments, setComments] = useState([]);
+    const addCommentRef = useRef();
     function formatNumber(num) {
         if (num >= 1000000) {
             return (num / 1000000).toFixed(1) + 'M';
@@ -88,7 +108,24 @@ const Post = ({
         };
     });
 
-    const getTotalVotes = (pollOptions) => {
+    useEffect(() => {
+        if (isSelected) {
+          getRequest(
+            `${baseUrl}/post/${id}/comments?${
+              selectedSort ? `sort=${selectedSort.toLowerCase()}` : ""
+            }`
+          )
+            .then((res) => {
+              console.log(res);
+              setComments(res.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else setComments([]);
+      }, [isSelected, selectedSort]);
+
+      const getTotalVotes = (pollOptions) => {
         return pollOptions.reduce((total, option) => total + option.votes, 0);
     }
 
@@ -159,49 +196,72 @@ const Post = ({
             setIsHiddenMsg(response.data.message);
             setCurrentIsHidden(prev => !prev);
         }
-    }
+    };
+
     return (
+
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
-            <div
-                id={"mainfeed_" + id + "_full"}
-                className={`flex flex-col bg-reddit_greenyDark hover:bg-reddit_hover ${isOpenDots ? "bg-reddit_hover" : ""
-                    } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
+        <div
+            id={"mainfeed_" + id + "_full"}
+            className={`flex flex-col bg-reddit_greenyDark hover:bg-reddit_hover ${isOpenDots ? "bg-reddit_hover" : ""
+                } ${
+                    !isSelected && "hover:bg-reddit_hover"
+                  } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full cursor-pointer h-fit`}
+                  hidden={isShown}
+        >
+            <div className="flex flex-row items-center w-full h-6 ">
+            {isSelected && (
+          <Link
+            className="max-w-10 min-h-10 mr-3 flex flex-row justify-center items-center w-full h-6 rounded-full bg-gray-800"
+            to={"/"}
+          >
+            <svg
+              rpl=""
+              fill="currentColor"
+              height="20"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-gray-400 text-bold rounded-full h-5 w-5"
             >
-                <div className="flex flex-row items-center w-full h-6 ">
+              <path d="M19 9.375H2.51l7.932-7.933-.884-.884-9 9a.625.625 0 0 0 0 .884l9 9 .884-.884-7.933-7.933H19v-1.25Z"></path>
+            </svg>
+          </Link>
+        )}
+                <div
+                    id={"mainfeed_" + id + "_community"}
+                    href=""
+                    className="flex items-center w-fit"
+                >
+                    <img src={profilePicture} alt="Logo" className="w-6 rounded-full h-6" />
+                    <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
+                        {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
+                    </p>
+                </div>
+
+                <div className=' flex flex-row w-[20%] xs:w-[40%] items-center '>
+                    <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
+                    <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
+                        {uploadedFrom}
+                    </p>
+                </div>
+
+                <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
+                    {!isJoined && <div onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                        <h1 className='text-[12px] font-medium text-white'>Join</h1>
+                    </div>}
                     <div
-                        id={"mainfeed_" + id + "_community"}
-                        href=""
-                        className="flex items-center w-fit"
+                        id={"mainfeed_" + id + "_menu"}
+                        className="h-7 w-7 ml-auto text-white rounded-full flex justify-center cursor-pointer items-center hover:bg-reddit_search_light"
                     >
-                        <img src={profilePicture} alt="Logo" className="w-6 rounded-full h-6" />
-                        <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
-                            {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
-                        </p>
+                        <EllipsisHorizontalIcon
+                            onClick={(e) => {
+
+                                setIsOpenDots((prev) => !prev);
+                            }}
+                            className="h-6 w-6 outline-none"
+                        />
                     </div>
-
-                    <div className=' flex flex-row w-[20%] xs:w-[40%] items-center '>
-                        <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
-                        <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
-                            {uploadedFrom}
-                        </p>
-                    </div>
-
-                    <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {!isJoined && <div onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-                            <h1 className='text-[12px] font-medium text-white'>Join</h1>
-                        </div>}
-                        <div
-                            id={"mainfeed_" + id + "_menu"}
-                            className="h-7 w-7 ml-auto text-white rounded-full flex justify-center cursor-pointer items-center hover:bg-reddit_search_light"
-                        >
-                            <EllipsisHorizontalIcon
-                                onClick={(e) => {
-
-                                    setIsOpenDots((prev) => !prev);
-                                }}
-                                className="h-6 w-6 outline-none"
-                            />
-                        </div>
 
                         {isOpenDots && (
                             <div className="z-1 w-30 h-37 bg-reddit_lightGreen absolute -ml-[24px] mt-47 text-white text-sm py-2 rounded-lg font-extralight flex flex-col">
@@ -348,12 +408,57 @@ const Post = ({
                         isUpvoted={isUpvoted}
                         isDownvoted={isDownvoted}
                     />
-                    <Comment id={id} commentCount={commentCount} />
-                    <Share id={id} />
-                </div>
-            </div>
+                <Comment
+          id={id}
+          commentCount={commentCount}
+          url={!isSelected ? `/${username}/comment/${id}` : null}
+          onClick={
+            !isSelected
+              ? () => setSelectedPost(id)
+              : () => {
+                  console.log(addCommentRef.current);
+                  addCommentRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+          }
+        />
+        <Share id={id} username={username} />
+      </div>
 
-    );
+      {isSelected && (
+        <>
+          <div ref={addCommentRef} className="m-2 mt-3 w-10">
+            <SimpleMenu
+              title={selectedSort}
+              menuItems={sorts}
+              onSelect={setSelectedSort}
+            />
+          </div>
+
+          <AddComment
+            postId={id}
+            onAddComment={(newComment) =>
+              setComments([newComment, ...comments])
+            }
+            isCommenting={addingComment}
+            setIsCommenting={setAddingComment}
+          />
+
+          {comments?.length ? (
+            <div className="mb-5">
+              {comments.map((comment) => (
+                <PostComment key={comment._id} id={comment._id} {...comment} />
+              ))}
+            
+  </div>
+          ) : (
+            <NoComments />
+          )}
+        </>
+      )}
+    </div>
+  );
 };
-
 export default Post;

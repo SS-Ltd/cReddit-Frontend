@@ -52,6 +52,7 @@ function Settings() {
   getF(setUserSettings);
 
   useEffect(() => {
+    console.log(`${baseUrl}/user/settings`);
     getRequest(`${baseUrl}/user/settings`)
       .then((res) => {
         console.log(res.data);

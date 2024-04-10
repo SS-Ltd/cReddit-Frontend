@@ -8,17 +8,18 @@ import { baseUrl } from '@/constants';
 import CreateCommunity from '../Components/createCommunity/CreateCommunity';
 import { UserContext } from '@/context/UserContext';
 import { useState, useEffect, useRef, useContext } from 'react';
+import { Routes, Route } from "react-router-dom";
 
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
-    const [isCommunityOpen, setIsCommunityOpen] = useState(false);
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
     const [userHistoryRes, setUserHistoryRes] = useState(null);
     const { isLoggedIn } = useContext(UserContext);
-    const sidebarRef = useRef();
-    const recentRef = useRef();
-    const mainfeedRef = useRef();
-    const communiyCardRef = useRef();
-    const communityButtonRef = useRef();
+  const sidebarRef = useRef();
+  const recentRef = useRef();
+  const mainfeedRef = useRef();
+  const communiyCardRef = useRef();
+  const communityButtonRef = useRef();
 
     useEffect(() => {
         async function getHistory() {
@@ -45,60 +46,61 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         };
         document.addEventListener('click', handleClickOutside);
 
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    });
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  });
 
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(min-width: 1200px)');
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1200px)");
 
-        const handleResize = () => {
-            if (mediaQuery.matches) {
-                setIsVisibleLeftSidebar(false);
-            }
-        };
+    const handleResize = () => {
+      if (mediaQuery.matches) {
+        setIsVisibleLeftSidebar(false);
+      }
+    };
 
-        mediaQuery.addEventListener('change', handleResize);
-        handleResize();
+    mediaQuery.addEventListener("change", handleResize);
+    handleResize();
 
-        return () => mediaQuery.removeEventListener('change', handleResize);
-    });
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  });
 
-    useEffect(() => { //Todo: Optimize the code of handling the disappearing of scrolling
-        let timer = null;
+  useEffect(() => {
+    //Todo: Optimize the code of handling the disappearing of scrolling
+    let timer = null;
 
-        const handleScroll = () => {
-            clearTimeout(timer);
+    const handleScroll = () => {
+      clearTimeout(timer);
 
-            if (!recentRef.current.classList.contains('scrolling')) {
-                recentRef.current.classList.add('scrolling');
-            }
+      if (!recentRef.current.classList.contains("scrolling")) {
+        recentRef.current.classList.add("scrolling");
+      }
 
-            if (!sidebarRef.current.classList.contains('scrolling')) {
-                sidebarRef.current.classList.add('scrolling');
-            }
+      if (!sidebarRef.current.classList.contains("scrolling")) {
+        sidebarRef.current.classList.add("scrolling");
+      }
 
-            if (!mainfeedRef.current.classList.contains('scrolling')) {
-                mainfeedRef.current.classList.add('scrolling');
-            }
+      if (!mainfeedRef.current.classList.contains("scrolling")) {
+        mainfeedRef.current.classList.add("scrolling");
+      }
 
-            timer = setTimeout(function () {
-                if (recentRef.current.classList.contains('scrolling')) {
-                    recentRef.current.classList.remove('scrolling');
-                }
-                if (sidebarRef.current.classList.contains('scrolling')) {
-                    sidebarRef.current.classList.remove('scrolling');
-                }
-                if (mainfeedRef.current.classList.contains('scrolling')) {
-                    mainfeedRef.current.classList.remove('scrolling');
-                }
-            }, 440);
-        };
+      timer = setTimeout(function () {
+        if (recentRef.current.classList.contains("scrolling")) {
+          recentRef.current.classList.remove("scrolling");
+        }
+        if (sidebarRef.current.classList.contains("scrolling")) {
+          sidebarRef.current.classList.remove("scrolling");
+        }
+        if (mainfeedRef.current.classList.contains("scrolling")) {
+          mainfeedRef.current.classList.remove("scrolling");
+        }
+      }, 440);
+    };
 
-        recentRef.current.addEventListener('scroll', handleScroll);
-        sidebarRef.current.addEventListener('scroll', handleScroll);
-        mainfeedRef.current.addEventListener('scroll', handleScroll);
+    recentRef.current.addEventListener("scroll", handleScroll);
+    sidebarRef.current.addEventListener("scroll", handleScroll);
+    mainfeedRef.current.addEventListener("scroll", handleScroll);
 
         return () => {
             if (recentRef.current) {
@@ -126,9 +128,14 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                         {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
                     </div>
 
-                    <div className='w-fit max-w-210 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0  mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                        <Mainfeed />
-                    </div>
+          <div
+            className="w-fit max-w-210 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0  mx-1 lg:mx-2 "
+            ref={mainfeedRef}
+          >
+            <Routes>
+              <Route path="/*" element={<Mainfeed />} />
+            </Routes>
+          </div>
 
                     <div className='w-fit min-w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
                         <Recent userHistoryRes={userHistoryRes} />

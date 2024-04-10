@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { patchRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants';
+import { UpDownVoteComment } from "./utils/CommentsUtils";
 
 const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
   return isUpvote ? (
