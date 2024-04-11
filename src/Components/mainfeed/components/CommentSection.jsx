@@ -12,27 +12,40 @@ function CommentSection({
 }) {
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
+  const [binaryImage, setBinaryImage] = useState(null);
   const [buttonColor, setButtonColor] = useState("#4d4608");
   const [modalShow, setModalShow] = useState(false);
   const textareaRef = useRef();
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
-    const imageUrl = URL.createObjectURL(file);
-    setImage(imageUrl);
+    // convert image to base64
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    // convert image to binary
+    const binaryReader = new FileReader();
+    binaryReader.onload = () => {
+      setBinaryImage(binaryReader.result);
+    };
+    binaryReader.readAsArrayBuffer(file);
+
     setComment("");
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    if (isCommenting) {
+    if (isCommenting && !image) {
       textareaRef.current.focus();
     }
   }, [isCommenting]);
 
   async function addComment() {
-    const newComment = await postComment(postId, image, comment);
+    const newComment = await postComment(postId, binaryImage, comment);
     if (!newComment) return;
     onAddComment(newComment);
     setComment("");
@@ -49,7 +62,7 @@ function CommentSection({
         <textarea
           disabled={image ? true : false}
           ref={textareaRef}
-          className="w-full block rounded-2xl pl-5 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
+          className="w-full block resize-none rounded-2xl pl-5 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
           cols="10"
           style={{ outline: "none", boxShadow: "none" }}
           onInput={(e) => {
@@ -63,7 +76,7 @@ function CommentSection({
 
       {image && (
         <img
-          className="object-cover w-full h-full rounded-lg"
+          className="w-full h-full rounded-5xl object-cover p-4"
           src={image}
           alt="preview"
         />
@@ -117,11 +130,13 @@ function CommentSection({
 
       <CancelComment
         show={modalShow}
-        onHide={() => {
-          setImage(null);
+        onHide={(eraseComment) => {
           setModalShow(false);
-          setIsCommenting(false);
-          setComment("");
+          if (eraseComment) {
+            setImage(null);
+            setIsCommenting(false);
+            setComment("");
+          }
         }}
       />
     </div>
