@@ -37,7 +37,7 @@ const CommunityItem = ({ index, name, icon, topic, members }) => {
             {topic}
           </h6>
           <h6 className="text-[12px] m-0 truncate w-[11rem] text-[#82959B]">
-            {members} members
+            {members === 1 ? `${members} member` : `${members} members`}
           </h6>
         </div>
       </div>
