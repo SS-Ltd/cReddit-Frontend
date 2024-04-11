@@ -12,14 +12,27 @@ function CommentSection({
 }) {
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
+  const [binaryImage, setBinaryImage] = useState(null);
   const [buttonColor, setButtonColor] = useState("#4d4608");
   const [modalShow, setModalShow] = useState(false);
   const textareaRef = useRef();
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
-    const imageUrl = URL.createObjectURL(file);
-    setImage(imageUrl);
+    // convert image to base64
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    // convert image to binary
+    const binaryReader = new FileReader();
+    binaryReader.onload = () => {
+      setBinaryImage(binaryReader.result);
+    };
+    binaryReader.readAsArrayBuffer(file);
+
     setComment("");
   }, []);
 
@@ -32,7 +45,7 @@ function CommentSection({
   }, [isCommenting]);
 
   async function addComment() {
-    const newComment = await postComment(postId, image, comment);
+    const newComment = await postComment(postId, binaryImage, comment);
     if (!newComment) return;
     onAddComment(newComment);
     setComment("");
