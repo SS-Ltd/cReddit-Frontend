@@ -23,6 +23,11 @@ const Tabs = [
   "Emails",
 ];
 
+/**
+ * TabsPath is an array of strings representing the paths for each tab in the Settings component.
+ * The order of the paths in the array corresponds to the order of the tabs in the component.
+ * @type {string[]}
+ */
 const TabsPath = [
   "account",
   "profile",
@@ -32,6 +37,12 @@ const TabsPath = [
   "emails",
 ];
 
+/**
+ * initCurrTab is a function that determines the initial current tab based on the path in the window location.
+ * It splits the path, gets the third part (which should correspond to the tab), and finds the index of this part in the TabsPath array.
+ * If the tab is not found in the TabsPath array, it defaults to the first tab (index 0).
+ * @returns {number} The index of the current tab in the TabsPath array. If the tab is not found, it returns 0.
+ */
 const initCurrTab = () => {
   const path = window.location.pathname;
   // console.log(path);
@@ -41,10 +52,33 @@ const initCurrTab = () => {
   return index != -1 ? index : 0;
 };
 
+/**
+ * Settings is a React component that displays the user settings and allows the user to switch between different settings tabs.
+ * It has two state variables: userSettings and currTab.
+ * userSettings holds the user settings and is initially set to null.
+ * currTab holds the index of the current tab and is initially set to the result of initCurrTab().
+ * @component
+ */
 function Settings() {
+  /**
+   * userSettings is a state variable that holds the user settings.
+   * It is initially set to null.
+   * @type {Object}
+   */
   const [userSettings, setUserSettings] = useState(null);
+
+  /**
+   * currTab is a state variable that holds the index of the current tab.
+   * It is initially set to the result of initCurrTab().
+   * @type {number}
+   */
   const [currTab, setCurrTab] = useState(initCurrTab());
 
+  /**
+   * onSetTab is a function that sets the current tab to the given index.
+   * It updates the currTab state variable.
+   * @param {number} index - The index of the new current tab.
+   */
   const onSetTab = (index) => {
     setCurrTab(index);
   };

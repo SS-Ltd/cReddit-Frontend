@@ -9,6 +9,22 @@ import { notify } from "./components/CustomToast";
 import SocialLinks from "./components/SocialLinks";
 import { clearHistory } from "./utils/ClearHistory";
 
+/**
+ * Profile is a React component that displays the user's profile settings.
+ * It allows the user to change their display name, about text, social links, and various visibility settings.
+ * It also allows the user to clear their history.
+ *
+ * @component
+ * @param {Object} props - The props for the Profile component.
+ * @param {string} props.displayName - The user's display name.
+ * @param {string} props.about - The user's about text.
+ * @param {Object[]} props.socialLinks - The user's social links.
+ * @param {boolean} props.showAdultContent - Whether the user has chosen to show adult content.
+ * @param {boolean} props.allowFollow - Whether the user allows others to follow them.
+ * @param {boolean} props.isContentVisible - Whether the user's content is visible to others.
+ * @param {boolean} props.isActiveCommunityVisible - Whether the user's active community is visible to others.
+ * @param {Function} props.setUserSettings - A function to update the user settings.
+ */
 function Profile({
   displayName,
   about,
@@ -19,6 +35,10 @@ function Profile({
   isActiveCommunityVisible,
   setUserSettings,
 }) {
+  /**
+   * State variable for whether the SocialLinksModal is shown. Initially set to false.
+   * @type {boolean}
+   */
   const [modalShow, setModalShow] = useState(false);
 
   return (
