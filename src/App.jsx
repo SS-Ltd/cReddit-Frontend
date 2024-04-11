@@ -12,6 +12,7 @@ import { FormText } from "react-bootstrap";
 import axiosInterceptor from "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
 import CreatePost from "./Components/create_post/CreatePost";
+import TopCommunities from "./Components/topcommunities/TopCommunities";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -30,6 +31,7 @@ function App() {
         >
           {" "}
         </div> */}
+      <TopCommunities />
       <Routes>
         <Route
           path="/"

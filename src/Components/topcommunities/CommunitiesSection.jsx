@@ -1,3 +1,7 @@
+import { useState, useEffect } from "react";
+import CommunityItem from "./CommunityItem";
+import { baseUrl } from "../../constants";
+
 const CommunitiesSection = () => {
   const [communities, setCommunities] = useState([]);
   return (
