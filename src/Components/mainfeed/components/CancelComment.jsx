@@ -17,14 +17,14 @@ function CancelComment(props) {
           <div className="flex flex-row justify-center mt-6">
             <button
               className="bg-gray-800 h-9 items-center rounded-3xl font-plex hover:bg-gray-700"
-              onClick={props.onHide}
+              onClick={() => props.onHide(false)}
             >
               <p className="text-white text-md pl-3 pr-3 mr-6 ml-6">Cancel</p>
             </button>
             <button className="h-9 items-center rounded-3xl font-plex ml-2 bg-red-700">
               <p
                 className="text-white text-md pl-3 pr-3 mr-6 ml-6"
-                onClick={props.onHide}
+                onClick={() => props.onHide(true)}
               >
                 Discard
               </p>

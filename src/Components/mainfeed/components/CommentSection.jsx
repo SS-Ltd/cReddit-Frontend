@@ -26,7 +26,7 @@ function CommentSection({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    if (isCommenting) {
+    if (isCommenting && !image) {
       textareaRef.current.focus();
     }
   }, [isCommenting]);
@@ -64,7 +64,7 @@ function CommentSection({
 
       {image && (
         <img
-          className="object-cover w-full h-full rounded-lg"
+          className="w-full h-full rounded-5xl object-cover p-4"
           src={image}
           alt="preview"
         />
@@ -118,11 +118,13 @@ function CommentSection({
 
       <CancelComment
         show={modalShow}
-        onHide={() => {
-          setImage(null);
+        onHide={(eraseComment) => {
           setModalShow(false);
-          setIsCommenting(false);
-          setComment("");
+          if (eraseComment) {
+            setImage(null);
+            setIsCommenting(false);
+            setComment("");
+          }
         }}
       />
     </div>
