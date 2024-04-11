@@ -1,7 +1,15 @@
 import { baseUrl } from "../../../constants";
 import { postRequest, getRequest } from "../../../services/Requests";
 
-
+/**
+ * Posts a new comment.
+ * 
+ * @async
+ * @param {string} postId - The ID of the post to comment on.
+ * @param {ArrayBuffer[]} images - The images of the comment.
+ * @param {string} text - The text of the comment.
+ * @returns {Object|null} The new comment, or null if the request failed.
+ */
 export async function postComment(postId, images, text) {
     let url = `${baseUrl}/comment`;
     console.log({ postId, images, text })
