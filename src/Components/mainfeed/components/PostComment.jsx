@@ -4,6 +4,25 @@ import Comment from "../Comment";
 import Share from "../Share";
 import SaveComment from "./SaveComment";
 
+/**
+ * PostComment is a React component that displays a comment on a post.
+ * It shows the comment's content, the username of the commenter, the comment's creation and update times, and the commenter's profile picture.
+ * It also includes Vote, Share, and SaveComment components for the comment.
+ *
+ * @component
+ * @param {Object} props - The props for the PostComment component.
+ * @param {string} props.id - The ID of the comment.
+ * @param {string} props.username - The username of the commenter.
+ * @param {string} props.content - The content of the comment.
+ * @param {boolean} props.isImage - Whether the comment includes an image.
+ * @param {string} props.createdAt - The creation time of the comment.
+ * @param {string} props.updatedAt - The update time of the comment.
+ * @param {string} props.profilePicture - The URL of the commenter's profile picture.
+ * @param {number} props.netVote - The net vote count of the comment.
+ * @param {boolean} props.isUpvoted - Whether the comment is upvoted by the current user.
+ * @param {boolean} props.isDownvoted - Whether the comment is downvoted by the current user.
+ * @param {boolean} props.isSaved - Whether the comment is saved by the current user.
+ */
 function PostComment({
   id,
   username,
@@ -53,7 +72,7 @@ function PostComment({
       <div className="w-full ml-12 flex flex-wrap justify-start items-center">
         <div className="mt-3">
           <Vote
-            id={`${id}`}
+            id={`mainfeed_${id}_vote`}
             netVotes={netVote}
             isUpvoted={isUpvoted}
             isDownvoted={isDownvoted}
@@ -61,10 +80,10 @@ function PostComment({
         </div>
 
         <div className="ml-3 mt-3">
-          <Share id={`${id}`} />
+          <Share id={`mainfeed_${id}_share`} />
         </div>
         <div className="ml-3 mt-3">
-          <SaveComment id={`${id}`} Saved={isSaved} />
+          <SaveComment id={`mainfeed_${id}_save`} Saved={isSaved} />
         </div>
       </div>
     </>

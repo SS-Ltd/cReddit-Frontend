@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { Save } from "../utils/CommentsUtils";
 
+/**
+ * SaveComment is a React component that allows the user to save or unsave a comment.
+ * It displays a button that, when clicked, saves or unsaves the comment.
+ *
+ * @component
+ * @param {Object} props - The props for the SaveComment component.
+ * @param {string} props.id - The ID of the comment to save or unsave.
+ * @param {boolean} props.Saved - Whether the comment is saved by the current user.
+ * @returns {JSX.Element}
+ *  */
 function SaveComment({ id, Saved }) {
   const [isSaved, setIsSaved] = useState(Saved);
 
@@ -16,7 +26,7 @@ function SaveComment({ id, Saved }) {
       onClick={handleClickSave}
     >
       {!isSaved && (
-        <div className="p-2 cursor-pointer flex flex-row items-center justify-center">
+        <div className="p-2 flex flex-row items-center justify-center">
           <svg
             className="h-4 w-4 text-white "
             rpl=""
@@ -34,7 +44,7 @@ function SaveComment({ id, Saved }) {
       )}
 
       {isSaved && (
-        <div className="p-2 cursor-pointer flex flex-row items-center justify-center">
+        <div className="p-2 flex flex-row items-center justify-center">
           <svg
             className="h-4 w-6 text-white "
             rpl=""
