@@ -1,6 +1,10 @@
 import Navbar from "../navbar/Navbar";
 import CommunitiesSection from "./CommunitiesSection";
 
+/**
+ * React component representing a page displaying top communities.
+ * @returns {JSX.Element} React component.
+ */
 const TopCommunities = () => {
   return (
     <>
