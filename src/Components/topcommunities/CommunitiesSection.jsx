@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import CommunityItem from "./CommunityItem";
 import { baseUrl } from "../../constants";
 
+/**
+ * React component to display top communities from Reddit.
+ * @returns {JSX.Element} React component.
+ */
 const CommunitiesSection = () => {
   const [communities, setCommunities] = useState([]);
   const [page, setPage] = useState(1);
