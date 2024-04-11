@@ -12,6 +12,7 @@ const CommunitiesSection = () => {
    * @type {[Object[], function]} State hook for communities and setter function.
    */
   const [communities, setCommunities] = useState([]);
+
   const [page, setPage] = useState(1);
 
   useEffect(() => {
