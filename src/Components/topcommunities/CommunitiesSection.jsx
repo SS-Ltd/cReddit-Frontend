@@ -18,6 +18,16 @@ const CommunitiesSection = () => {
     getTop();
   }, [page]);
 
+  const generatePages = (currentPage) => {
+    const pages = [];
+    for (let i = currentPage - 4; i <= currentPage + 4; i++) {
+      if (i > 0) {
+        pages.push(i);
+      }
+    }
+    return pages;
+  };
+
   return (
     <>
       <section className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem]">
@@ -42,6 +52,21 @@ const CommunitiesSection = () => {
               topic={community.topic}
               members={community.members}
             />
+          ))}
+        </div>
+        <div className="flex flex-wrap justify-center">
+          {generatePages(page).map((pageNumber) => (
+            <a
+              key={pageNumber}
+              className={`flex font-bold justify-center py-[0.25rem] relative w-[4rem] text-[0.75rem] leading-[1rem] no-underline hover:no-underline ${
+                pageNumber === page
+                  ? "text-[#1870F4] cursor-default"
+                  : "text-[#F2F2F2] cursor-pointer"
+              }`}
+              onClick={() => setPage(pageNumber)}
+            >
+              {pageNumber}
+            </a>
           ))}
         </div>
       </section>
