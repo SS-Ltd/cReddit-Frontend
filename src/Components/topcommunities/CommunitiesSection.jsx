@@ -1,4 +1,5 @@
 const CommunitiesSection = () => {
+  const [communities, setCommunities] = useState([]);
   return (
     <>
       <section className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem]">
@@ -13,6 +14,18 @@ const CommunitiesSection = () => {
             Browse Reddit's largest communities
           </h2>
         </header>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 striped">
+          {communities.map((community, index) => (
+            <CommunityItem
+              key={index}
+              index={index}
+              name={community.name}
+              icon={community.icon}
+              topic={community.topic}
+              members={community.members}
+            />
+          ))}
+        </div>
       </section>
     </>
   );
