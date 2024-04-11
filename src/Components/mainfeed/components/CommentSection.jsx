@@ -49,7 +49,7 @@ function CommentSection({
         <textarea
           disabled={image ? true : false}
           ref={textareaRef}
-          className="w-full block rounded-2xl pl-5 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
+          className="w-full block resize-none rounded-2xl pl-5 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
           cols="10"
           style={{ outline: "none", boxShadow: "none" }}
           onInput={(e) => {
@@ -58,6 +58,7 @@ function CommentSection({
           }}
           onChange={(e) => setComment(e.target.value)}
           value={comment}
+        
         ></textarea>
       )}
 

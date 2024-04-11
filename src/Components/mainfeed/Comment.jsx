@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 const Comment = ({ id, commentCount, url, onClick }) => {
-  const [commnetNumber, setCommentNumber] = useState(commentCount);
+const [commnetNumber, setCommentNumber] = useState(commentCount);
 
   function formatComments(num) {
     if (num >= 1000000) {

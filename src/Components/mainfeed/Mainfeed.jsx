@@ -7,6 +7,7 @@ import { UserContext } from '@/context/UserContext';
 import { postRequest, getRequest, postRequestImg } from "../../services/Requests";
 import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
+import SortingMenu from "./components/SortingMenu";
 
 
 const sorts = ["Best", "Hot", "New", "Top", "Rising"];
@@ -32,10 +33,11 @@ const Mainfeed = () => {
   const { isLoggedIn } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const location = useLocation();
+
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -60,7 +62,11 @@ const Mainfeed = () => {
         setLoading(false);
       }
     }
-    getHomeFeed();
+
+    if (!location.pathname.includes("comment")) {
+      setLoading(true);
+      getHomeFeed();
+    }
   }, [isLoggedIn, page]);
 
 
@@ -103,8 +109,6 @@ const Mainfeed = () => {
     getSelectedPost(location, posts, setSelectedPost);
   }, [location]);
 
-
-
   useEffect(() => {
     let closeDropdown = (e) => {
       if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
@@ -138,24 +142,26 @@ const Mainfeed = () => {
     };
   });
 
-    return (
-        <div id="mainfeed" className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden ">
-            <div className="flex items-center h-12 mb-2 px-2 w-full" >
+  return (
+    <div id="mainfeed" className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden ">
+      <div className="flex items-center h-12 mb-2 px-2 w-full" >
 
-                <div id="mainfeed_category_dropdown" ref={menuRefCateg} className="relative">
-                <SortingMenu
+        <div id="mainfeed_category_dropdown" ref={menuRefCateg} className="relative">
+
+
+          <SortingMenu
             isOpen={isOpenCateg}
             setIsOpen={setIsOpenCateg}
             items={sorts}
           />
-                         
-                </div>
 
-                <div ref={menuRefView} className="relative">
-                    <div id="mainfeed_view_type" onClick={() => setIsOpenView((prev) => !prev)} className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? 'bg-reddit_search_light' : ''} justify-center items-center cursor-pointer`} >
-                        <ViewColumnsIcon className='h-4.5 w-5 text-gray-500 rotate-90' />
-                        <ChevronDownIcon className='h-3 ml-0.5 w-3 text-gray-400' />
-                    </div>
+        </div>
+
+        <div ref={menuRefView} className="relative">
+          <div id="mainfeed_view_type" onClick={() => setIsOpenView((prev) => !prev)} className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? 'bg-reddit_search_light' : ''} justify-center items-center cursor-pointer`} >
+            <ViewColumnsIcon className='h-4.5 w-5 text-gray-500 rotate-90' />
+            <ChevronDownIcon className='h-3 ml-0.5 w-3 text-gray-400' />
+          </div>
 
           {isOpenView && (
             <div className=" w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col">
@@ -189,16 +195,16 @@ const Mainfeed = () => {
 
       {posts.map((post, i) => (
         <Post key={i}
-        id={post._id}
-        {...post}
-        setSelectedPost={(postId) => handleSelectPost(postId)}
-        isSelected={selectedPost?._id === post._id}
-        isShown={selectedPost && selectedPost._id !== post._id}/>
+          id={post._id}
+          {...post}
+          setSelectedPost={(postId) => handleSelectPost(postId)}
+          isSelected={selectedPost?._id === post._id}
+          isShown={selectedPost && selectedPost._id !== post._id} />
       ))}
 
       {
         <div className="w-full max-h-15 mt-10">
-          <Loading />
+          {loading && <Loading />}
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
               <p className=" text-transparent">

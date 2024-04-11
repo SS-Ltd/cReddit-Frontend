@@ -16,7 +16,7 @@ function SaveComment({ id, Saved }) {
       onClick={handleClickSave}
     >
       {!isSaved && (
-        <div className="p-2 flex flex-row items-center justify-center">
+        <div className="p-2 cursor-pointer flex flex-row items-center justify-center">
           <svg
             className="h-4 w-4 text-white "
             rpl=""
@@ -34,7 +34,7 @@ function SaveComment({ id, Saved }) {
       )}
 
       {isSaved && (
-        <div className="p-2 flex flex-row items-center justify-center">
+        <div className="p-2 cursor-pointer flex flex-row items-center justify-center">
           <svg
             className="h-4 w-6 text-white "
             rpl=""

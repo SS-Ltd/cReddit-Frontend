@@ -267,7 +267,7 @@ export const postHandlers = [
     }),
 
     // save a post
-    http.post(`${baseUrl}/post/:postId/save`, (resolver) => {
+    http.patch(`${baseUrl}/post/:postId/save`, (resolver) => {
         return HttpResponse.json({ message: "Post saved successfully" })
     }),
 ]

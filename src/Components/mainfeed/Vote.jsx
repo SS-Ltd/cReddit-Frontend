@@ -122,6 +122,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     }
 
     const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
+    console.log(id);
     if (response.status != 200 && response.status != 201) {
       setVoters(oldVoters);
       setIsUpvote(oldIsUpvote);
