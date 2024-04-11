@@ -7,7 +7,7 @@ import Home from "./views/Home";
 import { useState, useRef, useEffect } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { FormText } from "react-bootstrap";
 import axiosInterceptor from "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
@@ -18,7 +18,7 @@ function App() {
   const navbarRef = useRef();
   return (
     <Router>
-      <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
+      {/* <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
         <Navbar
           setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
           navbarRef={navbarRef}
@@ -29,13 +29,22 @@ function App() {
           onClick={() => setIsVisibleLeftSidebar(false)}
         >
           {" "}
-        </div>
-        <Routes>
-          <Route path="/" element={<Home isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
-          <Route path="/settings/*" element={<Settings />} />
-          <Route path="/submit" element={ <CreatePost/>}/>
-        </Routes>
-      </div>
+        </div> */}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              isVisibleLeftSidebar={isVisibleLeftSidebar}
+              setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+              navbarRef={navbarRef}
+            />
+          }
+        />
+        <Route path="/settings/*" element={<Settings />} />
+        <Route path="/submit" element={<CreatePost />} />
+      </Routes>
+      {/* </div> */}
     </Router>
   );
 }
