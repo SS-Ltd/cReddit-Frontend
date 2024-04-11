@@ -4,6 +4,20 @@ import { baseUrl } from "../../constants";
 
 const CommunitiesSection = () => {
   const [communities, setCommunities] = useState([]);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const getTop = async () => {
+      const response = await getRequest(
+        `${baseUrl}/subreddit/top?page=${page}&limit=250&sort=all`
+      );
+      if (response.status === 200 || response.status === 201) {
+        setCommunities(response.data);
+      }
+    };
+    getTop();
+  }, [page]);
+
   return (
     <>
       <section className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem]">
