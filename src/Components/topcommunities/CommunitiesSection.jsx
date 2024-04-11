@@ -7,6 +7,10 @@ import { baseUrl } from "../../constants";
  * @returns {JSX.Element} React component.
  */
 const CommunitiesSection = () => {
+  /**
+   * State to hold the list of communities.
+   * @type {[Object[], function]} State hook for communities and setter function.
+   */
   const [communities, setCommunities] = useState([]);
   const [page, setPage] = useState(1);
 
