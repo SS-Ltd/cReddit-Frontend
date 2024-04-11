@@ -1,3 +1,14 @@
+/**
+ * React component representing a community item.
+ * @param {Object} props - Component props.
+ * @param {number} props.index - Index of the community item.
+ * @param {string} props.name - Name of the community.
+ * @param {string} props.icon - URL of the community icon.
+ * @param {string} props.topic - Topic of the community.
+ * @param {number} props.members - Number of members in the community.
+ * @returns {JSX.Element} React component.
+ */
+
 const CommunityItem = ({ index, name, icon, topic, members }) => {
   return (
     <>
