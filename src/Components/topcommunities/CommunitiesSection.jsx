@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CommunityItem from "./CommunityItem";
 import { baseUrl } from "../../constants";
-// import { getRequest } from "../../services/Requests";
+import { getRequest } from "../../services/Requests";
 
 /**
  * React component to display top communities from Reddit.
@@ -76,7 +76,7 @@ const CommunitiesSection = () => {
             />
           ))}
         </div>
-        <div className="flex flex-wrap justify-center">
+        <div className="flex flex-wrap justify-center mt-[30px]">
           {generatePages(page).map((pageNumber) => (
             <a
               key={pageNumber}

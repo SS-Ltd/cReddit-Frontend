@@ -24,7 +24,7 @@ const CommunityItem = ({ index, name, icon, topic, members }) => {
                 srcSet=""
                 sizes=""
                 alt={`${name} icon`}
-                className="rounded-full"
+                className="rounded-full w-full h-full"
               ></img>
             </div>
           </div>
