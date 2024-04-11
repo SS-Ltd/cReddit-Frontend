@@ -13,8 +13,15 @@ const CommunitiesSection = () => {
    */
   const [communities, setCommunities] = useState([]);
 
+  /**
+   * State to manage the current page.
+   * @type {[number, function]} State hook for page number and setter function.
+   */
   const [page, setPage] = useState(1);
 
+  /**
+   * Effect hook to fetch top communities based on the page number.
+   */
   useEffect(() => {
     const getTop = async () => {
       const response = await getRequest(
@@ -27,6 +34,11 @@ const CommunitiesSection = () => {
     getTop();
   }, [page]);
 
+  /**
+   * Generates an array of page numbers around the current page.
+   * @param {number} currentPage - The current page number.
+   * @returns {number[]} Array of page numbers.
+   */
   const generatePages = (currentPage) => {
     const pages = [];
     for (let i = currentPage - 4; i <= currentPage + 4; i++) {
