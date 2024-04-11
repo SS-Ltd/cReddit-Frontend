@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CommunityItem from "./CommunityItem";
 import { baseUrl } from "../../constants";
+// import { getRequest } from "../../services/Requests";
 
 /**
  * React component to display top communities from Reddit.
