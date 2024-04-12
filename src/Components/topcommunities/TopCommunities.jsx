@@ -8,7 +8,7 @@ import CommunitiesSection from "./CommunitiesSection";
 const TopCommunities = () => {
   return (
     <>
-      <div className="bg-[#0b1416]">
+      <div id="Top-Communities" className="bg-[#0b1416]">
         <Navbar />
         <CommunitiesSection />
       </div>

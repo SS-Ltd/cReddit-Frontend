@@ -12,7 +12,10 @@
 const CommunityItem = ({ index, name, icon, topic, members }) => {
   return (
     <>
-      <div className="flex flex-wrap justify-center py-[0.75rem] h-[76px] xs:border-t xs:border-gray-700 sm:border-none">
+      <div
+        id="Community-Item"
+        className="flex flex-wrap justify-center py-[0.75rem] h-[76px] xs:border-t xs:border-gray-700 sm:border-none"
+      >
         <h6 className="flex flex-col font-bold justify-center items-center text-[12px] w-[48px] m-0 truncate text-[#FFFFFF]">
           {index + 1}
         </h6>
