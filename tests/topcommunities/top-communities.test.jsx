@@ -1,5 +1,5 @@
 import { mount } from "vitest";
-import TopCommunities from "../src/Components/topcommunities/TopCommunities";
+import TopCommunities from "../../src/Components/topcommunities/TopCommunities";
 
 test("TopCommunities renders Navbar and CommunitiesSection", () => {
   // Mount the TopCommunities component
