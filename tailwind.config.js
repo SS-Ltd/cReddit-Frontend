@@ -37,6 +37,7 @@ export default {
         reddit_upvote: "#D93A01",
         reddit_links: "#629FFF",
         reddit_green_success: "50a332",
+        reddit_light_undo: "#223237",
       },
       gridTemplateColumns: {
         16: "repeat(16, minmax(0, 1fr))",
@@ -84,6 +85,7 @@ export default {
         // Add as many as you need
       },
       spacing: {
+        '0%': '0%',
         '1%': '1%',
         '1.5%': '1.5%',
         '2%': '2%',
@@ -173,6 +175,15 @@ export default {
         '100%': '100%',
 
 
+        '0': '0px',
+        '1': '4px',
+        '2': '8px',
+        '3': '12px',
+        '4': '16px',
+        '5': '20px',
+        '6': '24px',
+        '7': '28px',
+        '8': '32px',
         '9': '36px',
         '9.1': '36.5px',
         '9.2': '36.8px',
@@ -339,7 +350,9 @@ export default {
         '189': '756px',
         '190': '760px',
         '192': '768px',
+        '196': '784px',
         '198': '792px',
+        '210': '880px',
         '0.1px': '0.04px',
         '1px': '1px',
       },
@@ -381,7 +394,8 @@ export default {
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require("daisyui"),
   ],
 }
 

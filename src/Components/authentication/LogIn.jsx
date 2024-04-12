@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
@@ -6,9 +6,12 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
+import { UserContext } from '@/context/UserContext';
 
-const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu, setIsLogged }) => {
 
+const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
+
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(null);
@@ -37,7 +40,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         LoginSuccessToast("Logged in successfully");
         setTimeout(() => {
           setIsOpenedLoginMenu(false);
-          setIsLogged(true);
+          setIsLoggedIn(true);
         }, 3000);
       }
     }
@@ -46,7 +49,8 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
     async function sendToken() {
       if (OAuthAccessToken) {
         const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
-        console.log("Response ", response);
+        // console.log("accessToken", OAuthAccessToken);
+        // console.log("Response ", response);
         if (response.status !== 200 && response.status !== 201) {
           setOauthLoginError(response.data.message);
           LoginFailedToast(response.data.message);
@@ -55,7 +59,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
           LoginSuccessToast("Logged in successfully");
           setTimeout(() => {
             setIsOpenedLoginMenu(false);
-            setIsLogged(true);
+            setIsLoggedIn(true);
           }, 3000);
         }
       }
@@ -66,29 +70,26 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   );
   const handleGoogleLogin = useGoogleLogin({
     clientId: { Client_ID },
-    onSuccess: (codeResponse) => { setOAuthAccessToken(codeResponse.access_token); },
+    onSuccess: (codeResponse) => { console.log(codeResponse); setOAuthAccessToken(codeResponse.access_token); },
     onError: (error) => console.log('Login Failed:', error)
   });
   return (<>
     <ToastContainer
       position="bottom-center"
-      autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
       rtl={false}
-      pauseOnFocusLoss
       draggable
-      pauseOnHover
-      theme="colored"
-    />
+      theme="colored" />
+
     <div id="navbar_login_menu" className="flex pt-10 flex-col bg-reddit_menu msm:rounded-3xl h-full min-w-88 w-full px-6 msm:px-16">
 
       <div className="h-full flex flex-col">
         <div className="flex flex-col">
 
           <div className="flex flex-row justify-between">
-            <h1 className="text-2xl h-7 text-white font-bold mb-2 text-neutral">
+            <h1 className="text-2xl h-7 text-white font-bold mb-2">
               Log In
             </h1>
             <div className="flex ">
@@ -181,7 +182,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         </div>
       </div>
 
-      <div className="h-[96px] py-[24px] mt-auto mb-4 msm:mt-0 msm:mb-0 flex items-center">
+      <div className="h-[96px] py-[24px] mt-auto mb-10 msm:mt-0 msm:mb-0 flex items-center">
         <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateLoginUsername(username) && validateLoginPassword(password) && loginError == null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 mt-1 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
           <span className="flex items-center justify-center">
             <span className="flex items-center gap-[8px] text-[14px] font-[600] ">

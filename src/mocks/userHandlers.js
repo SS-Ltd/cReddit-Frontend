@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw"
 
-
 export const userHandlers = [
 
     http.post('/user/login', async (resolver) => {
@@ -33,6 +32,19 @@ export const userHandlers = [
                 message: error.message
             }, { status: 400 });
         }
+    }),
+    http.get('/user', async (resolver) => {
+        return HttpResponse.json({
+            username: "ficklepickle",
+            displayName: "theUser",
+            about: "I love pizza and coding",
+            email: "malek@email.com",
+            profilePicture: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+            banner: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+            followers: 100,
+            cakeDay: "2024-03-25T15:37:33.339+00:00"
+
+        });
     }),
 
     http.get('/user/is-available/:username', async (resolver) => {
@@ -98,15 +110,15 @@ export const userHandlers = [
     }),
 
     http.get('/user/generate-username', async (resolver) => {
-        
-            return HttpResponse.json(
-                {
-                    message: "Username generated successfully",
-                    username: "FicklePickle123"
-                   
-                }
-            )
-        
+
+        return HttpResponse.json(
+            {
+                message: "Username generated successfully",
+                username: "FicklePickle123"
+
+            }
+        )
+
 
     }),
 
@@ -127,7 +139,11 @@ export const userHandlers = [
             }
         )
     }),
-    http.get('/user/refreshToken', async (resolver) => {
+    http.get('/user/refresh-token', async (resolver) => {
+
+        // return HttpResponse.json({
+        //     message: "Unauthorized"
+        // }, { status: 400 });
         return HttpResponse.json(
             {
                 message: "Token refreshed successfully"
@@ -142,6 +158,96 @@ export const userHandlers = [
                 message: "User verified successfully"
             }
         )
+    }),
+    http.get('/user/joined-communities', async (resolver) => {
+
+        return HttpResponse.json([
+            {
+                name: "AskReddit",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                banner: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                members: 100,
+                rules: [
+                    "No spamming",
+                    "No harassment"
+                ],
+                moderators: [
+                    "Mod1",
+                    "Mod2"
+                ]
+            },
+            {
+                name: "worldnews",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                banner: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                members: 200,
+                rules: [
+                    "No spamming",
+                    "Be respectful"
+                ],
+                moderators: [
+                    "Mod3",
+                    "Mod4"
+                ]
+            },
+            {
+                name: "funny",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                banner: "https://random.imagecdn.app/500/150",
+                members: 300,
+                rules: [
+                    "No spamming",
+                    "No trolling"
+                ],
+                moderators: [
+                    "Mod5",
+                    "Mod6"
+                ]
+            },
+            {
+                name: "pics",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                banner: "https://random.imagecdn.app/500/150",
+                members: 400,
+                rules: [
+                    "No spamming",
+                    "No hate speech"
+                ],
+                moderators: [
+                    "Mod7",
+                    "Mod8"
+                ]
+            },
+            {
+                name: "science",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
+                members: 500,
+                rules: [
+                    "No spamming",
+                    "No personal attacks"
+                ],
+                moderators: [
+                    "Mod9",
+                    "Mod10"
+                ]
+            },
+            {
+                name: "physics",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
+                members: 500,
+                rules: [
+                    "No spamming",
+                    "No personal attacks"
+                ],
+                moderators: [
+                    "Mod9",
+                    "Mod10"
+                ]
+            }
+        ])
+
     }),
     http.get('/user/u/:username', async (resolver) => {
 
@@ -613,7 +719,7 @@ export const userHandlers = [
 
 
 
-    http.delete('/user/clear-history', async (resolver) => {
+    http.delete('/user/history', async (resolver) => {
 
         return HttpResponse.json(
             {
@@ -640,37 +746,177 @@ export const userHandlers = [
         )
     }),
 
+
+    http.get('/user/joined-communities', async (resolver) => {
+        return HttpResponse.json([
+            {
+                "communityName": "cReddit_SW_Project",
+                "profilePicture": "drive.creddit.com/test",
+                "members": 100
+            }
+        ])
+    }),
+
     http.get('/user/history', async (resolver) => {
         return HttpResponse.json([
             {
-                comments: 50,
-                upvotes: 1500,
-                pollVotes: {
-                    option3: 40,
-                    option1: 10,
-                    option2: 20
-                },
-                isDownvoted: false,
+                postId: "3150651awd651awd",
+                type: "Images & Video",
+                username: "Sayed",
+                communityName: "Watermelon",
+                title: "How to make a watermelon cake",
+                content: "https://random.imagecdn.app/500/150",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 23,
+                commentCount: 50,
                 isNSFW: false,
-                isUpvoted: true,
-                postId: "350651awd651awd",
-                ownerId: "350651awd651awd",
-                title: "Hello World",
-                downvotes: 100,
-                content: "This is my content",
-                isFollowed: true,
                 isSpoiler: false,
-                ownerProfilePicture: "drive.creddit.com/test",
-                uploadDate: "06/03/2024 22:10:03",
-                children: [
-                    "",
-                    ""
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
                 ],
-                isSaved: true,
-                isLocked: true,
-                communityProfilePicture: "drive.creddit.com / test",
-                communityId: "350651awd651awd"
-            }
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "3513023wd651awd",
+                type: "Normal",
+                username: "Samirshahin",
+                communityName: null,
+                title: "how to test flutter object kill my students ??? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 203,
+                commentCount: 10,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "3506422323d651awd",
+                type: "Images & Video",
+                username: "Dr.Bayomme",
+                communityName: null,
+                title: "how to samir location middle flow a machine  middle flow a machine  middle flow a machine on eating cornflex",
+                content: "https://random.imagecdn.app/600/150",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "35023w32d651awd",
+                type: "Normal",
+                username: "Sayed",
+                communityName: "reactJs",
+                title: "how to center a div ? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "35023w32d651awd",
+                type: "Normal",
+                username: "Sayed",
+                communityName: "reactJs",
+                title: "how to center a div ? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            },
+            {
+                postId: "35023w32d651awd",
+                type: "Normal",
+                username: "Sayed",
+                communityName: "reactJs",
+                title: "how to center a div ? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            },
         ])
     }),
 

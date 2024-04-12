@@ -1,6 +1,6 @@
 import redditLogo from '../../assets/reddit_logo.png';
 import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, PlusIcon, } from '@heroicons/react/24/outline'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import avatar from '../../assets/avatar.png';
 import Searchbar from '../searchbar/Searchbar';
 import Separator from '../sidebar/Nav-Icons/Separator';
@@ -12,17 +12,26 @@ import LogIn from '../authentication/LogIn';
 import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
+import { getRequest } from '../../services/Requests';
+import { baseUrl } from "../../constants";
+import { UserContext } from '@/context/UserContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 
 
 
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
+    const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
+    const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    const [isLogged, setIsLogged] = useState(() => {
-        const savedIsLogged = localStorage.getItem('isLogged');
-        return savedIsLogged !== null ? JSON.parse(savedIsLogged) : false;
-    });
+    // const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    //     const savedisLoggedIn = localStorage.getItem('isLoggedIn');
+    //     return savedisLoggedIn !== null ? JSON.parse(savedisLoggedIn) : false;
+    // });
+
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
     const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
@@ -41,10 +50,20 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
     const emailVerificationRef = useRef();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        localStorage.setItem('isLogged', JSON.stringify(isLogged));
-    }, [isLogged]);
+    const handleLogout = async () => {
+        const response = await getRequest(`${baseUrl}/user/logout`);
+        if (response.status == 200 || response.status == 201) {
+            setIsLoggedIn(false);
+            setIsOpenProfileMenu(false);
+            navigate('');
+        }
+    }
+
+    // useEffect(() => {
+    //     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+    // }, [isLoggedIn]);
 
 
     useEffect(() => {
@@ -81,16 +100,21 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             document.removeEventListener('click', closeDropdown);
         };
     });
+    const location = useLocation();
+    const words = ['/submit', '/settings']; 
 
+    const urlContainsWord = words.some(word => location.pathname.includes(word));
 
     return (
         <div ref={navbarRef} className="flex z-20 fixed flex-col w-full no-select">
 
 
             <header className="flex w-full bg-reddit_navbar p-2 items-center">
-                <div className='ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex xl:hidden justify-center items-center'>
-                    <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
-                </div>
+                {!urlContainsWord && (
+                    <div className='ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex xl:hidden justify-center items-center'>
+                        <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
+                    </div>
+                )}
 
 
                 <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">
@@ -115,7 +139,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
 
 
-                        {!isLogged && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
+                        {!isLoggedIn && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
                             <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login_button">
                                 <span className="flex items-center justify-center ">
                                     <span className="flex items-center font-medium text-white text-sm ">Log In</span>
@@ -127,7 +151,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={loginMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsLogged={setIsLogged} />
+                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                     </div>
                                 </div>
                             )}
@@ -186,7 +210,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                     <div ref={secondSignupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
 
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail} setIsLogged={setIsLogged} />
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail} />
                                     </div>
                                 </div>
                             )}
@@ -200,7 +224,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                         }
 
 
-                        {isLogged &&
+                        {isLoggedIn &&
                             <>
                                 <a id='navbar_chat' href='' className="flex justify-center items-center w-fit h-fit">
                                     <div className='hover:bg-reddit_search_light ml-0 xs:ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
@@ -224,24 +248,24 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
 
                                 <div className="flex justify-center items-center w-fit h-fit">
-                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { e.stopPropagation(); setIsOpenProfileMenu((prev) => !prev); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
-                                        <div className=' bg-reddit_sky w-8 h-8 rounded-full'>
-                                            <img src={avatar} alt="Open profile menu" style={{ filter: '', transform: 'scaleX(-1)' }} className="block" />
+                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
+                                        <div className='  w-8 h-8 rounded-full'>
+                                            <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
                                         </div>
                                     </div>
 
                                     {isOpenProfileMenu && (<div ref={profileMenuRefExpanded} className=' w-62 mr-52 mt-104 h-88 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'>
 
-                                        <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 ml-2 pl-4 hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
+                                        <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
                                             <div className='flex flex-row w-full'>
 
-                                                <div className=' bg-reddit_sky w-9 h-9 rounded-full'>
-                                                    <img src={avatar} alt="Open profile menu" style={{ filter: '', transform: 'scaleX(-1)' }} className="block" />
+                                                <div className='  w-9 h-9 rounded-full'>
+                                                    <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
                                                 </div>
 
                                                 <div className='ml-2.5 text-sm '>
                                                     <p className='text-gray-200'>View Profile</p>
-                                                    <p className='text-xs -ml-1 text-gray-400'>u/MalekFickleElsaka</p>
+                                                    <p className='text-xs  text-gray-400'>u/{user}</p>
                                                 </div>
 
                                             </div>
@@ -281,7 +305,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
 
 
-                                        <div onClick={()=>{setIsLogged(false); setIsOpenProfileMenu(false)}} id="profile_logout" href="" className='w-full pl-7  hover:bg-reddit_hover h-14 flex items-center cursor-pointer rounded-b-lg'>
+                                        <div onClick={handleLogout} id="profile_logout" href="" className='w-full pl-7  hover:bg-reddit_hover h-14 flex items-center cursor-pointer rounded-b-lg'>
                                             <svg rpl="" fill="currentColor" height="20" icon-name="logout-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11.991 10.625H1v-1.25h10.991l-1.933-1.933.884-.884 3 3a.624.624 0 0 1 0 .884l-3 3-.884-.884 1.933-1.933ZM15.375 1h-9.75A2.629 2.629 0 0 0 3 3.625v.792h1.25v-.792A1.377 1.377 0 0 1 5.625 2.25h9.75a1.377 1.377 0 0 1 1.375 1.375v12.75a1.377 1.377 0 0 1-1.375 1.375h-9.75a1.377 1.377 0 0 1-1.375-1.375v-.792H3v.792A2.63 2.63 0 0 0 5.625 19h9.75A2.63 2.63 0 0 0 18 16.375V3.625A2.63 2.63 0 0 0 15.375 1Z"></path>
                                             </svg>

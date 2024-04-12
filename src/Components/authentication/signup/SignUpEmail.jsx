@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Input from "../FloatingInput";
 import GAButtons from "../GAButtons";
 import FloatingInput from "../FloatingInput";
 import { postRequest } from "../../../services/Requests";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Client_ID, baseUrl } from "../../../constants";
-
+import { UserContext } from '@/context/UserContext';
+import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
+import { ToastContainer } from "react-toastify";
 
 const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedSecondSignupMenu, setNavbarSignupEmail }) => {
 
@@ -14,7 +16,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
     const [email, setEmail] = useState('');
     const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
     const [oauthSignUpError, setOauthSignUpError] = useState(null);
-
+    const { setIsLoggedIn } = useContext(UserContext);
 
 
     useEffect(() => {
@@ -45,13 +47,17 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
         async function sendToken() {
             if (OAuthAccessToken) {
                 const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
-                console.log("Response ", response);
+
                 if (response.status !== 200 && response.status !== 201) {
                     setOauthSignUpError(response.data.message);
                     LoginFailedToast(response.data.message);
-
                 } else {
-                    LoginSuccessToast("signed Up successfully");
+                    LoginSuccessToast("Signed up successfully");
+                    setTimeout(() => {
+                        setIsOpenedSecondSignupMenu(false);
+                        setIsOpenedSignupMenu(false);
+                        setIsLoggedIn(true);
+                    }, 3000);
                 }
             }
         }
@@ -67,7 +73,14 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
 
     return (
         <>
-       
+            <ToastContainer
+                position="bottom-center"
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                draggable
+                theme="colored" />
 
             <div id="navbar_signup_menu" className="flex min-w-88 pt-2 flex-col w-full h-full h-min-160 msm:px-13.5 pl-4 pr-4 bg-reddit_menu msm:rounded-3xl">
 
@@ -75,7 +88,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                 <div className="h-full w-full flex flex-col ">
 
                     <div className="flex pt-8 flex-row justify-between">
-                        <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2 text-neutral">
+                        <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2">
                             Sign Up
                         </h1>
                         <div id="signup1_close" className=" flex justify-end pb-2 -mt-1 msm:-mr-3  rounded-2xl">
@@ -150,7 +163,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                     </div>
                 </div>
 
-                <div className="mt-auto mb-4 w-full h-[96px] px-2 flex justify-center items-center">
+                <div className="mt-auto mb-10 w-full h-[96px] px-2 flex justify-center items-center">
                     <div id="signup_email_continue" onClick={(e) => handleSignupEmailSubmit(e)} className={`${email && validateEmail(email) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
                         <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                             Continue
