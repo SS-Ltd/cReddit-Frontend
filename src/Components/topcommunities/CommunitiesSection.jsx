@@ -3,49 +3,31 @@ import CommunityItem from "./CommunityItem";
 import { baseUrl } from "../../constants";
 import { getRequest } from "../../services/Requests";
 
-/**
- * React component to display top communities from Reddit.
- * @returns {JSX.Element} React component.
- */
 const CommunitiesSection = () => {
-  /**
-   * State to hold the list of communities.
-   * @type {[Object[], function]} State hook for communities and setter function.
-   */
   const [communities, setCommunities] = useState([]);
-
-  /**
-   * State to manage the current page.
-   * @type {[number, function]} State hook for page number and setter function.
-   */
   const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const communitiesPerPage = 5;
 
-  /**
-   * Effect hook to fetch top communities based on the page number.
-   */
   useEffect(() => {
     const getTop = async () => {
       const response = await getRequest(
-        `${baseUrl}/subreddit/top?page=${page}&limit=250&sort=all`
+        `${baseUrl}/subreddit/top?page=${page}&limit=${communitiesPerPage}&sort=all`
       );
       if (response.status === 200 || response.status === 201) {
-        setCommunities(response.data);
+        setCommunities(response.data.topCommunities);
+        setTotalCount(response.data.count);
       }
     };
     getTop();
   }, [page]);
 
-  /**
-   * Generates an array of page numbers around the current page.
-   * @param {number} currentPage - The current page number.
-   * @returns {number[]} Array of page numbers.
-   */
-  const generatePages = (currentPage) => {
+  const totalPages = Math.ceil(totalCount / communitiesPerPage);
+
+  const generatePages = () => {
     const pages = [];
-    for (let i = currentPage - 4; i <= currentPage + 4; i++) {
-      if (i > 0) {
-        pages.push(i);
-      }
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
     }
     return pages;
   };
@@ -67,8 +49,8 @@ const CommunitiesSection = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 striped">
           {communities.map((community, index) => (
             <CommunityItem
-              key={index}
-              index={index}
+              key={(page - 1) * communitiesPerPage + index}
+              index={(page - 1) * communitiesPerPage + index}
               name={community.name}
               icon={community.icon}
               topic={community.topic}
@@ -77,7 +59,7 @@ const CommunitiesSection = () => {
           ))}
         </div>
         <div className="flex flex-wrap justify-center mt-[30px]">
-          {generatePages(page).map((pageNumber) => (
+          {generatePages().map((pageNumber) => (
             <a
               key={pageNumber}
               className={`flex font-bold justify-center py-[0.25rem] relative w-[4rem] text-[0.75rem] leading-[1rem] no-underline hover:no-underline ${
