@@ -3,13 +3,43 @@ import CommunityItem from "./CommunityItem";
 import { baseUrl } from "../../constants";
 import { getRequest } from "../../services/Requests";
 
+/**
+ * React component to display top communities from Reddit.
+ * @returns {JSX.Element} React component.
+ */
 const CommunitiesSection = () => {
+  /**
+   * State to hold the list of communities.
+   * @type {[Object[], function]} State hook for communities and setter function.
+   */
   const [communities, setCommunities] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const communitiesPerPage = 5;
 
+  /**
+   * State to manage the current page.
+   * @type {[number, function]} State hook for page number and setter function.
+   */
+  const [page, setPage] = useState(1);
+
+  /**
+   * State to hold the total count of communities.
+   * @type {[number, function]} State hook for total count and setter function.
+   */
+  const [totalCount, setTotalCount] = useState(0);
+
+  /**
+   * Number of communities to display per page.
+   * @type {number}
+   */
+  const communitiesPerPage = 250;
+
+  /**
+   * Effect hook to fetch top communities based on the page number.
+   */
   useEffect(() => {
+    /**
+     * Asynchronous function to fetch top communities from the API.
+     * @returns {void}
+     */
     const getTop = async () => {
       const response = await getRequest(
         `${baseUrl}/subreddit/top?page=${page}&limit=${communitiesPerPage}&sort=all`
@@ -22,8 +52,16 @@ const CommunitiesSection = () => {
     getTop();
   }, [page]);
 
+  /**
+   * Calculate the total number of pages based on the total count and communities per page.
+   * @type {number}
+   */
   const totalPages = Math.ceil(totalCount / communitiesPerPage);
 
+  /**
+   * Generates an array of page numbers.
+   * @returns {number[]} Array of page numbers.
+   */
   const generatePages = () => {
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -34,7 +72,7 @@ const CommunitiesSection = () => {
 
   return (
     <>
-      <section className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem]">
+      <section className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem] w-screen h-screen">
         <header className="p-0 my-[1rem] mx-[0rem]">
           <h1 className="flex items-center justify-center font-bold mt-[64px] mb-[0.25rem] mx-0 text-[1rem] leading-[1.25rem] ms-0 me-0 text-[#F2F2F2]">
             Best of Reddit
