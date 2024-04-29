@@ -16,7 +16,7 @@ import { postRequest, deleteRequest } from "@/services/Requests";
  * @param {string} props.icon - The URL of the community's icon.
  * @param {string} props.banner - The URL of the community's banner.
  * @param {number} props.members - The number of members in the community.
- * @param {boolean} [props.isJoined=true] - Indicates whether the user has joined the community.
+ * @param {boolean} [props.isMember=true] - Indicates whether the user has joined the community.
  * @param {boolean} [props.isMuted=true] - Indicates whether the user has muted the community.
  *
  * @example
@@ -24,17 +24,10 @@ import { postRequest, deleteRequest } from "@/services/Requests";
  *
  * @returns {React.Element} The rendered component.
  */
-function CommunityHeader({
-  name,
-  icon,
-  banner,
-  members,
-  isJoined = true,
-  isMuted = false,
-}) {
+function CommunityHeader({ name, icon, banner, members, isMember, isMuted }) {
   console.log(name, icon, banner, members);
 
-  const [joined, setJoined] = useState(isJoined);
+  const [joined, setJoined] = useState(isMember);
   const [muted, setMuted] = useState(isMuted);
 
   async function handleJoinSubreddit() {
