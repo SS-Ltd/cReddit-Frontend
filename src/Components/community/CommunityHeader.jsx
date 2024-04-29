@@ -59,7 +59,7 @@ function CommunityHeader({ name, icon, banner, members, isMember, isMuted }) {
     >
       <div
         id="community-header__banner"
-        className="w-full flex flex-row md:pr-2 md:pl-2 max-w-5xl h-20"
+        className="w-full flex flex-row md:pr-2 md:pl-2 h-20"
       >
         <img
           id="community-header__banner-img"
@@ -103,7 +103,7 @@ function CommunityHeader({ name, icon, banner, members, isMember, isMuted }) {
         <div className="flex flex-row items-end xs:ml-auto pt-2 pb-2 pl-2 pr-10">
           <Link
             id="community-header__info__community__create-post"
-            to={"/submit"} // TODO: Add the correct path --> "r/{name}/submit)"
+            to={`/submit/r/${name}`} // TODO: Add the correct path --> "r/{name}/submit)"
             className="rounded-3xl border border-gray-400 ml-2"
           >
             <div
