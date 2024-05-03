@@ -109,7 +109,9 @@ function App() {
             }
           />
           {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
-          {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
+          {isLoggedIn && <Route path="/submit/r/:communityName" element={<CreatePost />} />}
+          {isLoggedIn && <Route path="/submit/edit/:postId" element={<CreatePost />} />}
+          {isLoggedIn && <Route path="/submit/crosspost/:postId" element={<CreatePost />} />}
           <Route
             path="/notifications"
             element={

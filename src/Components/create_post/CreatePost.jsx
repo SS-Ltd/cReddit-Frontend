@@ -15,6 +15,7 @@ import { UserContext } from '@/context/UserContext';
 
 
 
+
 /**
  * CreatePost component is a form for creating a new post.
  * @component
@@ -46,6 +47,8 @@ const CreatePost = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
+    const titleRef = useRef();
+
 
     let initialHeight = '38px';
     let communityName = "";
@@ -178,10 +181,26 @@ const CreatePost = () => {
         return response
     }
 
-    const searchSubreddits = async () => {
+    useEffect(() => {
 
-    }
+        const getEditedPost = async () => {
+            const response = await getRequest(`${baseUrl}/post/${location.pathname.split('/')[3]}`);
+            if (response.status == 200 || response.status == 201) {
+                if (response.data.communityName != null)
+                    commNameInputRef.current.value = `r/${response.data.communityName}`;
+                else
+                    commNameInputRef.current.value = `u/${user}`;
+                titleRef.current.value = response.data.title;
+                setTitle(response.data.title);
+              
+            }
+      
+        }
 
+        if (location.pathname.includes("/edit/")) {
+            getEditedPost();
+        }
+    }, [location.pathname])
 
     /**
  * Gets the joined subreddits.
@@ -319,12 +338,12 @@ const CreatePost = () => {
 
             <div className='flex flex-col w-full h-fit mb-16 lg:mr-10  '>
                 <div className='w-full h-14 min-h-14 border-b-[1px] border-gray-600 flex flex-row items-center '>
-                    <h1 className='text-lg text-white font-base'>Create a post</h1>
+                    <h1 className='text-lg text-white font-base'>{location.pathname.includes("edit") ? 'Edit a Post' : !location.pathname.includes("crosspost") ? 'Create a Post' : 'Share a Post'}</h1>
                 </div>
 
                 <div className='w-full h-[40px] ml-[0.2px] relative mt-3'>
-                    <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" data-testid="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
-                        <input autoComplete='off' onChange={() => { getSearchResults(commNameInputRef.current.value); !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("JOINED COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
+                    <div onClick={(e) => { if (!location.pathname.includes("/edit/")) { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); } }} id="create_post_community_dropdown_button" data-testid="create_post_community_dropdown_button" className={`${!location.pathname.includes("/edit/") ? "cursor-pointer" : "cursor-not-allowed"} pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
+                        <input autoComplete='off' onChange={() => { getSearchResults(commNameInputRef.current.value); !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("JOINED COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" readOnly={location.pathname.includes("/edit/")} />
                         <div className="w-fit flex ml-auto mr-5 flex-row">
                             <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="#F05152" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -356,7 +375,7 @@ const CreatePost = () => {
                         </li>
 
                         <ul data-testid="joined-subreddits" className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
-                            {(commNameInputRef.current && commNameInputRef.current.value.trim()=="" )&& joinedSubreddits.map((subreddit, index) => (
+                            {(commNameInputRef.current && commNameInputRef.current.value.trim() == "") && joinedSubreddits.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
                                         <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
@@ -367,7 +386,7 @@ const CreatePost = () => {
                                     </div>
                                 </li>
                             ))}
-                            {communityResults.length!=0 && communityResults.map((subreddit, index) => (
+                            {communityResults.length != 0 && communityResults.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
                                         <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
@@ -394,18 +413,18 @@ const CreatePost = () => {
                             <h1 className='ml-1' >Post</h1>
                         </div>
 
-                        <div id='type_image' onClick={() => setType('Images & Video')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "Images & Video" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_image' onClick={() => { !location.pathname.includes("/edit/") && setType('Images & Video') }} className={`h-full w-1/4 flex hover:bg-reddit_search_light ${!location.pathname.includes("/edit/") ? "cursor-pointer" : "cursor-not-allowed"} flex-row justify-center items-center ${type == "Images & Video" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <PhotoOutlined />
                             <h1 className='ml-1' >Image</h1>
                         </div>
 
-                        <div id='type_link' onClick={() => setType('Link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "Link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_link' onClick={() => { !location.pathname.includes("/edit/") && setType('Link') }} className={`h-full w-1/4 flex hover:bg-reddit_search_light ${!location.pathname.includes("/edit/") ? "cursor-pointer" : "cursor-not-allowed"} flex-row justify-center items-center ${type == "Link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <Link />
                             <h1 className='ml-1'>Link</h1>
                         </div>
 
 
-                        <div id='type_poll' onClick={() => setType('Poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${type == "Poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
+                        <div id='type_poll' onClick={() => { !location.pathname.includes("/edit/") && setType('Poll') }} className={`h-full w-1/4 flex hover:bg-reddit_search_light ${!location.pathname.includes("/edit/") ? "cursor-pointer" : "cursor-not-allowed"}  flex-row justify-center items-center rounded-tr-lg ${type == "Poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
                             <PollOutlined />
                             <h1 className='ml-1' >Poll</h1>
                         </div>
@@ -415,6 +434,7 @@ const CreatePost = () => {
                     <div className='w-full flex flex-col h-fit px-3 '>
                         <div id='post_title' className={`mb-2.5  border-[1px] ${isFocused ? ' border-white ' : ' border-gray-500'}   min-h-[39px] flex flex-row w-full mt-3 `} >
                             <textarea maxLength={300}
+                                ref={titleRef}
                                 onInput={handleInput}
                                 placeholder='Title'
                                 onFocus={() => setIsFocused(true)}
@@ -426,7 +446,7 @@ const CreatePost = () => {
                         </div>
                         {type == 'Post' && (
                             <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
-                                <Post setContent={setContent} type={type} />
+                                <Post setContent={setContent}  type={type} />
 
                             </div>)}
 

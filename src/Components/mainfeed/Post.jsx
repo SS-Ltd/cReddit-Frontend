@@ -439,7 +439,7 @@ const Post = ({
 
 
               {username == userInfo.username && type == "Post" &&
-                <div
+                <div onClick={()=>navigate(`/submit/edit/${id}`)}
                   id={"mainfeed_" + id + "_menu_report"}
                   className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
                 >
