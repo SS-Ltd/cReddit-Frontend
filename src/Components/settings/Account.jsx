@@ -1,6 +1,10 @@
+import React, { useState } from "react";
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import DisconnectButton from "./components/DisconnectButton";
+import ChangeProfileModal from "./components/ChangeProfileModal";
+import { changeProfile } from "./utils/ChangeProfile";
+import { notify } from "./components/CustomToast";
 /**
  * Account is a React component that displays the user's account settings.
  * It allows the user to connect their account to Twitter and Apple.
@@ -21,6 +25,38 @@ function Account({
   connectedToGoogle,
   setUserSettings,
 }) {
+  const [showChangeEmailModal, setShowChangeEmailModal] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+  const [newEmail, setNewEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function handleChangeEmail() {
+    setShowChangeEmailModal(false);
+    const res = await changeProfile("email", { password, newEmail });
+    if (res) notify("Changes saved successfully");
+    else notify("Failed to save changes");
+  }
+
+  async function handleChangePassword() {
+    if (newPassword !== confirmPassword) {
+      notify("Passwords do not match!");
+      return;
+    }
+    setShowChangePasswordModal(false);
+    const res = await changeProfile("password", {
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    });
+    if (res) notify("Changes saved successfully");
+    else notify("Failed to save changes");
+  }
+
   return (
     <div className="flex flex-col w-full">
       <h3 className="text-white -mb-3 text-xl font-bold font-plex">
@@ -36,7 +72,20 @@ function Account({
         pageName={"account"}
         settingName={"email"}
         setUserSettings={setUserSettings}
+        overrideOnClick={() => setShowChangeEmailModal(true)}
       />
+      <ChangeProfileModal
+        show={showChangeEmailModal}
+        onHide={() => setShowChangeEmailModal(false)}
+        title="Update your email"
+        message="Update your email below. There will be a new verification email sent
+            that you will need to use to verify this new email."
+        inputLabels={["Password", "New email"]}
+        onClicks={[setPassword, setNewEmail]}
+        buttonLabel="Save email"
+        onConfirm={handleChangeEmail}
+      />
+
       <Setting
         title="Gender"
         message="This information may be used to improve your recommendations and ads."
@@ -55,6 +104,17 @@ function Account({
         pageName={"account"}
         settingName={"password"}
         setUserSettings={setUserSettings}
+        overrideOnClick={() => setShowChangePasswordModal(true)}
+      />
+      <ChangeProfileModal
+        show={showChangePasswordModal}
+        onHide={() => setShowChangePasswordModal(false)}
+        title="Change your password"
+        message="Update your password below. A verification email will be sent to your email."
+        inputLabels={["Old password", "New password", "Confirm password"]}
+        onClicks={[setOldPassword, setNewPassword, setConfirmPassword]}
+        buttonLabel="Save password"
+        onConfirm={handleChangePassword}
       />
       <Setting
         title="Country"

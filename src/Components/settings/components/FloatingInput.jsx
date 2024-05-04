@@ -1,9 +1,10 @@
-function FloatingInput({ id, label, buttonText, onSubmit }) {
+function FloatingInput({ id, label, setInputText, buttonText, onSubmit }) {
   return (
     <div className="relative w-100% max-w-3xl mt-2">
       <input
         type="text"
         id={id}
+        onChange={(e) => setInputText(e.target.value)}
         aria-describedby={id + "_helper"}
         className="pl-5 block rounded-md px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 appearance-none dark:text-white dark:border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-300  peer"
         placeholder=""
