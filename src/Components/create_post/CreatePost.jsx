@@ -6,13 +6,13 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import redditLogo from "../../assets/reddit_logo.png"
-import Post from './Post';
 import { baseUrl } from "../../constants";
 import { v4 as uuidv4 } from 'uuid';
 import RedditRuleIcon from './RedditRuleIcon';
 import DropImage from './DropImage';
 import { UserContext } from '@/context/UserContext';
-
+import Tiptap from '../tiptap/Tiptap';
+import AlertDemo from '../alert/AlertDemo';
 
 
 /**
@@ -23,6 +23,7 @@ import { UserContext } from '@/context/UserContext';
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
     const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
+    const [alertState, setAlertState] = useState({ show: false, message: "", condition: "" });
     const [communityResults, setCommunityResults] = useState([]);
     const [isCommunityOpenLocal, setIsCommunityOpenLocal] = useState(false);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
@@ -49,6 +50,15 @@ const CreatePost = () => {
 
     let initialHeight = '38px';
     let communityName = "";
+
+    const showAlertForTime = (condition, message) => {
+        setAlertState({ show: true, message: message, condition: condition });
+
+        setTimeout(() => {
+            setAlertState({ show: false, message: "", condition: "" });
+        }, 3000);
+    };
+
 
     useEffect(() => {
         getJoinedSubreddits();
@@ -145,19 +155,30 @@ const CreatePost = () => {
      * @returns {Object} - The response from the post request.
      */
     const handleSubmitImg = async () => {
-
-        if (commNameInputRef.current.value.substring(2) != user)
-            communityName = commNameInputRef.current.value.substring(2);
-
-        const formData = new FormData();
-        formData.append('images', file);
-        formData.append('type', type);
-        formData.append('communityName', communityName);
-        formData.append('title', title);
-        formData.append('isSpoiler', isSpoiler);
-        formData.append('isNSFW', isNSFW);
-        const response = await postRequestImg(`${baseUrl}/post`, formData);
-        return response
+        try {
+            if (commNameInputRef.current.value.substring(2) != user)
+              communityName = commNameInputRef.current.value.substring(2);
+        
+            const formData = new FormData();
+            formData.append('images', file);
+            formData.append('type', type);
+            formData.append('communityName', communityName);
+            formData.append('title', title);
+            formData.append('isSpoiler', isSpoiler);
+            formData.append('isNSFW', isNSFW);
+            const response = await postRequestImg(`${baseUrl}/post`, formData);
+        
+            if (response && response.status != 200 && response.status != 201) {
+              showAlertForTime("error", response.data.message);
+            }
+            return response;
+          } catch (error) {
+            if (error.response) {
+                showAlertForTime("error", error.response.data.message);
+            } else {
+                showAlertForTime("error", error.message);
+            }
+          }
     }
 
     /**
@@ -178,9 +199,6 @@ const CreatePost = () => {
         return response
     }
 
-    const searchSubreddits = async () => {
-
-    }
 
 
     /**
@@ -222,6 +240,7 @@ const CreatePost = () => {
                 else if (type === "Images & Video") {
                     if (file != null)
                         res = await handleSubmitImg();
+
                 }
                 else {
                     res = await handleSubmitOtherTypes();
@@ -235,8 +254,7 @@ const CreatePost = () => {
                 }
 
                 if (res != null && res.status != 200 && res.status != 201) {
-                    //Todo: either toast or 404 page for failure creating post -> server error 
-                    navigate('/not-found');
+                    showAlertForTime("error", res.data.message);
                 }
                 setIsLoading(false);
             }
@@ -315,7 +333,7 @@ const CreatePost = () => {
     return (
 
         <div className='flex mx-auto min-w-[350px]  sm:px-9 pl-2 pr-2 w-full max-w-[1092px] flex-row mt-15 overflow'>
-
+            {alertState.show && < AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
 
             <div className='flex flex-col w-full h-fit mb-16 lg:mr-10  '>
                 <div className='w-full h-14 min-h-14 border-b-[1px] border-gray-600 flex flex-row items-center '>
@@ -356,7 +374,7 @@ const CreatePost = () => {
                         </li>
 
                         <ul data-testid="joined-subreddits" className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
-                            {(commNameInputRef.current && commNameInputRef.current.value.trim()=="" )&& joinedSubreddits.map((subreddit, index) => (
+                            {(commNameInputRef.current && commNameInputRef.current.value.trim() == "") && joinedSubreddits.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
                                         <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
@@ -367,7 +385,7 @@ const CreatePost = () => {
                                     </div>
                                 </li>
                             ))}
-                            {communityResults.length!=0 && communityResults.map((subreddit, index) => (
+                            {communityResults.length != 0 && communityResults.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
                                         <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
@@ -425,8 +443,8 @@ const CreatePost = () => {
                             <div className='text-gray-400 no-select mr-1 text-[9px] flex flex-row justify-center items-center w-14 h-10'>{charCount}/300</div>
                         </div>
                         {type == 'Post' && (
-                            <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
-                                <Post setContent={setContent} type={type} />
+                            <div className='w-full h-fit  mb-3  '>
+                                <Tiptap setDescription={setContent} />
 
                             </div>)}
 
