@@ -84,7 +84,7 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
             }
         }
     }
-   
+
 
     const handleBlock = async (e) => {
         e.stopPropagation();
@@ -171,7 +171,7 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
                 <div className="flex flex-row justify-start text-white">
                     {isBlocked ?
 
-                        <button id="follow-btn-usercard" data-testid="follow-btn-usercard" onClick={(e) => { handleBlock(e) }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 bg-reddit_Blocked hover:bg-reddit_Blocked_hover`}>
+                        <button id="unblock-btn-usercard" data-testid="unblock-btn-usercard" onClick={(e) => { handleBlock(e) }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 bg-reddit_Blocked hover:bg-reddit_Blocked_hover`}>
                             <UserMinusIcon className='h-5 w-5 text-white ' />
                             <p className="ml-2 font-bold" data-testid="follow-btn-text" > UnBlock  </p>
                         </button>
