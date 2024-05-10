@@ -5,6 +5,11 @@ export default defineConfig({
     plugins: [react()],
     test: {
         environment: 'jsdom',
+        root: './',
+        coverage: {
+            include: ['**/src/**'],
+            provider: 'v8'
+        }
     },
     resolve: {
         alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }]
