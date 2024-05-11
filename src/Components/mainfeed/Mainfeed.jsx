@@ -198,7 +198,7 @@ const Mainfeed = ({ mode }) => {
 
   return (
     <div
-      id="mainfeed"
+      id="mainfeed" data-testid="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 ">
       {alertState.show && <AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
       {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
