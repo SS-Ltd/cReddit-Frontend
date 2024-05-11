@@ -7,7 +7,7 @@ const LandingOnChat = () => {
     return (
 
         <div className="landing w-full h-full flex flex-col flex-grow items-center justify-center gap-2 min-h-[250px]">
-            <img src={LandingImg} className="h-40 w-40" />
+            <img src={LandingImg} data-testid="landing-img" className="h-40 w-40" />
             <p className="text-white text-xl font-bold">Welcome to chat! </p>
             <p className="text-white text-lg">select channel or create one with other redditors.</p>
             <button
