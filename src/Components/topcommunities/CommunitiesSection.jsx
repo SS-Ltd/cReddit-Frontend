@@ -88,8 +88,9 @@ const CommunitiesSection = () => {
             Browse Reddit's largest communities
           </h2>
         </header>
-        {isLoading ? <Loading /> :
-
+        {isLoading ? (
+          <Loading />
+        ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 striped">
               {communities.map((community, index) => (
@@ -107,10 +108,11 @@ const CommunitiesSection = () => {
               {generatePages().map((pageNumber) => (
                 <a
                   key={pageNumber}
-                  className={`flex font-bold justify-center py-[0.25rem] relative w-[4rem] text-[0.75rem] leading-[1rem] no-underline hover:no-underline ${pageNumber === page
-                    ? "text-[#1870F4] cursor-default"
-                    : "text-[#F2F2F2] cursor-pointer"
-                    }`}
+                  className={`flex font-bold justify-center py-[0.25rem] relative w-[4rem] text-[0.75rem] leading-[1rem] no-underline hover:no-underline ${
+                    pageNumber === page
+                      ? "text-[#1870F4] cursor-default"
+                      : "text-[#F2F2F2] cursor-pointer"
+                  }`}
                   onClick={() => setPage(pageNumber)}
                 >
                   {pageNumber}
@@ -118,8 +120,7 @@ const CommunitiesSection = () => {
               ))}
             </div>
           </>
-        }
-
+        )}
       </section>
     </>
   );

@@ -12,6 +12,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description1"
           topic="Test Topic1"
           rules={[]}
+          moderators={[]}
         />
       </MemoryRouter>
     );
@@ -26,6 +27,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description2"
           topic="Test Topic2"
           rules={[]}
+          moderators={[]}
         />
       </MemoryRouter>
     );
@@ -40,6 +42,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description3"
           topic="Test Topic3"
           rules={[]}
+          moderators={[]}
         />
       </MemoryRouter>
     );
@@ -52,6 +55,7 @@ describe("CommunityInfo Component", () => {
       { text: ["Rule 2"] },
       { text: ["Rule 3"] },
     ];
+
     render(
       <MemoryRouter>
         <CommunityInfo
@@ -59,11 +63,35 @@ describe("CommunityInfo Component", () => {
           description="Test Description4"
           topic="Test Topic4"
           rules={rules}
+          moderators={[]}
         />
       </MemoryRouter>
     );
     expect(screen.getByText("Rule 1")).not.toBeNull();
     expect(screen.getByText("Rule 2")).not.toBeNull();
     expect(screen.getByText("Rule 3")).not.toBeNull();
+  });
+
+  it("renders the correct number of moderators", () => {
+    const moderators = [
+      { username: "moderator1", profilePicture: "profile1" },
+      { username: "moderator2", profilePicture: "profile2" },
+      { username: "moderator3", profilePicture: "profile3" },
+    ];
+
+    render(
+      <MemoryRouter>
+        <CommunityInfo
+          name="Test Community5"
+          description="Test Description5"
+          topic="Test Topic5"
+          rules={[]}
+          moderators={moderators}
+        />
+      </MemoryRouter>
+    );
+    expect(screen.getByText("u/moderator1")).not.toBeNull();
+    expect(screen.getByText("u/moderator2")).not.toBeNull();
+    expect(screen.getByText("u/moderator3")).not.toBeNull();
   });
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
+import { describe, it, afterEach, beforeEach, vi } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import CommunitiesSection from "@/Components/topcommunities/CommunitiesSection";
 import { getRequest } from "@/services/Requests";

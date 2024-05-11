@@ -4,6 +4,20 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { UserContext } from "@/context/UserContext";
 import ViewProfile from "@/Components/viewprofile/ViewProfile";
 
+class MockIntersectionObserver {
+  constructor() {}
+
+  observe() {
+    return null;
+  }
+
+  disconnect() {
+    return null;
+  }
+}
+
+global.IntersectionObserver = MockIntersectionObserver;
+
 const mockUserContextValue = {
   isLoggedIn: true,
   username: "testUser",

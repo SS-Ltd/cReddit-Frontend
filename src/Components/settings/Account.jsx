@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { postRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import { useNavigate } from "react-router-dom";
-import { generateToken } from "@/firebase";
+// import { generateToken } from "@/firebase";
 /**
  * Account is a React component that displays the user's account settings.
  * It allows the user to connect their account to Twitter and Apple.
@@ -29,24 +29,22 @@ function Account({
   const navigate = useNavigate();
   const [fcmToken, setFcmToken] = useState(null);
   useEffect(() => {
-
-    const getFCM = async () => {
-      const token = await generateToken();
-      setFcmToken(token);
-    }
-
-    getFCM();
-  }, [])
+    // const getFCM = async () => {
+    //   const token = await generateToken();
+    //   setFcmToken(token);
+    // };
+    // getFCM();
+  }, []);
   const handleDeleteAccount = async () => {
-    const response = await postRequest(`${baseUrl}/user/`, {
-      fcmToken
-    });
-    if (response.status == 200 || response.status == 201) {
-      setIsLoggedIn(false);
-      setIsOpenProfileMenu(false);
-      navigate('');
-    }
-  }
+    // const response = await postRequest(`${baseUrl}/user/`, {
+    //   fcmToken
+    // });
+    // if (response.status == 200 || response.status == 201) {
+    //   setIsLoggedIn(false);
+    //   setIsOpenProfileMenu(false);
+    //   navigate('');
+    // }
+  };
   return (
     <div className="flex flex-col w-full">
       <h3 className="text-white -mb-3 text-xl font-bold font-plex">
@@ -120,9 +118,10 @@ function Account({
       <Subtitle title="DELETE ACCOUNTS" />
       <div className="max-w-3xl flex flex-row justify-end w-full items-end mt-4">
         <button
+          data-testid="settings-delete-account-button"
           id="settings-delete-account-button"
           className="w-49 h-7 justify-center group flex flex-row items-center"
-          onClick={handleDeleteAccount}
+          // onClick={handleDeleteAccount}
         >
           <i className="fa-solid fa-trash-can" style={{ color: "#ff585b" }}></i>
           <span className="text-red-500 group-hover:text-red-700 text-sm font-bold font-plex pl-3">

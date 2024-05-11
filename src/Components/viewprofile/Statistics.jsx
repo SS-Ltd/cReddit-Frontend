@@ -1,3 +1,12 @@
+/**
+ * Component displaying statistics including views, upvote rate, downvote rate, and comment count.
+ * @param {Object} props - Component props.
+ * @param {number} props.views - The total number of views.
+ * @param {number} props.upvote - The number of upvotes.
+ * @param {number} props.downvote - The number of downvotes.
+ * @param {number} props.commentCount - The total number of comments.
+ * @returns {JSX.Element} Component displaying statistics.
+ */
 const Statistics = ({ views, upvote, downvote, commentCount }) => {
   return (
     <div id="statistics">
