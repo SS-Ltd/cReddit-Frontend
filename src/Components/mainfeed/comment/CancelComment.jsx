@@ -1,4 +1,5 @@
 import Modal from "react-bootstrap/Modal";
+
 /**
  * CancelComment is a React component that displays a modal when the user tries to cancel adding a comment.
  * It asks the user to confirm whether they want to discard their comment in progress.
@@ -36,13 +37,8 @@ function CancelComment(props) {
               id="discard-comment-button"
               className="h-9 items-center rounded-3xl font-plex ml-2 bg-red-700"
               onClick={props.onDiscard}
-
             >
-              <p
-                className="text-white text-md pl-3 pr-3 mr-6 ml-6"
-              >
-                Discard
-              </p>
+              <p className="text-white text-md pl-3 pr-3 mr-6 ml-6">Discard</p>
             </button>
           </div>
         </div>

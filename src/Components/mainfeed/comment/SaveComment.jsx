@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Save } from "./CommentUtils";
+
 /**
  * SaveComment is a React component that allows the user to save or unsave a comment.
  * It displays a button that, when clicked, saves or unsaves the comment.
@@ -15,14 +16,14 @@ function SaveComment({ id, Saved }) {
 
   async function handleClickSave() {
     setIsSaved((prev) => !prev);
-    if (!await Save(id, isSaved)) {
+    if (!(await Save(id, isSaved))) {
       setIsSaved((prev) => !prev);
     }
   }
 
   return (
     <div
-      id={id+"_save"}
+      id={id + "_save"}
       className="flex flex-row items-center w-full h-8 justify-center  bg-reddit_search hover:bg-reddit_search_light rounded-3xl"
       onClick={handleClickSave}
     >
