@@ -83,6 +83,16 @@ const Comments = ({ userInfo }) => {
     getComments();
   }, [currentPage, hasMore]);
 
+  /**
+   * Executes a callback when the component is mounted or when certain dependencies change.
+   * If the component is loading, it returns early.
+   * Sets up an IntersectionObserver to trigger a callback when the last comment element is intersecting with the viewport and there are more items to load.
+   * Disconnects the IntersectionObserver when the component is unmounted or when certain dependencies change.
+   * @param {function} nextPage - Callback function to be executed when the last comment element is intersecting with the viewport and there are more items to load.
+   * @param {boolean} loading - Flag indicating whether the component is currently in a loading state.
+   * @param {boolean} hasMore - Flag indicating whether there are more items to load.
+   * @param {MutableRefObject} lastCommentRef - Reference to the last comment element.
+   */
   useEffect(() => {
     if (loading) return;
 

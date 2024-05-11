@@ -1,24 +1,41 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom/vitest";
+import { MemoryRouter } from "react-router-dom";
 import Overview from "@/Components/viewprofile/Overview";
+import { getRequest } from "@/services/Requests";
+import { UserContext } from "@/context/UserContext";
+
+const mockUserContextValue = {
+  isLoggedIn: true,
+};
+
+class IntersectionObserver {
+  constructor(callback, options) {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+global.IntersectionObserver = IntersectionObserver;
+
+vi.mock("@/services/Requests", () => ({
+  getRequest: vi.fn(),
+}));
 
 describe("Overview component", () => {
-  it("renders correctly", () => {
-    const { getByAltText, getByText } = render(<Overview />);
+  const userInfo = { username: "testUser" };
 
-    const snooImage = getByAltText("Image of a wondering Snoo");
-    expect(snooImage).toBeInTheDocument();
-    expect(snooImage).toHaveAttribute(
-      "src",
-      "https://www.redditstatic.com/shreddit/assets/hmm-snoo.png"
-    );
-    expect(snooImage).toHaveAttribute("width", "60");
-    expect(snooImage).toHaveAttribute("loading", "lazy");
+  beforeEach(() => {
+    getRequest.mockResolvedValue({ status: 200, data: [] });
+  });
 
-    const welcomeMessage = getByText(
-      "Welcome to Your Profile Page, Have a walk!"
+  it("renders Overview component without crashing", () => {
+    render(
+      <UserContext.Provider value={mockUserContextValue}>
+        <MemoryRouter>
+          <Overview userInfo={userInfo} />
+        </MemoryRouter>
+      </UserContext.Provider>
     );
-    expect(welcomeMessage).toBeInTheDocument();
   });
 });

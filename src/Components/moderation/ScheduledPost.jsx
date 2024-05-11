@@ -1,5 +1,15 @@
 import killbill from "@/assets/kill_bill.jpg";
 
+/**
+ * Represents a scheduled post displayed in the inbox.
+ * @param {Object} props - Component props.
+ * @param {string} props.username - The username of the sender.
+ * @param {string} props.content - The content of the message.
+ * @param {string} props.title - The title of the scheduled post.
+ * @param {boolean} props.isSpoiler - Indicates if the post is marked as a spoiler.
+ * @param {boolean} props.isNsfw - Indicates if the post is marked as NSFW (Not Safe For Work).
+ * @returns {JSX.Element} A React component representing a scheduled post.
+ */
 const ScheduledPost = ({ username, content, title, isSpoiler, isNsfw }) => {
   return (
     <div className="flex flex-col h-fit w-1/2 ">

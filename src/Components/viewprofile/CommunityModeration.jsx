@@ -1,3 +1,12 @@
+/**
+ * Component representing a community item for moderation.
+ * Renders a list item with community name, icon, and member count.
+ * @param {Object} props - Component props.
+ * @param {string} props.name - Name of the community.
+ * @param {string} props.icon - URL of the community icon.
+ * @param {number} props.members - Number of members in the community.
+ * @returns {JSX.Element} Community item for moderation.
+ */
 const CommunityModeration = ({ name, icon, members }) => {
   return (
     <li className="relative list-none mt-0 -mx-[1rem]">
