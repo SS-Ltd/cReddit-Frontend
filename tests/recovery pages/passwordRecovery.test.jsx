@@ -74,4 +74,19 @@ describe('PasswordRecovery Component', () => {
     // Verify that the postRequest was called
     expect(patchRequest).toHaveBeenCalled();
   });
+
+  it('should disable the submit button when passwords do not match', async () => {
+    render(
+      <MemoryRouter>
+        <PasswordRecovery />
+      </MemoryRouter>
+    );
+    const newPasswordInput = screen.getByLabelText('New Password');
+    const confirmPasswordInput = screen.getByLabelText('Confirm New Password');
+
+    fireEvent.change(newPasswordInput, { target: { value: 'validPassword123' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'anotherPassword123' } });
+
+    expect(screen.getByRole('button', { name: 'Continue' })).toHaveAttribute('aria-disabled', 'true');
+  });
 });
