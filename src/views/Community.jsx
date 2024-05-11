@@ -1,7 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../Components/sidebar/Sidebar";
-import Mainfeed from "../Components/mainfeed/Mainfeed";
-import Recent from "../Components/mainfeed/Recent";
 import { getRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import CreateCommunity from "../Components/createCommunity/CreateCommunity";
