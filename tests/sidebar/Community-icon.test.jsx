@@ -1,6 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import CommunityIcon from '@/Components/sidebar/Nav-Icons/Community-icon';
+import { MemoryRouter as Router } from 'react-router-dom';
+
 import '@testing-library/jest-dom/vitest';
 afterEach(() => {
     cleanup();
@@ -14,7 +16,7 @@ describe('Community Icon testing ', () => {
         const classNames = "testClass";
 
         // Act
-        render(<CommunityIcon divId={divId} className={classNames} />);
+        render(<Router><CommunityIcon divId={divId} className={classNames} /></Router>);
 
         // Assert
         const divElement = screen.getByTestId(divId);
@@ -27,7 +29,7 @@ describe('Community Icon testing ', () => {
         const defaultIcon = "default-icon.png";
 
         // Act
-        render(<CommunityIcon icon={defaultIcon} />);
+        render(<Router><CommunityIcon icon={defaultIcon} /></Router>);
 
         // Assert
         const iconElement = screen.getByAltText("randomImgs");
