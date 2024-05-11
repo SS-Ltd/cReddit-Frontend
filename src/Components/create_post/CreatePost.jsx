@@ -641,7 +641,7 @@ const CreatePost = () => {
                         {/* Conditional rendering for the "Post" button */}
                         {!isSubmitPage && (
                             <>
-                                <div
+                                <div id='submit_post'
                                     onClick={handleSubmitPost}
                                     className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${(title.trim() === '' ||
                                         (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
@@ -660,7 +660,7 @@ const CreatePost = () => {
                         {/* Conditional rendering for the "Schedule" button and selectors */}
                         {isSubmitPage && (
                             <>
-                                <div
+                                <div id='submit_post'
                                     onClick={handleSubmit}
                                     className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${(title.trim() === '' ||
 
