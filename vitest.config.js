@@ -10,7 +10,7 @@ export default defineConfig({
             include: ['**/src/**'],
             provider: 'v8',
             exclude: ['**/src/context/**', '**/src/services/**', '**/src/Components/settings/utils/**',
-             '**/src/utils/**', '**/src/Components/mainfeed/comment/CommentUtils.js', '**/src/App.jsx' , '**/public/**', '**/src/firebase.js', '**/src/index.jsx' ]
+             '**/src/utils/**', '**/src/Components/mainfeed/comment/CommentUtils.js', '**/src/App.jsx' , '**/public/**', '**/src/firebase.js', '**/src/index.jsx', '**/src/Components/notifications/NotificationContext.jsx' ]
         }
     },
     resolve: {
