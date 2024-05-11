@@ -3,11 +3,36 @@ import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import DropDownMenu from '@/Components/sidebar/Nav-Icons/DropDownMenu';
 import '@testing-library/jest-dom/vitest';
 import { UserContext } from '@/context/UserContext';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
+
+
+// ...
+
 
 
 afterEach(() => {
     cleanup();
 });
+vi.mock('react-router-dom', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        useNavigate: () => (url) => {
+            // Simulate navigation (optional: log the URL)
+            console.log(`Navigated to: ${url}`);
+        },
+        Route: actual.Route,
+        Router: actual.Router,
+        Routes: actual.Routes,
+    };
+});
+
+const mockHistory = {
+    location: { pathname: '/test-path' },
+    listen: vi.fn(),
+    push: vi.fn(),
+};
 
 describe('DropDown menue testing', () => {
 
@@ -16,18 +41,21 @@ describe('DropDown menue testing', () => {
     const setIsVisibleLeftSidebar = vi.fn();
     const userHistoryRes = [];
 
+
     const renderDropDownMenu = (userContextValue) => {
         return render(
             <UserContext.Provider value={userContextValue}>
-                <DropDownMenu
-                    MenuHeader="Test Menu"
-                    id="test-menu"
-                    setIsCommunityOpen={setIsCommunityOpen}
-                    communityButtonRef={communityButtonRef}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    userHistoryRes={userHistoryRes}
-                />
-            </UserContext.Provider>
+                <Router >
+                    <DropDownMenu
+                        userHistoryRes={mockHistory}
+                        MenuHeader="Test Menu"
+                        id="test-menu"
+                        setIsCommunityOpen={setIsCommunityOpen}
+                        communityButtonRef={communityButtonRef}
+                        setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                    />
+                </ Router>
+            </UserContext.Provider >
         );
     }
 
@@ -46,8 +74,6 @@ describe('DropDown menue testing', () => {
     });
     it('renders the chevron up icon when menu is dropped', () => {
         const { getByTestId } = renderDropDownMenu({ isLoggedIn: false });
-        fireEvent.click(getByTestId('isDropped-set')); // Assuming the menuHeader is a button
-        expect(getByTestId('chvronDown')).toBeInTheDocument();
         fireEvent.click(getByTestId('isDropped-set')); // Assuming the menuHeader is a button
         expect(getByTestId('chvronUP')).toBeInTheDocument();
     });

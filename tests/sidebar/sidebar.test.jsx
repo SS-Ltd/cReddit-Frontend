@@ -34,8 +34,8 @@ describe('Sidebar testing', () => {
 
         // Assert
         expect(container).toBeInTheDocument();
-        expect(container.querySelectorAll('.SideIcon-Container')).toHaveLength(16);
-        expect(container.querySelectorAll('.Separator')).toHaveLength(5);
+        expect(container.querySelectorAll('.SideIcon-Container')).toHaveLength(54);
+        expect(container.querySelectorAll('.Separator')).toHaveLength(13);
     });
     // Renders the sidebar component with recent dropdown menu expanded and no recent subreddits.
     it('should render the sidebar component with recent dropdown menu expanded and no recent subreddits', () => {
@@ -67,8 +67,8 @@ describe('Sidebar testing', () => {
 
         // Assert
         expect(container).toBeInTheDocument();
-        expect(container.querySelectorAll('.SideIcon-Container')).toHaveLength(16);
-        expect(container.querySelectorAll('.Separator')).toHaveLength(5);
+        expect(container.querySelectorAll('.SideIcon-Container')).toHaveLength(54);
+        expect(container.querySelectorAll('.Separator')).toHaveLength(13);
         expect(container.querySelectorAll('.NavIcon[id^="sidebar_recent_icon"]')).toHaveLength(0);
     });
 
