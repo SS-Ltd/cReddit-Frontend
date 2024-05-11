@@ -1,11 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
 import CancelComment from "./CancelComment";
 import { submitComment } from "./CommentUtils";
 import DropCommentImage from "./DropCommentImage";
-import { getRequest } from "../../../services/Requests";
-import { baseUrl } from "../../../constants";
-import PostComment from "./PostComment";
+
 /**
  * CommentSection is a React component that allows the user to add a comment to a post.
  * It includes a text area for the user to write their comment and a dropzone for the user to add an image to their comment.
@@ -17,7 +14,6 @@ import PostComment from "./PostComment";
  * @param {boolean} props.isCommenting - Whether the user is currently adding a comment.
  * @param {Function} props.setIsCommenting - A function to set the isCommenting state.
  */
-
 function CommentSection({
   postId,
   isCommenting,
@@ -26,12 +22,12 @@ function CommentSection({
   setIsPaginationLoading,
   setLoadingAddComment,
   setSelectedPost,
-  setPosts
+  setPosts,
 }) {
   /**
-  * State variable for the comment text. Initially set to an empty string.
-  * @type {string}
-  */
+   * State variable for the comment text. Initially set to an empty string.
+   * @type {string}
+   */
   const [comment, setComment] = useState("");
 
   /**
@@ -45,9 +41,9 @@ function CommentSection({
    */
   const [buttonColor, setButtonColor] = useState("#4d4608");
   /**
-    * State variable for whether the modal is shown. Initially set to false.
-    * @type {boolean}
-    */
+   * State variable for whether the modal is shown. Initially set to false.
+   * @type {boolean}
+   */
   const [modalShow, setModalShow] = useState(false);
   /**
    * Ref for the text area.
@@ -56,15 +52,13 @@ function CommentSection({
   const textareaRef = useRef();
   const handleFileChange = (e) => {
     setImage(e.target.files[0]);
-  }
-
+  };
 
   useEffect(() => {
     if (isCommenting) {
       textareaRef.current.focus();
     }
   }, [isCommenting]);
-
 
   const addComment = async () => {
     if (!(image || (comment && comment.trim() !== ""))) return;
@@ -76,15 +70,24 @@ function CommentSection({
       setLoadingAddComment(false);
       return;
     }
-    setPostComments(prev => [newComment, ...prev]);
-    setSelectedPost(prev => ({...prev, commentCount: prev.commentCount + 1}));
-    setPosts(prev => prev.map(post => post._id === postId ? {...post, commentCount: post.commentCount + 1} : post));
+    setPostComments((prev) => [newComment, ...prev]);
+    setSelectedPost((prev) => ({
+      ...prev,
+      commentCount: prev.commentCount + 1,
+    }));
+    setPosts((prev) =>
+      prev.map((post) =>
+        post._id === postId
+          ? { ...post, commentCount: post.commentCount + 1 }
+          : post
+      )
+    );
     setIsPaginationLoading(false);
     setLoadingAddComment(false);
     setComment("");
     setImage(null);
     setIsCommenting(false);
-  }
+  };
 
   const dropzoneRef = useRef();
 
@@ -94,12 +97,17 @@ function CommentSection({
       hidden={!isCommenting}
     >
       <div className="h-fit">
-        <DropCommentImage id="comment" handleFileChange={handleFileChange} image={image} ref={dropzoneRef} />
+        <DropCommentImage
+          id="comment"
+          handleFileChange={handleFileChange}
+          image={image}
+          ref={dropzoneRef}
+        />
       </div>
 
       {!image && (
-        <textarea id="comment_text"
-
+        <textarea
+          id="comment_text"
           disabled={image ? true : false}
           ref={textareaRef}
           className="w-full block resize-none rounded-2xl pl-3 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
@@ -116,14 +124,29 @@ function CommentSection({
 
       <div className="w-full flex flex-row">
         <div className="w-full flex flex-row p-2 pb-1 items-end  justify-end">
-
-          <div id="comment_img" className="w-fit h-fit cursor-pointer mr-auto" onClick={() => dropzoneRef.current.click()}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="gray" className="w-7 h-7">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+          <div
+            id="comment_img"
+            className="w-fit h-fit cursor-pointer mr-auto"
+            onClick={() => dropzoneRef.current.click()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="gray"
+              className="w-7 h-7"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+              />
             </svg>
           </div>
 
-          <button id="cancel_comment"
+          <button
+            id="cancel_comment"
             className="bg-gray-800 h-8 items-center rounded-3xl font-plex hover:bg-gray-700"
             onClick={() => {
               if (comment.length || image) setModalShow(true);
@@ -136,18 +159,20 @@ function CommentSection({
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
 
-          <div id="submit_comment"
+          <div
+            id="submit_comment"
             onClick={() => addComment()}
-            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(image || (comment && comment.trim() !== "")) ? "cursor-pointer" : "cursor-not-allowed"} `}
+            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${
+              image || (comment && comment.trim() !== "")
+                ? "cursor-pointer"
+                : "cursor-not-allowed"
+            } `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
             onMouseLeave={() => setButtonColor("#4d4608")}
           >
             <p className="text-white text-xs font-bold pl-3 pr-3 ">Comment</p>
           </div>
-
-
-
         </div>
       </div>
 
@@ -156,7 +181,6 @@ function CommentSection({
         onHide={() => {
           setModalShow(false);
         }}
-
         onDiscard={() => {
           setModalShow(false);
           setComment("");

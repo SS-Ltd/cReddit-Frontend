@@ -51,7 +51,7 @@ const EmailVerification = ({ setIsOpenedEmailVerification, setIsOpenedForgotPass
                     </svg>
                 </div>
 
-                <div id="email_verify_close" onClick={() => setInternalClose(true)} className="hover:bg-reddit_search_light msm:mr-5 cursor-pointer rounded-full w-8 h-8 flex justify-center items-center bg-reddit_search">
+                <div data-testid="email_verify_close" id="email_verify_close" onClick={() => setInternalClose(true)} className="hover:bg-reddit_search_light msm:mr-5 cursor-pointer rounded-full w-8 h-8 flex justify-center items-center bg-reddit_search">
                     <XMarkIcon className="w-6 h-7 " />
                 </div>
             </div>

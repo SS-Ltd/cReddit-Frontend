@@ -1,4 +1,5 @@
 import CommentSection from "./CommentSection";
+
 /**
  * AddComment is a React component that allows the user to add a comment to a post.
  * It displays a button that, when clicked, shows the CommentSection component.
@@ -17,12 +18,12 @@ function AddComment({
   setIsPaginationLoading,
   setLoadingAddComment,
   setSelectedPost,
-  setPosts
+  setPosts,
 }) {
-
   return (
     <div className="w-full mt-3 inline-flex flex-row  justify-center">
-      <button id="add_comment"
+      <button
+        id="add_comment"
         className="w-full h-10 bg-greenyDark flex flex-row items-center rounded-3xl border border-gray-600 font-plex"
         hidden={isCommenting}
         onClick={() => {
