@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import Rule from "./Rule";
 import Moderator from "./Moderator";
-
 /**
  * CommunityInfo component displays the CommunityInfo posts of a user.
  *
