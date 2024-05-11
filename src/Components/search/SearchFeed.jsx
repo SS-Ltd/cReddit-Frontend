@@ -181,7 +181,7 @@ const SearchFeed = ({ isSafe, sortTime, sortType }) => {
 
 
     return (
-        <div id="search_feed" className="flex-col flex w-full mt-2.5 ">
+        <div id="search_feed" data-testid="search_feed" className="flex-col flex w-full mt-2.5 ">
 
             <div id="search_content_map" className="flex-col max-w-[745px] flex">
                 {location.pathname.endsWith("/people") &&
