@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { patchRequest } from '@/services/Requests';
-import { baseUrl } from '@/constants';
-
+import { patchRequest } from "@/services/Requests";
+import { baseUrl } from "@/constants";
 
 /**
  * upVote component allows users to upvote a post.
@@ -27,9 +26,11 @@ const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
     </svg>
   ) : (
     <svg
-      className={`${isHoverUpvote && !(isUpvote || isDownvote) ? "fill-reddit_upvote" : ""
-        } ${!isUpvote ? (isDownvote ? "hover:fill-white" : "") : "hover:fill-white"
-        }`}
+      className={`${
+        isHoverUpvote && !(isUpvote || isDownvote) ? "fill-reddit_upvote" : ""
+      } ${
+        !isUpvote ? (isDownvote ? "hover:fill-white" : "") : "hover:fill-white"
+      }`}
       fill="#ffffff"
       width="19px"
       height="22px"
@@ -75,11 +76,13 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
     </svg>
   ) : (
     <svg
-      className={`${isHoverDownvote && !(isUpvote || isDownvote)
-        ? "fill-reddit_downvote"
-        : ""
-        }  ${!isDownvote ? (isUpvote ? "hover:fill-white" : "") : "hover:fill-white"
-        }`}
+      className={`${
+        isHoverDownvote && !(isUpvote || isDownvote)
+          ? "fill-reddit_downvote"
+          : ""
+      }  ${
+        !isDownvote ? (isUpvote ? "hover:fill-white" : "") : "hover:fill-white"
+      }`}
       fill="#ffffff"
       width="19px"
       height="22px"
@@ -113,21 +116,25 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
  * @param {function} props.setPosts - The function to set the posts.
  * @returns {JSX.Element} The rendered Vote component.
  * */
-const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) => {
+const Vote = ({
+  id,
+  netVotes,
+  isUpvoted,
+  isDownvoted,
+  setPosts,
+  testId = "",
+}) => {
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  useEffect
-    (() => {
-      setVoters(netVotes);
-      setIsUpvote(isUpvoted);
-      setIsDownvote(isDownvoted);
-    }, [netVotes, isUpvoted, isDownvoted]);
-
-
+  useEffect(() => {
+    setVoters(netVotes);
+    setIsUpvote(isUpvoted);
+    setIsDownvote(isDownvoted);
+  }, [netVotes, isUpvoted, isDownvoted]);
 
   /**
    * Formats the vote count for display.
@@ -137,15 +144,14 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) =
    * */
   function formatVotes(num) {
     let absoluteNum = Math.abs(num);
-    let sign = num < 0 ? '-' : '';
+    let sign = num < 0 ? "-" : "";
 
-    if (!num)
-      return num;
+    if (!num) return num;
 
     if (absoluteNum >= 1000000) {
-      return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
+      return sign + (absoluteNum / 1000000).toFixed(1) + "M";
     } else if (absoluteNum >= 1000) {
-      return sign + (absoluteNum / 1000).toFixed(1) + 'K';
+      return sign + (absoluteNum / 1000).toFixed(1) + "K";
     } else {
       return num.toString();
     }
@@ -174,26 +180,25 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) =
       newIsUpvote = true;
     }
 
-    setVoters(prevVoters => newVoters);
-    setIsUpvote(prevIsUpvote => newIsUpvote);
-    setIsDownvote(prevIsDownvote => newIsDownvote);
+    setVoters((prevVoters) => newVoters);
+    setIsUpvote((prevIsUpvote) => newIsUpvote);
+    setIsDownvote((prevIsDownvote) => newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(prevVoters => voters);
-      setIsUpvote(prevIsUpvote => isUpvote);
-      setIsDownvote(prevIsDownvote => isDownvote);
+      setVoters((prevVoters) => voters);
+      setIsUpvote((prevIsUpvote) => isUpvote);
+      setIsDownvote((prevIsDownvote) => isDownvote);
     } else {
-
       if (setPosts) {
-        setPosts(prevPosts => {
-          return prevPosts.map(post => {
+        setPosts((prevPosts) => {
+          return prevPosts.map((post) => {
             if (post._id === id) {
               return {
                 ...post,
                 netVote: newVoters,
                 isUpvoted: newIsUpvote,
-                isDownvoted: newIsDownvote
+                isDownvoted: newIsDownvote,
               };
             }
             return post;
@@ -202,7 +207,6 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) =
       }
     }
   };
-
 
   /**
    * Handles the downvote event of the post, updating the vote count and status.
@@ -227,26 +231,25 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) =
       newIsDownvote = true;
     }
 
-    setVoters(prevVoters => newVoters);
-    setIsUpvote(prevIsUpvote => newIsUpvote);
-    setIsDownvote(prevIsDownvote => newIsDownvote);
+    setVoters((prevVoters) => newVoters);
+    setIsUpvote((prevIsUpvote) => newIsUpvote);
+    setIsDownvote((prevIsDownvote) => newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(prevVoters => voters);
-      setIsUpvote(prevIsUpvote => isUpvote);
-      setIsDownvote(prevIsDownvote => isDownvote);
+      setVoters((prevVoters) => voters);
+      setIsUpvote((prevIsUpvote) => isUpvote);
+      setIsDownvote((prevIsDownvote) => isDownvote);
     } else {
-
       if (setPosts) {
-        setPosts(prevPosts => {
-          return prevPosts.map(post => {
+        setPosts((prevPosts) => {
+          return prevPosts.map((post) => {
             if (post._id === id) {
               return {
                 ...post,
                 netVote: newVoters,
                 isUpvoted: newIsUpvote,
-                isDownvoted: newIsDownvote
+                isDownvoted: newIsDownvote,
               };
             }
             return post;
@@ -258,20 +261,22 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) =
 
   return (
     <div
-      className={`flex flex-row justify-evenly items-center min-w-22 px-1 h-8  ${isDownvote
-        ? "bg-reddit_downvote"
-        : isUpvote
+      className={`flex flex-row justify-evenly items-center min-w-22 px-1 h-8  ${
+        isDownvote
+          ? "bg-reddit_downvote"
+          : isUpvote
           ? "bg-reddit_upvote"
           : "bg-reddit_search"
-        }  rounded-3xl`}
+      }  rounded-3xl`}
     >
       <span
         id={"mainfeed_" + id + "_upvote" + testId}
         onMouseEnter={() => setIsHoverUpvote(true)}
         onMouseLeave={() => setIsHoverUpvote(false)}
         role="button"
-        className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
-          } rounded-full w-7 h-8 flex justify-center items-center`}
+        className={`hover:bg-reddit_search_light ${
+          isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
+        } rounded-full w-7 h-8 flex justify-center items-center`}
         onClick={handleUpvote}
       >
         <UpVote
@@ -286,8 +291,9 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) =
         onMouseEnter={() => setIsHoverDownvote(true)}
         onMouseLeave={() => setIsHoverDownvote(false)}
         role="button"
-        className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
-          } w-7 h-8 rounded-full flex justify-center items-center`}
+        className={`hover:bg-reddit_search_light ${
+          isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
+        } w-7 h-8 rounded-full flex justify-center items-center`}
         onClick={handleDownvote}
       >
         <DownVote

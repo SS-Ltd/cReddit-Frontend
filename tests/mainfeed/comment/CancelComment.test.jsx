@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import CancelComment from "@/Components/mainfeed/comment/CancelComment";
 
 describe("CancelComment component", () => {

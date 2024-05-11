@@ -2,7 +2,7 @@ import moment from "moment";
 import Vote from "../Vote";
 import Share from "../Share";
 import SaveComment from "./SaveComment";
-import { useEffect } from "react";
+
 /**
  * PostComment is a React component that displays a comment on a post.
  * It shows the comment's content, the username of the commenter, the comment's creation and update times, and the commenter's profile picture.
@@ -35,15 +35,17 @@ const PostComment = ({
   profilePicture,
   isSaved,
   testId,
-  lastCommentElementRef
+  lastCommentElementRef,
 }) => {
-
-
   return (
-    <div ref={lastCommentElementRef?lastCommentElementRef:null} className="px-4 mt-2">
+    <div
+      ref={lastCommentElementRef ? lastCommentElementRef : null}
+      className="px-4 mt-2"
+    >
       <div className="w-full mt-6 flex flex-row justify-start items-center overflow-hidden">
         <div className=" bg-reddit_greenyDark flex flex-row justify-start items-center">
-          <img src={profilePicture}
+          <img
+            src={profilePicture}
             alt="avatar"
             className="h-9 w-9 rounded-full"
           />
@@ -60,7 +62,8 @@ const PostComment = ({
         >
           <p className="text-white text-break text-sm ml-3">{content}</p>
         </div>
-        <div hidden={!isImage}
+        <div
+          hidden={!isImage}
           className="ml-12 bg-reddit_greenyDark flex flex-row justify-start items-center"
         >
           <img
@@ -82,17 +85,14 @@ const PostComment = ({
         </div>
 
         <div className="ml-3 mt-3">
-          <Share id={id}
-           testId={"_comment"} />
-          
+          <Share id={id} testId={"_comment"} />
         </div>
         <div className="ml-3 mt-3">
           <SaveComment id={id} Saved={isSaved} />
         </div>
       </div>
     </div>
-
   );
-}
+};
 
 export default PostComment;
