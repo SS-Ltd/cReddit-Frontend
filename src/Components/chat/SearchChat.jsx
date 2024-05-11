@@ -79,7 +79,7 @@ const SearchChat = () => {
     return (
 
         <div className="flex-col w-full h-full items-center gap-20 p-7 flex relative bg-reddit_dark_Chat_Create">
-            <div className="flex-col w-full items-center flex relative mt-5">
+            <div test-dataid="search-user-row-1" className="flex-col w-full items-center flex relative mt-5">
                 <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-full  xl:max-w-[600px] z-40 xs:bg-reddit_dark_search_chat justify-center sm:justify-start cursor-pointer sm:cursor-default h-13  min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3 `}>
                     <MagnifyingGlassIcon className=" text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
 
@@ -135,7 +135,7 @@ const SearchChat = () => {
                         <li key={index} className="tag">
                             <img src={profilePictureTag[index]} className='h-4 w-4 rounded-full mr-1'></img>
                             <span className='tag-title'>{tag}</span>
-                            <span id="remove-tag-icon" className='tag-close-icon'
+                            <span test-dataid="remove-tag-icon" id="remove-tag-icon" className='tag-close-icon'
                                 onClick={() => removeTags(index)}
                             >
                                 x

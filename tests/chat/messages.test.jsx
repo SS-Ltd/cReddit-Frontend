@@ -8,7 +8,7 @@ afterEach(() => {
     cleanup();
 });
 
-describe("Threads component", () => {
+describe("chat messages component", () => {
     // Renders a div element with id 'open-threads' and data-testid 'open-threads'
     // Renders a message with username, profile picture, message content and timestamp when isFirstMessage is true
     it('should render a message with username, profile picture, message content, and timestamp when isFirstMessage is true', () => {
