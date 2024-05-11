@@ -2,33 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import Rule from "./Rule";
 import Moderator from "./Moderator";
 
-// const tempModerators = [
-//   {
-//     id: "1",
-//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-//     name: "Baroudy1452",
-//     moderatorSince: "1/1/2001",
-//   },
-//   {
-//     id: "2",
-//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-//     name: "JIMMY",
-//     moderatorSince: "1/1/2001",
-//   },
-//   {
-//     id: "3",
-//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-//     name: "JIMMY2",
-//     moderatorSince: "1/1/2001",
-//   },
-//   {
-//     id: "4",
-//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-//     name: "JIMMY3",
-//     "moderatorSince:": "1/1/2001",
-//   },
-// ];
-
 /**
  * CommunityInfo component displays the CommunityInfo posts of a user.
  *

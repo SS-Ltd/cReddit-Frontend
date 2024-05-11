@@ -24,21 +24,16 @@ import { postRequest, deleteRequest } from "@/services/Requests";
  *
  * @returns {React.Element} The rendered component.
  */
-function CommunityHeader({
-  name,
-  icon,
-  banner,
-  members,
-  isMember,
-  isMuted
-}) {
-
-
+function CommunityHeader({ name, icon, banner, members, isMember, isMuted }) {
   const [joined, setJoined] = useState(isMember);
   const [muted, setMuted] = useState(isMuted);
 
+  /**
+   * Handles the join/mute action for the subreddit community.
+   * If the user is already a member, it sends a request to leave the community.
+   * If the user is not a member, it sends a request to join the community.
+   */
   async function handleJoinSubreddit() {
-
     let res;
     if (joined) {
       res = await deleteRequest(`${baseUrl}/subreddit/${name}/join`);
@@ -49,6 +44,11 @@ function CommunityHeader({
     if (res.status === 200 || res.status === 201) setJoined(!joined);
   }
 
+  /**
+   * Handles the mute action for the subreddit community.
+   * If the community is already muted, it sends a request to unmute the community.
+   * If the community is not muted, it sends a request to mute the community.
+   */
   async function handleMuteSubreddit() {
     let res;
     if (muted) {
