@@ -12,6 +12,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description1"
           topic="Test Topic1"
           rules={[]}
+          moderators={[]}
         />
       </MemoryRouter>
     );
@@ -26,6 +27,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description2"
           topic="Test Topic2"
           rules={[]}
+          moderators={[]}
         />
       </MemoryRouter>
     );
@@ -40,6 +42,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description3"
           topic="Test Topic3"
           rules={[]}
+          moderators={[]}
         />
       </MemoryRouter>
     );
@@ -52,6 +55,13 @@ describe("CommunityInfo Component", () => {
       { text: ["Rule 2"] },
       { text: ["Rule 3"] },
     ];
+
+    const moderators = [
+      { username: "mod1", profilePic: "pic1" },
+      { username: "mod2", profilePic: "pic2" },
+      { username: "mod3", profilePic: "pic3" },
+    ];
+
     render(
       <MemoryRouter>
         <CommunityInfo
@@ -59,6 +69,7 @@ describe("CommunityInfo Component", () => {
           description="Test Description4"
           topic="Test Topic4"
           rules={rules}
+          moderators={moderators}
         />
       </MemoryRouter>
     );

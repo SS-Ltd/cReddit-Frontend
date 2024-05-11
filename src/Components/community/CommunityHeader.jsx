@@ -24,21 +24,11 @@ import { postRequest, deleteRequest } from "@/services/Requests";
  *
  * @returns {React.Element} The rendered component.
  */
-function CommunityHeader({
-  name,
-  icon,
-  banner,
-  members,
-  isMember,
-  isMuted
-}) {
-
-
+function CommunityHeader({ name, icon, banner, members, isMember, isMuted }) {
   const [joined, setJoined] = useState(isMember);
   const [muted, setMuted] = useState(isMuted);
 
   async function handleJoinSubreddit() {
-
     let res;
     if (joined) {
       res = await deleteRequest(`${baseUrl}/subreddit/${name}/join`);
@@ -46,7 +36,7 @@ function CommunityHeader({
       res = await postRequest(`${baseUrl}/subreddit/${name}/join`);
     }
 
-    if (res.status === 200 || res.status === 201) setJoined(!joined);
+    if (res && (res.status === 200 || res.status === 201)) setJoined(!joined);
   }
 
   async function handleMuteSubreddit() {
