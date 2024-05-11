@@ -4,6 +4,7 @@
  * @param {function} setIsChat - A function to set the chat state.
  * @returns {void}
  */
+import { useEffect } from 'react';
 const useChat = (setIsChat) => {
   useEffect(() => {
     setIsChat(true);

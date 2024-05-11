@@ -60,12 +60,12 @@ const ChatBox = () => {
         const getMessages = async () => {
             setMessageLoading(true);
             const response = await getRequest(`${baseUrl}/chat/${selectedRoomId}?page=1&limit=50`);
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 const reversedData = response.data;
                 setMessage(reversedData);
                 setMessageLoading(false);
             } else {
-                console.log(response.data.message);
+                console.log(response?.data.message);
             }
         };
 
@@ -75,7 +75,7 @@ const ChatBox = () => {
 
     const handleLeaveRoom = async () => {
         const response = await deleteRequest(`${baseUrl}/chat/leaveChat/${selectedRoomId}`);
-        if (response.status === 200) {
+        if (response?.status === 200) {
             socket.current.emit('leaveRoom', selectedRoomId);
             setIsAddChat(false);
             setIsChannelSelected(false);
