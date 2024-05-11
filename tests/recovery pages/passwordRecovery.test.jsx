@@ -1,21 +1,30 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import PasswordRecovery from '@/Components/recovery/PasswordRecovery';
-import { postRequest } from '@/services/Requests';
+import { patchRequest, postRequest } from '@/services/Requests';
+import { MemoryRouter } from 'react-router-dom';
+
 import '@testing-library/jest-dom/vitest';
 
 afterEach(() => {
-    cleanup();
+  cleanup();
 });
 
 // Mock the postRequest function
-vi.mock('@/services/Requests', () => ({
+vi.mock('@/services/Requests', async (importOriginal) => ({
+  ...await importOriginal(),
   postRequest: vi.fn(() => Promise.resolve({ status: 200 })),
+  patchRequest: vi.fn(() => Promise.resolve({ status: 200 })),
+
 }));
 
 describe('PasswordRecovery Component', () => {
   it('should accept a valid password', async () => {
-    render(<PasswordRecovery />);
+    render(
+      <MemoryRouter>
+        <PasswordRecovery />
+      </MemoryRouter>
+    );
     const newPasswordInput = screen.getByLabelText('New Password');
     fireEvent.change(newPasswordInput, { target: { value: 'validPassword123' } });
 
@@ -24,7 +33,10 @@ describe('PasswordRecovery Component', () => {
   });
 
   it('should not accept an invalid password', async () => {
-    render(<PasswordRecovery />);
+    render(
+      <MemoryRouter>
+        <PasswordRecovery />
+      </MemoryRouter>);
     const newPasswordInput = screen.getByLabelText('New Password');
     fireEvent.change(newPasswordInput, { target: { value: 'short' } });
 
@@ -33,7 +45,9 @@ describe('PasswordRecovery Component', () => {
   });
 
   it('should check if passwords match', async () => {
-    render(<PasswordRecovery />);
+    render(<MemoryRouter>
+      <PasswordRecovery />
+    </MemoryRouter>);
     const newPasswordInput = screen.getByLabelText('New Password');
     const confirmPasswordInput = screen.getByLabelText('Confirm New Password');
 
@@ -46,7 +60,10 @@ describe('PasswordRecovery Component', () => {
 
   it('should handle form submission correctly', async () => {
     postRequest.mockImplementation(() => Promise.resolve({ status: 200 }));
-    render(<PasswordRecovery />);
+    patchRequest.mockImplementation(() => Promise.resolve({ status: 200 }));
+    render(<MemoryRouter>
+      <PasswordRecovery />
+    </MemoryRouter>);
     const newPasswordInput = screen.getByLabelText('New Password');
     const confirmPasswordInput = screen.getByLabelText('Confirm New Password');
 
@@ -55,6 +72,6 @@ describe('PasswordRecovery Component', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
     // Verify that the postRequest was called
-    expect(postRequest).toHaveBeenCalled();
+    expect(patchRequest).toHaveBeenCalled();
   });
 });
