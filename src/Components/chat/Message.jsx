@@ -8,7 +8,7 @@ const Message = ({ Message, isFirstMessage, time, username, profilePicture }) =>
 
         return (
             <>
-                <div className="flex flex-row justify-center font-bold">  <p className="text-cyan-500  mt-2 mb-1 text-xs">{Message}</p>  </div>
+                <div test-dataid="null-message" className="flex flex-row justify-center font-bold">  <p className="text-cyan-500  mt-2 mb-1 text-xs">{Message}</p>  </div>
                 <Separator />
             </>
         )
