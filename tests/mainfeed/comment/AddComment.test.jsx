@@ -29,7 +29,7 @@ describe("AddComment Component", () => {
         selectedSort="New"
       />
     );
-    const buttonElement = document.getElementById("1-add-comment-button");
+    const buttonElement = document.getElementById("add_comment");
     expect(buttonElement).not.toBeNull();
   });
 
@@ -45,7 +45,7 @@ describe("AddComment Component", () => {
         selectedSort="New"
       />
     );
-    const buttonElement = document.getElementById("1-add-comment-button");
+    const buttonElement = document.getElementById("add_comment");
     fireEvent.click(buttonElement);
     waitFor(() => {
       expect(setIsCommenting).toHaveBeenCalledTimes(1);
