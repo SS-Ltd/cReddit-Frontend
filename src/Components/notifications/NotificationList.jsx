@@ -15,6 +15,7 @@ import { testingUrl } from '@/constants';
  * @param {Array} props.notifications - List of notification objects to display.
  * @param {boolean} props.isNewNotificationsPage - Indicates if this component is used on a page dedicated to notifications.
  * @param {Object} props.reference - React ref passed to the component for handling outside clicks or similar behaviors.
+ * @param {Function} props.setIsOpenBellMenu - Function to control the state of a notification bell dropdown menu.
  * @returns {JSX.Element} A component that displays a list of notifications with interactive tabs and options.
  */
 const NotificationList = ({ notifications, isNewNotificationsPage, reference, setIsOpenBellMenu }) => {
@@ -23,8 +24,10 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
     const { setNotifications, removeNotification } = useNotifications();
     const navigate = useNavigate();
 
-
-    // Check window size and redirect if needed
+    /**
+     * Adjusts the component's layout or redirects to the detailed notifications page
+     * if the window size is less than the specified breakpoint.
+     */
     useEffect(() => {
         function handleResize() {
             const width = window.innerWidth;
@@ -46,7 +49,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
             window.removeEventListener('resize', handleResize);
         };
     }, [isNewNotificationsPage, navigate]);
-    
+
     /**
      * Handles the action to navigate to the full notifications page and sets the current notifications in context.
      */
@@ -102,24 +105,10 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
         return Math.floor((now - date) / msPerHour);
     };
 
-    // Organize notifications by today and earlier
-    const todayNotifications = [];
-    const earlierNotifications = [];
-
-    const recentNotifications = isNewNotificationsPage ? notifications : notifications.slice(0, 3);
-
-    recentNotifications.forEach(notification => {
-        const notificationDate = parseDateTime(notification.date, notification.time);
-        if (now - notificationDate < 24 * 60 * 60 * 1000) { // If within last 24 hours
-            todayNotifications.push({
-                ...notification,
-                time: `${getHourDifference(notificationDate)}h`
-            });
-        } else {
-            earlierNotifications.push(notification);
-        }
-    });
-
+    /**
+     * Marks all notifications as read through an API request
+     * and updates the local notification context state.
+     */
     const handleMarkAllAsRead = async () => {
         try {
             const response = await putRequest(`${baseUrl}/notification/mark-all-as-read`);
@@ -130,8 +119,6 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                     isRead: true
                 }));
                 setNotifications(updatedNotifications);
-                
-
             } else {
                 console.error("Error marking all notifications as read:", response.status, response.statusText);
             }
