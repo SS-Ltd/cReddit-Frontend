@@ -52,7 +52,6 @@ const VerifyEmail = () => {
         <div>
             {isLoading ? <Loading /> : (
                 <div>
-                    {/** Component's content could be placed here if not loading **/}
                 </div>
             )}
         </div>
