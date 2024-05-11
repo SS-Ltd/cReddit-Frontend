@@ -59,7 +59,7 @@ const Community = ({
     communityButtonRef,
     userHistoryRes,
     setUserHistoryRes,
-    sidebarRef
+    sidebarRef,
   } = useContext(SidebarContext);
 
   useEffect(() => {
@@ -71,7 +71,6 @@ const Community = ({
       setShowAdultPage(response.data.isNSFW && !userInfo.showAdultContent);
     }
     getSubreddit();
-
   }, [location.pathname]);
 
   useEffect(() => {
@@ -184,15 +183,14 @@ const Community = ({
       id="community_page"
       className="w-full mt-14 h-full flex flex-row overflow-hidden scrollbar_mod"
     >
-      <div
-        className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}
-      >
+      <div className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}>
         <div
           ref={sidebarRef}
-          className={`h-full ${isVisibleLeftSidebar
-            ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
-            : "hidden xl:flex"
-            } z-20  w-[290px] min-w-[270px] border-r  border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
+          className={`h-full ${
+            isVisibleLeftSidebar
+              ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
+              : "hidden xl:flex"
+          } z-20  w-[290px] min-w-[270px] border-r  border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
         >
           <Sidebar
             setIsCommunityOpen={setIsCommunityOpen}
@@ -210,38 +208,42 @@ const Community = ({
           )}
         </div>
 
-
-
         <div className="flex flex-col w-full overflow-auto scrollbar_mod_mf  items-center">
+          {showAdultPage ? (
+            <div className="w-full flex flex-row justify-center mt-[240px]">
+              <NSFW setOver18={setShowAdultPage} />
+            </div>
+          ) : (
+            <div
+              id={`community_page__content`}
+              className="w-fit flex flex-col max-w-[1100px] mx-2"
+            >
+              {subreddit && <CommunityHeader {...subreddit} />}
 
-          {showAdultPage ? <div className="w-full flex flex-row justify-center mt-[240px]">
-            <NSFW setOver18={setShowAdultPage} />
-          </div> : <div
-            id={`community_page__content`}
-            className="w-fit flex flex-col max-w-[1100px] mx-2" >
+              <div className="w-full flex flex-row">
+                <div
+                  id="community_page__content__mainfeed"
+                  className="w-fit px-1 flex flex-row flex-grow lg:flex-grow-0  "
+                  ref={mainfeedRef}
+                >
+                  {subreddit && (
+                    <CommunityFeed
+                      subredditName={subreddit.name}
+                      isMember={subreddit.isMember}
+                    />
+                  )}
+                </div>
 
-            {subreddit && <CommunityHeader {...subreddit} />}
-
-            <div className="w-full flex flex-row">
-              <div
-                id="community_page__content__mainfeed"
-                className="w-fit px-1 flex flex-row flex-grow lg:flex-grow-0  "
-                ref={mainfeedRef}
-              >
-                {subreddit && <CommunityFeed subredditName={subreddit.name} isMember={subreddit.isMember} />}
-              </div>
-
-              <div
-                id="community_page__content__community_info"
-                className="w-fit min-w-fit max-h-200 overflow-auto scrollbar_mod_mf sticky top-2"
-                ref={commInfoRef}
-              >
-                {subreddit && <CommunityInfo {...subreddit} />}
+                <div
+                  id="community_page__content__community_info"
+                  className="w-fit min-w-fit max-h-200 overflow-auto scrollbar_mod_mf sticky top-2"
+                  ref={commInfoRef}
+                >
+                  {subreddit && <CommunityInfo {...subreddit} />}
+                </div>
               </div>
             </div>
-          </div>}
-
-
+          )}
         </div>
       </div>
     </div>
