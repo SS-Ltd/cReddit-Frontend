@@ -28,6 +28,16 @@ function Rule({ id, i, text, description }) {
 
 export default Rule;
 
+/**
+ * CustomToggle component displays the rules of a community.
+ * @component
+ * @param {Object} props - The props object.
+ * @param {string} props.id - The unique identifier for the rule.
+ * @param {number} props.eventKey - The event key for the rule.
+ * @param {string} props.text - The text of the rule.
+ * @param {number} props.number - The number of the rule.
+ * @returns {JSX.Element} - The rendered CustomToggle component.
+ */
 function CustomToggle({ id, eventKey, text, number }) {
   const [isDropped, setIsDropped] = useState(false);
   const decoratedOnClick = useAccordionButton(eventKey, () =>
@@ -55,6 +65,13 @@ function CustomToggle({ id, eventKey, text, number }) {
   );
 }
 
+/**
+ * CustomCollapse component displays the rules of a community.
+ * @component
+ * @param {Object} props - The props object.
+ * @param {string} props.description - The description of the rule.
+ * @returns {JSX.Element} - The rendered CustomCollapse component.
+ */
 function CustomCollapse({ description }) {
   return (
     <div className="flex flex-col items-start justify-start w-full">
