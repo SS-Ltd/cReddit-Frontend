@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
  * @param {string} props.message - The message to be displayed in the toast.
  * @returns {JSX.Element} A JSX element representing the custom toast.
  */
-const CustomToast = ({ message }) => (
+export const CustomToast = ({ message }) => (
   <div className=" max-h-7 mb-1  flex flex-row items-center">
     <svg
       className="max-w-7 mr-4 ml-4"
