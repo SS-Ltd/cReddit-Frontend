@@ -3,6 +3,7 @@ function RegularButton({ regularButton, onRegularButtonOnClick, clickableID }) {
     <div className="flex flex-row justify-end w-full items-center pb-1 pr-1">
       <button
         id={clickableID?.toLowerCase()}
+        data-testid={clickableID}
         className="text-white text-sm font-bold font-plex bg-reddit_darkGray p-2 rounded-3xl border border-reddit_darkGray hover:bg-gray-800 hover:border-white"
         onClick={onRegularButtonOnClick}
       >

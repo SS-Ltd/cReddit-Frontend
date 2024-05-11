@@ -14,6 +14,7 @@ function SimpleMenu({ title, menuItems, onSelect, id }) {
         return (
           <NavDropdown.Item
             id={`${id}-${item.name.toLowerCase()}`}
+            data-testid={`${id}-${item.name.toLowerCase()}`}
             key={item.name}
             className="text-md hover:bg-reddit_hover"
             onClick={() => onSelect(item.name)}

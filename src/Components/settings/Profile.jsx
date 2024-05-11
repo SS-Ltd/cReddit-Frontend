@@ -37,7 +37,7 @@ function Profile({
   isContentVisible,
   isActiveCommunityVisible,
   setUserSettings,
-  isNSFW
+  isNSFW,
 }) {
   const [modalShow, setModalShow] = useState(false);
   // const [avatar, setAvatar] = useState(null);
@@ -79,7 +79,7 @@ function Profile({
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div data-testid="setting-tab-profile-tab" className="flex flex-col w-full">
       <h3 className="text-white -mb-3 text-xl font-bold font-plex">
         Customize Profile
       </h3>
@@ -172,7 +172,7 @@ function Profile({
 
       <Subtitle title="PROFILE CATEGORY" />
       <Setting
-        id="profile-category-nsfw-toggle-button"
+        clickableID="profile-category-nsfw-toggle-button"
         title="NSFW"
         message="This content is NSFW (may contain nudity, pornography, profanity or inappropriate content for those under 18)"
         toggleButton={true}
@@ -184,7 +184,7 @@ function Profile({
 
       <Subtitle title="PROFILE CATEGORY" />
       <Setting
-        id="profile-category-follow-toggle-button"
+        clickableID="profile-category-follow-toggle-button"
         title="Allow people to follow you"
         message="Followers will be notified about posts you make to your profile and see them in their home feed."
         toggleButton={true}
@@ -194,7 +194,7 @@ function Profile({
         setUserSettings={setUserSettings}
       />
       <Setting
-        id="profile-category-visibility-toggle-button"
+        clickableID="profile-category-visibility-toggle-button"
         title="Content visibility"
         message="Posts to this profile can appear in r/all and your profile can be discovered in /users"
         toggleButton={true}
@@ -205,7 +205,7 @@ function Profile({
       />
 
       <Setting
-        id="profile-category-clear-history-button"
+        clickableID="profile-category-clear-history-button"
         title="Clear history"
         message="Delete your post views history."
         regularButton="Clear History"

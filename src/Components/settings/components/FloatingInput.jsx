@@ -1,6 +1,6 @@
 function FloatingInput({ id, label, buttonText, onSubmit }) {
   return (
-    <div className="relative w-100% max-w-3xl mt-2">
+    <div id={id} data-testid={id} className="relative w-100% max-w-3xl mt-2">
       <input
         type="text"
         id={id}
@@ -9,6 +9,7 @@ function FloatingInput({ id, label, buttonText, onSubmit }) {
         placeholder=""
       />
       <label
+        data-testid={id + "-label"}
         htmlFor={id}
         className="pl-3 absolute text-xs font-bold font-plex text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-2 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-gray-400 peer-focus:dark:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-2 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
       >

@@ -46,7 +46,7 @@ function Account({
     // }
   };
   return (
-    <div className="flex flex-col w-full">
+    <div data-testid="setting-tab-account-tab" className="flex flex-col w-full">
       <h3 className="text-white -mb-3 text-xl font-bold font-plex">
         Account Settings
       </h3>

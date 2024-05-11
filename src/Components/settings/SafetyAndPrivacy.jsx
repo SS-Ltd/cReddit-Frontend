@@ -18,9 +18,9 @@ import { blockCommunity, blockUser } from "./utils/Block";
  */
 function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
   /**
-  * State variable for the current blocked users. Initially set to the blockedUsers prop.
-  * @type {Object[]}
-  */
+   * State variable for the current blocked users. Initially set to the blockedUsers prop.
+   * @type {Object[]}
+   */
   const [currBlockedUsers, setCurrBlockedUsers] = useState(blockedUsers);
   /**
    * State variable for the current blocked communities. Initially set to the mutedCommunities prop.
@@ -29,16 +29,16 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
   const [currBlockedCommunities, setCurrBlockedCommunities] =
     useState(mutedCommunities);
   /**
-  * Unblocks a user.
-  * Calls the unblockUser utility function and updates the currBlockedUsers state variable.
-  * @async
-  * @param {string} username - The username of the user to unblock.
-  * @returns {Promise<void>}
-  * @resolves {void}
-  * @rejects {void}
-  * @notify {string} "Changes saved" - If the changes are saved successfully.
-  * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
-  */
+   * Unblocks a user.
+   * Calls the unblockUser utility function and updates the currBlockedUsers state variable.
+   * @async
+   * @param {string} username - The username of the user to unblock.
+   * @returns {Promise<void>}
+   * @resolves {void}
+   * @rejects {void}
+   * @notify {string} "Changes saved" - If the changes are saved successfully.
+   * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
+   */
   async function onUnBlockUser(username) {
     const res = await unblockUser(username);
     if (res) {
@@ -59,16 +59,16 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
     } else notify("Failed to save changes");
   }
   /**
-  * Unmutes a community.
-  * Calls the unblockCommunity utility function and updates the currBlockedCommunities state variable.
-  * @async
-  * @param {string} communityName - The name of the community to unmute.
-  * @returns {Promise<void>}
-  * @resolves {void}
-  * @rejects {void}
-  * @notify {string} "Changes saved" - If the changes are saved successfully.
-  * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
-  */
+   * Unmutes a community.
+   * Calls the unblockCommunity utility function and updates the currBlockedCommunities state variable.
+   * @async
+   * @param {string} communityName - The name of the community to unmute.
+   * @returns {Promise<void>}
+   * @resolves {void}
+   * @rejects {void}
+   * @notify {string} "Changes saved" - If the changes are saved successfully.
+   * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
+   */
   async function onUnMuteCommunity(communityName) {
     const res = await unblockCommunity(communityName);
     if (res) {
@@ -81,16 +81,16 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
     } else notify("Failed to save changes");
   }
   /**
- * Mutes a community.
- * Calls the blockCommunity utility function and updates the currBlockedCommunities state variable.
- * @async
- * @param {string} communityName - The name of the community to mute.
- * @returns {Promise<void>}
- * @resolves {void}
- * @rejects {void}
- * @notify {string} "Changes saved" - If the changes are saved successfully.
- * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
- * */
+   * Mutes a community.
+   * Calls the blockCommunity utility function and updates the currBlockedCommunities state variable.
+   * @async
+   * @param {string} communityName - The name of the community to mute.
+   * @returns {Promise<void>}
+   * @resolves {void}
+   * @rejects {void}
+   * @notify {string} "Changes saved" - If the changes are saved successfully.
+   * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
+   * */
   async function onMuteCommunity(communityName) {
     const res = await blockCommunity(communityName);
     if (res) {
@@ -119,7 +119,7 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
         message="Blocked people can’t send you chat requests or private messages."
       />
 
-      <div className="  w-90% max-w-3xl h-fit flex flex-col">
+      <div className="w-90% max-w-3xl h-fit flex flex-col">
         <FloatingInput
           id="safety-block-user-input"
           label="BLOCK NEW USER"

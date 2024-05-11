@@ -4,6 +4,7 @@ function ToggleButton({ isToggleOn, onToggleButtonOnClick, clickableID }) {
       <label className="inline-flex cursor-pointer items-center">
         <input
           id={clickableID?.toLowerCase()}
+          data-testid={clickableID}
           type="checkbox"
           checked={isToggleOn}
           onChange={onToggleButtonOnClick}
