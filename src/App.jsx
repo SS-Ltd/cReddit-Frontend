@@ -163,8 +163,7 @@ function App() {
             element={
               <SidebarContextProvider>
                 <TopCommunities
-                  isVisibleLeftSidebar={isVisibleLeftSidebar}
-                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  sidebarProps={sidebarProps}
                 />
               </SidebarContextProvider>
             }

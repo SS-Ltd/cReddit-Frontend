@@ -1,24 +1,33 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import CommunitiesSection from "./CommunitiesSection";
-import { SidebarContext } from "@/context/SidebarContext";
 import Sidebar from "../sidebar/Sidebar";
 
 /**
  * React component representing a page displaying top communities.
  * This component renders a list of top communities alongside a sidebar.
  * @param {Object} props - Component props.
- * @param {boolean} props.isVisibleLeftSidebar - Flag indicating if the left sidebar is visible.
- * @param {function} props.setIsVisibleLeftSidebar - Function to set the visibility of the left sidebar.
+ * @param {Object} props.sidebarProps - Props for the sidebar.
+ * @param {boolean} props.sidebarProps.isVisibleLeftSidebar - Flag indicating if the left sidebar is visible.
+ * @param {function} props.sidebarProps.setIsVisibleLeftSidebar - Function to set the visibility of the left sidebar.
+ * @param {function} props.sidebarProps.setIsCommunityOpen - Function to set if a community is open.
+ * @param {RefObject} props.sidebarProps.communityButtonRef - Reference to the community button.
+ * @param {any} props.sidebarProps.userHistoryRes - User history response.
+ * @param {RefObject} props.sidebarProps.sidebarRef - Reference to the sidebar.
  * @returns {JSX.Element} React component.
  */
-const TopCommunities = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar }) => {
-  // Retrieve context variables from SidebarContext
-  const { setIsCommunityOpen, communityButtonRef, userHistoryRes, sidebarRef } =
-    useContext(SidebarContext);
+const TopCommunities = ({ sidebarProps }) => {
+  const {
+    isVisibleLeftSidebar,
+    setIsVisibleLeftSidebar,
+    setIsCommunityOpen,
+    communityButtonRef,
+    userHistoryRes,
+    sidebarRef,
+  } = sidebarProps;
 
-    useEffect(() => {
-     setIsVisibleLeftSidebar(false);
-    } ,[]);
+  useEffect(() => {
+    setIsVisibleLeftSidebar(false);
+  }, []);
 
   return (
     <>

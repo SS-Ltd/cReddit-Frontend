@@ -9,7 +9,7 @@ afterEach(() => {
 
 describe("RightSidebar component", () => {
   const userInfo = {
-    username: "testUser",
+    displayName: "testUser",
     profilePicture: "testImage.jpg",
     banner: "testBanner.jpg",
   };

@@ -29,6 +29,9 @@ const RightSidebar = ({ userInfo }) => {
     return date.toLocaleDateString("en-US", options);
   };
 
+  /**
+   * Fetches social links from the user's settings and sets them.
+   */
   useEffect(() => {
     const getSocialLinks = async () => {
       const response = await getRequest(`${baseUrl}/user/settings`);
@@ -40,6 +43,9 @@ const RightSidebar = ({ userInfo }) => {
     getSocialLinks();
   }, []);
 
+  /**
+   * Fetches communities where the user is a moderator and sets them.
+   */
   useEffect(() => {
     const getCommunities = async () => {
       const response = await getRequest(`${baseUrl}/user/moderator-in`);

@@ -67,7 +67,6 @@ const Overview = ({ userInfo }) => {
           `${baseUrl}/user/${userInfo.username}/overview?page=${currentPage}&limit=${profileLimit}`
         );
         if (response.status === 200 || response.status === 201) {
-
           if (response.data.length === 0) {
             setHasMore(false);
           } else {
@@ -83,6 +82,9 @@ const Overview = ({ userInfo }) => {
     getOverview();
   }, [currentPage, hasMore]);
 
+  /**
+   * Observes scrolling behavior to trigger fetching additional data when reaching the end of the page.
+   */
   useEffect(() => {
     if (loading) return;
 

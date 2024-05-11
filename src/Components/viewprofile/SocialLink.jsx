@@ -1,3 +1,11 @@
+/**
+ * Component representing a social media link.
+ * Renders a link to a specific platform with its corresponding URL.
+ * @param {Object} props - Component props.
+ * @param {string} props.platform - The name of the social media platform.
+ * @param {string} props.url - The URL of the social media profile.
+ * @returns {JSX.Element} Social media link component.
+ */
 const SocialLink = ({ platform, url }) => {
   return (
     <a

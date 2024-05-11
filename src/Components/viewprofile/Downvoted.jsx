@@ -86,6 +86,9 @@ const Downvoted = () => {
     getDownvoted();
   }, [currentPage, hasMore]);
 
+  /**
+   * Observes scrolling behavior to trigger fetching additional data when reaching the end of the page.
+   */
   useEffect(() => {
     if (loading) return;
 

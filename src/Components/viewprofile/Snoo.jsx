@@ -1,3 +1,7 @@
+/**
+ * Component representing a Snoo placeholder, typically used in profile pages.
+ * Displays an image of Snoo with a welcome message.
+ */
 const Snoo = () => {
   return (
     <>

@@ -3,12 +3,23 @@ import { getRequest } from "@/services/Requests";
 import ScheduledPost from "./ScheduledPost.jsx";
 import { baseUrl } from "@/constants";
 
+/**
+ * Represents a component for scheduling posts in a subreddit.
+ * @param {Object} props - Component props.
+ * @param {Object} props.selectedSubReddit - The selected subreddit for scheduling posts.
+ * @param {string} props.selectedSubReddit.name - The name of the selected subreddit.
+ * @returns {JSX.Element} A React component for scheduling posts.
+ */
 const SchedulePost = ({ selectedSubReddit }) => {
   const [posts, setPosts] = useState([]);
 
   const currentUrl = window.location.origin;
 
   useEffect(() => {
+    /**
+     * Fetches scheduled posts from the server based on the selected subreddit.
+     * @returns {void}
+     */
     const getPosts = async () => {
       const response = await getRequest(
         `${baseUrl}/subreddit/${selectedSubReddit.name}/scheduled-posts`
@@ -43,14 +54,14 @@ const SchedulePost = ({ selectedSubReddit }) => {
       </div>
 
       <div id="mapped_mod" className="flex flex-col h-full w-full">
-      {posts.map((post, index) => (
+        {posts.map((post, index) => (
           <div
             key={index}
             className="w-full flex-col hover:bg-reddit_hover px-[32px] border-b-[1px] border-[#252C2E] py-4"
           >
             <ScheduledPost
               username={post.username}
-              profilePicture = {post.profilePicture}
+              profilePicture={post.profilePicture}
               content={post.content}
               title={post.title}
               isSpoiler={post.isSpoiler}

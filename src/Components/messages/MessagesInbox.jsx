@@ -2,6 +2,21 @@ import React from "react";
 import { baseUrl } from "@/constants";
 import { deleteRequest, patchRequest } from "@/services/Requests";
 
+/**
+ * Component representing a message in the user's inbox.
+ * Allows users to view, delete, and mark messages as read.
+ * For invitations, users can also accept or reject community moderation invitations.
+ * @param {Object} props - Component props.
+ * @param {string} props.id - The unique identifier of the message.
+ * @param {string} props.from - The sender of the message.
+ * @param {string} props.to - The recipient of the message.
+ * @param {string} props.subject - The subject of the message.
+ * @param {string} props.text - The content of the message.
+ * @param {boolean} props.isRead - Flag indicating if the message has been read.
+ * @param {boolean} props.isDeleted - Flag indicating if the message has been deleted.
+ * @param {string} props.createdAt - The timestamp when the message was created.
+ * @returns {JSX.Element|null} Component representing a message.
+ */
 const MessagesInbox = ({
   id,
   from,
@@ -22,6 +37,11 @@ const MessagesInbox = ({
 
   const communityName = isInvitation ? subject.split("/r/")[1] : null;
 
+  /**
+   * Deletes the message from the inbox.
+   * Reloads the page after successful deletion.
+   * @returns {Promise<void>} A promise indicating completion.
+   */
   const handleDelete = async () => {
     try {
       await deleteRequest(`${baseUrl}/message/${id}`);
@@ -31,6 +51,11 @@ const MessagesInbox = ({
     }
   };
 
+  /**
+   * Marks the message as read.
+   * Reloads the page after successful operation.
+   * @returns {Promise<void>} A promise indicating completion.
+   */
   const handleMarkAsRead = async () => {
     try {
       await patchRequest(`${baseUrl}/message/${id}/mark-as-read`);
@@ -40,6 +65,11 @@ const MessagesInbox = ({
     }
   };
 
+  /**
+   * Accepts a community moderation invitation.
+   * Reloads the page after successful operation.
+   * @returns {Promise<void>} A promise indicating completion.
+   */
   const handleAccept = async () => {
     try {
       await patchRequest(`${baseUrl}/accept-invite/${communityName}`);
@@ -49,6 +79,11 @@ const MessagesInbox = ({
     }
   };
 
+  /**
+   * Rejects a community moderation invitation.
+   * Reloads the page after successful operation.
+   * @returns {Promise<void>} A promise indicating completion.
+   */
   const handleReject = async () => {
     try {
       await patchRequest(`${baseUrl}/reject-invite/${communityName}`);
