@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react'
-import { expect, test, describe } from 'vitest';
-import { BrowserRouter as Router } from 'react-router-dom';
-import SearchFeedPeopleRow from '@/Components/search/SearchFeedPeopleRow'
+import { render } from "@testing-library/react";
+import { expect, test, describe } from "vitest";
+import { BrowserRouter as Router } from "react-router-dom";
+import SearchFeedPeopleRow from "@/Components/search/SearchFeedPeopleRow";
 
-describe('SearchFeedPeopleRow', () => {
-  test('renders correctly', async () => {
+describe("SearchFeedPeopleRow", () => {
+  test("renders correctly", async () => {
     const { getByText } = render(
       <Router>
         <SearchFeedPeopleRow
@@ -15,9 +15,9 @@ describe('SearchFeedPeopleRow', () => {
           lastElementRef={null}
         />
       </Router>
-    )
+    );
 
-    expect(getByText('u/test')).to.exist
-    expect(getByText('test about')).to.exist
-  })
-})
+    expect(getByText("u/test")).to.exist;
+    expect(getByText("test about")).to.exist;
+  });
+});

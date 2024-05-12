@@ -9,6 +9,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 afterEach(() => {
   cleanup();
 });
+
 describe("Usercard Component", () => {
   it("test 1 : clicking the button changes it to follow to unfollow and viceverse ", () => {
     const userContextValue = { isLoggedIn: true };

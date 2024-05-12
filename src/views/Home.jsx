@@ -18,7 +18,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const homefeedRef = useRef();
   const communiyCardRef = useRef();
 
-
   const {
     isCommunityOpen,
     setIsCommunityOpen,
@@ -32,27 +31,24 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const [homeFeedScroll, setHomeFeedScroll] = useState(0);
   const prevPath = useRef(navigate.pathname);
 
-
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
-      localStorage.setItem('homeFeedScroll', homeFeedScroll);
-
-    }
-    else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/")) {
+      localStorage.setItem("homeFeedScroll", homeFeedScroll);
+    } else if (
+      prevPath.current.includes("/comments/") &&
+      !navigate.pathname.includes("/comments/")
+    ) {
       setTimeout(() => {
-        homefeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
+        homefeedRef.current.scrollTop = localStorage.getItem("homeFeedScroll");
       }, 10);
     }
     prevPath.current = navigate.pathname;
   }, [navigate.pathname]);
 
-
-
   useEffect(() => {
     const mainfeedElement = document.getElementById("homefeed");
 
     const handleScroll = () => {
-
       setHomeFeedScroll(mainfeedElement.scrollTop);
     };
 
@@ -67,7 +63,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     };
   });
 
-
   useEffect(() => {
     async function getHistory() {
       const response = await getRequest(`${baseUrl}/user/history?limit=10`);
@@ -78,7 +73,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     }
     getHistory();
   }, [isLoggedIn]);
-
 
   useEffect(() => {
     let handleClickOutside = (e) => {
@@ -158,83 +152,109 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
     return () => {
       if (recentRef.current) {
-        recentRef.current.removeEventListener('scroll', handleScroll);
+        recentRef.current.removeEventListener("scroll", handleScroll);
       }
       if (sidebarRef.current) {
-        sidebarRef.current.removeEventListener('scroll', handleScroll);
+        sidebarRef.current.removeEventListener("scroll", handleScroll);
       }
       if (mainfeedRef.current) {
-        mainfeedRef.current.removeEventListener('scroll', handleScroll);
+        mainfeedRef.current.removeEventListener("scroll", handleScroll);
       }
     };
   });
   return (
-
     <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
       <div className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}>
-
-        <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
-          <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
+        <div
+          ref={sidebarRef}
+          className={`h-full ${
+            isVisibleLeftSidebar
+              ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
+              : "hidden xl:flex"
+          } z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
+        >
+          <Sidebar
+            setIsCommunityOpen={setIsCommunityOpen}
+            communityButtonRef={communityButtonRef}
+            setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+            userHistoryRes={userHistoryRes}
+          />
         </div>
         <div className="">
-          {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
+          {isCommunityOpen && (
+            <CreateCommunity
+              setIsCommunityOpen={setIsCommunityOpen}
+              communityCardRef={communiyCardRef}
+            />
+          )}
         </div>
 
-        <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-
-          {
-            location.pathname === "/popular" ?
-              <>
-                <div className=" w-full px-6 mt-[18px] lg:max-w-[1155px]">
-                  <PopularCarousel />
+        <div
+          ref={homefeedRef}
+          id="homefeed"
+          className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf"
+        >
+          {location.pathname === "/popular" ? (
+            <>
+              <div className=" w-full px-6 mt-[18px] lg:max-w-[1155px]">
+                <PopularCarousel />
+              </div>
+              <div className="flex flex-row w-fit">
+                <div
+                  className="w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  "
+                  ref={mainfeedRef}
+                >
+                  <Mainfeed mode={"popular"} />
                 </div>
-                <div className="flex flex-row w-fit">
-                  <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
-                    <Mainfeed mode={"popular"} />
-                  </div>
 
-                  <div
-                    className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-                    <Recent userHistoryRes={userHistoryRes} />
-                  </div>
+                <div
+                  className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]"
+                  ref={recentRef}
+                >
+                  <Recent userHistoryRes={userHistoryRes} />
                 </div>
-              </>
+              </div>
+            </>
+          ) : location.pathname === "/all" ? (
+            <>
+              <div className="flex flex-row w-fit">
+                <div
+                  className="w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  "
+                  ref={mainfeedRef}
+                >
+                  <Mainfeed mode={"all"} />
+                </div>
 
-              :
-              location.pathname === "/all" ?
-                <>
-                  <div className="flex flex-row w-fit">
-                    <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
-                      <Mainfeed mode={"all"} />
-                    </div>
+                <div
+                  className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]"
+                  ref={recentRef}
+                >
+                  <Recent userHistoryRes={userHistoryRes} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-row w-fit">
+                <div
+                  className="w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  "
+                  ref={mainfeedRef}
+                >
+                  <Mainfeed mode={"home"} />
+                </div>
 
-                    <div
-                      className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-                      <Recent userHistoryRes={userHistoryRes} />
-                    </div>
-                  </div>
-                </>
-                :
-
-                <>
-                  <div className="flex flex-row w-fit">
-                    <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
-                      <Mainfeed mode={"home"} />
-                    </div>
-
-                    <div
-                      className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-                      <Recent userHistoryRes={userHistoryRes} />
-                    </div>
-                  </div>
-                </>
-          }
-
-
+                <div
+                  className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]"
+                  ref={recentRef}
+                >
+                  <Recent userHistoryRes={userHistoryRes} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
-
   );
 };
 

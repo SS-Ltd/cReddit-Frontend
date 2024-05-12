@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react'
-import { expect, test, describe } from 'vitest';
-import { BrowserRouter as Router } from 'react-router-dom';
-import SearchFeedCommunitiesRow from '@/Components/search/SearchFeedCommunitiesRow'
+import { render } from "@testing-library/react";
+import { expect, test, describe } from "vitest";
+import { BrowserRouter as Router } from "react-router-dom";
+import SearchFeedCommunitiesRow from "@/Components/search/SearchFeedCommunitiesRow";
 
-describe('SearchFeedCommunitiesRow', () => {
-  test('renders correctly', async () => {
+describe("SearchFeedCommunitiesRow", () => {
+  test("renders correctly", async () => {
     const { getByText } = render(
       <Router>
         <SearchFeedCommunitiesRow
@@ -16,10 +16,10 @@ describe('SearchFeedCommunitiesRow', () => {
           lastElementRef={null}
         />
       </Router>
-    )
+    );
 
-    expect(getByText('r/test')).to.exist
-    expect(getByText('test description')).to.exist
-    expect(getByText('1.0K members')).to.exist
-  })
-})
+    expect(getByText("r/test")).to.exist;
+    expect(getByText("test description")).to.exist;
+    expect(getByText("1.0K members")).to.exist;
+  });
+});

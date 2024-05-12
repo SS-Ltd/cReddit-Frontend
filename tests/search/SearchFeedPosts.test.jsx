@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react'
-import { expect, test, describe } from 'vitest';
-import { BrowserRouter as Router } from 'react-router-dom';
-import SearchFeedPosts from '@/Components/search/SearchFeedPosts'
+import { render } from "@testing-library/react";
+import { expect, test, describe } from "vitest";
+import { BrowserRouter as Router } from "react-router-dom";
+import SearchFeedPosts from "@/Components/search/SearchFeedPosts";
 
-describe('SearchFeedPosts', () => {
-  test('renders correctly', async () => {
+describe("SearchFeedPosts", () => {
+  test("renders correctly", async () => {
     const { getByText } = render(
       <Router>
         <SearchFeedPosts
@@ -23,16 +23,15 @@ describe('SearchFeedPosts', () => {
           _id="testId"
         />
       </Router>
-    )
+    );
 
-    expect(getByText('r/testCommunity')).to.exist
-    expect(getByText('Test Title')).to.exist
-    expect(getByText('1.0K votes')).to.exist
-    expect(getByText('200 comments')).to.exist
-  })
+    expect(getByText("r/testCommunity")).to.exist;
+    expect(getByText("Test Title")).to.exist;
+    expect(getByText("1.0K votes")).to.exist;
+    expect(getByText("200 comments")).to.exist;
+  });
 
-  
-  test('renders correctly when communityName is null', async () => {
+  test("renders correctly when communityName is null", async () => {
     const { getByText, queryByText } = render(
       <Router>
         <SearchFeedPosts
@@ -51,10 +50,11 @@ describe('SearchFeedPosts', () => {
           _id="testId"
         />
       </Router>
-    )
-    expect(getByText('u/testUser2')).to.exist
-    expect(getByText('Test Title2')).to.exist
-    expect(getByText('2.0K votes')).to.exist
-    expect(getByText('100 comments')).to.exist
-  })
-})
+    );
+
+    expect(getByText("u/testUser2")).to.exist;
+    expect(getByText("Test Title2")).to.exist;
+    expect(getByText("2.0K votes")).to.exist;
+    expect(getByText("100 comments")).to.exist;
+  });
+});

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-const CustomToast = ({ message }) => (
+export const CustomToast = ({ message }) => (
   <div className=" max-h-7 mb-1  flex flex-row items-center">
     <svg
       className="max-w-7 mr-4 ml-4"
@@ -27,7 +27,9 @@ const CustomToast = ({ message }) => (
     <div className="text-white text-sm font-plex items-end mt-1">{message}</div>
   </div>
 );
+
 let id = 1;
+
 export const notify = (message) =>
   toast(<CustomToast message={message} />, {
     toastId: `popup_${id++}`,

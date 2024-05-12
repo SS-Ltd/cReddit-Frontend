@@ -4,6 +4,7 @@ import { notify } from "./components/CustomToast";
 import ToggleButton from "./components/ToggleButton";
 import RegularButton from "./components/RegularButton";
 import { changeSetting } from "./utils/ChangeSetting";
+
 /**
  * Setting is a React component that displays a setting item.
  * It can display a toggle button, a regular button, or a menu, depending on the props.

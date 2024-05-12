@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react'
-import { expect, test, describe } from 'vitest';
-import { BrowserRouter as Router } from 'react-router-dom';
-import SearchSubredditRow from '@/Components/search/SearchSubredditRow'
+import { render } from "@testing-library/react";
+import { expect, test, describe } from "vitest";
+import { BrowserRouter as Router } from "react-router-dom";
+import SearchSubredditRow from "@/Components/search/SearchSubredditRow";
 
-describe('SearchSubredditRow', () => {
-  test('renders correctly', async () => {
+describe("SearchSubredditRow", () => {
+  test("renders correctly", async () => {
     const { getByText } = render(
       <Router>
         <SearchSubredditRow
@@ -17,9 +17,9 @@ describe('SearchSubredditRow', () => {
           setIsFocused={() => {}}
         />
       </Router>
-    )
+    );
 
-    expect(getByText('r/test')).to.exist
-    expect(getByText('1.0K members')).to.exist
-  })
-})
+    expect(getByText("r/test")).to.exist;
+    expect(getByText("1.0K members")).to.exist;
+  });
+});

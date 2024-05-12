@@ -35,7 +35,6 @@ export const CustomToast = ({ message }) => (
   </div>
 );
 
-
 /**
  * RecoverySuccessToast is a function that displays a success toast with a custom message.
  * @component
@@ -44,15 +43,14 @@ export const CustomToast = ({ message }) => (
  */
 export const RecoverySuccessToast = (message) =>
   toast.success(<CustomToast message={message} />, {
-      toastId: "recovery-toast-success",
-      position: "bottom-center",
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    }
-  );
+    toastId: "recovery-toast-success",
+    position: "bottom-center",
+    hideProgressBar: false,
+    closeOnClick: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
 
 /**
  * RecoveryFailedToast is a function that displays an error toast with a custom message.
@@ -62,12 +60,11 @@ export const RecoverySuccessToast = (message) =>
  */
 export const RecoveryFailedToast = (message) =>
   toast.error(<CustomToast message={message} />, {
-      toastId: "recovery-toast-error",
-      position: "bottom-center",
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    }
-  );
+    toastId: "recovery-toast-error",
+    position: "bottom-center",
+    hideProgressBar: false,
+    closeOnClick: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });

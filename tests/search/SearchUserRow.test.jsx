@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react'
-import { expect, test, describe } from 'vitest';
-import { BrowserRouter as Router } from 'react-router-dom';
-import SearchUserRow from '@/Components/search/SearchUserRow'
+import { render } from "@testing-library/react";
+import { expect, test, describe } from "vitest";
+import { BrowserRouter as Router } from "react-router-dom";
+import SearchUserRow from "@/Components/search/SearchUserRow";
 
-describe('SearchUserRow', () => {
-  test('renders correctly', async () => {
+describe("SearchUserRow", () => {
+  test("renders correctly", async () => {
     const { getByText } = render(
       <Router>
         <SearchUserRow
@@ -16,12 +16,12 @@ describe('SearchUserRow', () => {
           setIsFocused={() => {}}
         />
       </Router>
-    )
+    );
 
-    expect(getByText('u/testUser')).to.exist
-  })
+    expect(getByText("u/testUser")).to.exist;
+  });
 
-  test('renders NSFW tag when isNSFW is true', async () => {
+  test("renders NSFW tag when isNSFW is true", async () => {
     const { getByText } = render(
       <Router>
         <SearchUserRow
@@ -33,8 +33,8 @@ describe('SearchUserRow', () => {
           setIsFocused={() => {}}
         />
       </Router>
-    )
+    );
 
-    expect(getByText('NSFW')).to.exist
-  })
-})
+    expect(getByText("NSFW")).to.exist;
+  });
+});
